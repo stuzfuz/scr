@@ -2,9 +2,7 @@
 
 namespace Data; 
 
-use BookShop\Category;
-use BookShop\Book;
-use BookShop\User;
+use inc\config;
 
 class DataManager {
 
@@ -20,7 +18,9 @@ class DataManager {
             }
             catch(PDOException $e)
             {
-                echo $e->getMessage();
+                Logger::log("Fatal Error - could not connect to Database");
+                readfile('static/500.html');
+
             }
         }
         // var_dump(self::$__connection);
@@ -56,83 +56,5 @@ class DataManager {
 
     private static function closeConnection() {
         self::$__connection == null; 
-    }
-
-    public static function getCategories() : array {
-        $categories = array();
-        $con = self::getConnection();
-        
-        $res = self::query($con, "SELECT id, name FROM categories");
-
-        // iterate over cursor
-        while ($cat = self::fetchObject($res)) {
-            $categories[] = new Category($cat->id, $cat->name);
-        }
-
-        self::closeConnection();
-
-        return $categories;
-    }
-
-    public static function getBooksByCategory(int $categoryId) : array {
-        $books = array();
-        $con = self::getConnection();
-        $res = self::query($con, "SELECT id, categoryId, title, author, price 
-            FROM books WHERE categoryId = ?", array($categoryId));
-
-        // var_dump($res);
-        while($book = self::fetchObject($res)) {
-            //var_dump($book);
-            $books[] = new Book($book->id, $book->categoryId, $book->title, $book->author, $book->price);
-        }
-        self::closeConnection();
-        return $books;
-    }
-
-    public static function getUserByUserName(string $userName) {
-      $user = null; 
-      $con = self::getConnection();
-      $res = self::query($con, "SELECT id, userName, passwordHash FROM users WHERE username = ?", array($userName));
-      if ($u = self::fetchObject($res)) {
-          $user = new User($u->id, $u->userName, $u->passwordHash);
-      }
-      self::closeConnection();
-      return $user;
-    }
-
-    public static function getUserById(int $userId) {
-        $user = null; 
-      $con = self::getConnection();
-      $res = self::query($con, "SELECT id, userName, passwordHash FROM users WHERE id = ?", array($userId));
-      if ($u = self::fetchObject($res)) {
-          $user = new User($u->id, $u->userName, $u->passwordHash);
-      }
-      self::closeConnection();
-      return $user;
-    }
-
-    public static function createOrder(int $userId, array $bookIds, string $nameOnCart, string $cardNumber) : int {
-        $con = self::getConnection();
-        $con->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        
-        $con->beginTransaction();
-        try {
-            self::query("INSERT INTO orders (userid, creditCardNumber, creditCardHolder) VALUES (?, ?, ?)",
-                array($userId, $cardNumber, $nameOnCart));
-
-            $orderId = $con->lastInsertid();
-
-            foreach($bookIds as $bookId) {
-                self::query($con, "INSERT INTO orderedbooks (orderId, bookId) VALUES (?, ?) ",
-                    array($orderId, $bookId));
-            }
-
-            $con->commit();
-        } catch (Exception $e) {
-            $con->rollBack();
-            $orderId = null;
-        }
-        self::closeConnection();
-        return $orderId;
     }
 }
