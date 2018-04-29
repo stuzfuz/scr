@@ -2,8 +2,8 @@
 
 class SimpleController {
 
-    private $route = null; 
-    private $data = null; 
+    protected $route = null; 
+    protected $data = null; 
 
     public function __construct($route) {
         $this->route = $route; 

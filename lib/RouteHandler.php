@@ -2,19 +2,36 @@
 
 class RouteHandler {
 
+    private static $requestParams = null;
+    private static $requestPath = null; 
+
+    private function sanitizeRequestParams() {
+        //TODO iterate over $_REQUEST and extract all params with prefix grg_ and sanitize them 
+    }
+
+    private static function sanitizeURL() {
+        self::$requestPath = $_SERVER['REDIRECT_URL'];
+        //TODO  sanitize $_SERVER['REDIRECT_URL'] 
+    }
+
     public static function handleRoute($db_conn)  {
-        $requestPath = $_SERVER['REDIRECT_URL'];
+        self::sanitizeURL();
+
         $verb = $_SERVER['REQUEST_METHOD'];
-        $requestPath2 = $requestPath;
+        $requestPath2 = self::$requestPath;
+
+        if ($verb == "POST") {
+            sanitizeRequestParams();
+        }
 
         $sql = "SELECT * FROM route WHERE verb = ? AND route = ?";
         $params = array($verb);
-        $params[] = $requestPath;
+        $params[] = self::$requestPath;
         // possible parameter in path
-        if (substr_count($requestPath, '/') > 1) {
-            $pos = strrpos($requestPath, "/");
+        if (substr_count(self::$requestPath, '/') > 1) {
+            $pos = strrpos(self::$requestPath, "/");
 
-            $requestPath2 = substr($requestPath, 0, $pos);
+            $requestPath2 = substr(self::$requestPath, 0, $pos);
 
             // \Util::my_var_dump($requestPath, "requestpath = ");
             // \Util::my_var_dump($requestPath2, "requestpath2 = ");

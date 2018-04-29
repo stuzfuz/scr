@@ -9,6 +9,7 @@ class ApplicationConfig {
 
     public static $logFile = 'log/poormansslack.log';
 
+    public static $indexTmpl = 'index.tmpl';
 }
 
 ?>
