@@ -5,4 +5,36 @@ Warning	192.168.33.1	Sun Apr 29, 2018 11:12	404 - could not find page: 	/login/s
                             ###name###
                           </a>
                         </li>
-                  
+                  ERROR	192.168.33.1	Sun Apr 29, 2018 15:53	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 15:54	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 15:54	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 15:54	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 15:55	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 15:57	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 15:57	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 15:58	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 15:58	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 15:58	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 15:59	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:00	TemplateEngine::render()   could not open file : 	components/main/header.htmlERROR	192.168.33.1	Sun Apr 29, 2018 16:02	TemplateEngine::render()   could not open file : 	components/main/header.htmlERROR	192.168.33.1	Sun Apr 29, 2018 16:02	TemplateEngine::render()   could not open file : 	components/main/header.htmlERROR	192.168.33.1	Sun Apr 29, 2018 16:03	TemplateEngine::render()   could not open file : 	components/main/header.htmlERROR	192.168.33.1	Sun Apr 29, 2018 16:03	TemplateEngine::render()   could not open file : 	components/main/header.htmlERROR	192.168.33.1	Sun Apr 29, 2018 16:05	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:06	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:06	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:08	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:10	TemplateEngine::renderForEach()   could not find key <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            ###name### in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:14	TemplateEngine::renderForEach()   could not find key channels in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:14	TemplateEngine::renderForEach()   could not find key channels in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:14	TemplateEngine::renderForEach()   could not find key channels in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:14	TemplateEngine::renderForEach()   could not find key channels in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:15	TemplateEngine::renderForEach()   could not find key >###nam in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:15	TemplateEngine::renderForEach()   could not find key >###nam in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:20	TemplateEngine::replaceVariable()   could not find key name in object data 	ERROR	192.168.33.1	Sun Apr 29, 2018 16:21	TemplateEngine::replaceVariable()   could not find key name in object data 	

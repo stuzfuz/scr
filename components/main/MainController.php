@@ -8,7 +8,7 @@ class MainController extends SimpleController {
         // \Util::my_var_dump($this->db_conn, "MainController this->db_conn  = ");
 
         // TODO: only those for the user who is logged in
-        $sql = "SELECT id, name FROM channel WHERE deleted = 0 ORDER BY name";
+        $sql = "SELECT id, name FROM channel WHERE deleted = 0 ORDER BY name LIMIT 2";
         $res = \DatabaseManager::query($this->db_conn, $sql, array());
         //  \Util::my_var_dump($res, "res = ");
         // exit();
@@ -30,6 +30,8 @@ class MainController extends SimpleController {
 
         // \Util::my_var_dump($this->data, "MainController this->data  = ");
 
+        // $data= array();
+        // $data["name"] = "georg";
         $this->data = $data; 
         // \Util::my_var_dump($this->data, "MainController this->data  = ");
 

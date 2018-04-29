@@ -153,7 +153,7 @@ VALUES ( 'dagobertdduck', 'dagobert@poormansslack.at', 'dagobert', 'duck', 	NOW(
 
 
 INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
-VALUES ( 'daisyduck', 'daisy@poormansslack.at', 'daisy', 'duck', 	NOW()-105000, SHA1('dais'), 0);
+VALUES ( 'daisyduck', 'daisy@poormansslack.at', 'daisy', 'duck', 	NOW()-10000, SHA1('dais'), 0);
 
 
 INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
