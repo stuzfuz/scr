@@ -6,7 +6,6 @@ class RouteHandler {
         $requestPath = $_SERVER['REDIRECT_URL'];
         $requestPath2 = $requestPath;
 
-
         $sql = "SELECT * FROM route WHERE route = ?";
         $params = array($requestPath);
         // possible parameter in path

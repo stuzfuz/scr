@@ -1,16 +1,22 @@
 <?php
 
-class MainController  extends SimpleController {
+class SimpleController {
 
-    protected function gatherData() {
-        $this->$data["loggedin"] = false;
+    private $route = null; 
+    private $data = null; 
+
+    public function __construct($route) {
+        $this->route = $route; 
     }
 
-    // TODO Delete this if not necessary
+    protected function gatherData() {
+        
+        $this->data = 'dkfjs';
+    }
+
     public function justDoIt() : string {
         echo "<br> " . $this->data . "<br/>";
         $page = \TemplateEngine::render('index.tmpl', $this->data, $this->route['headertemplate'], $this->route['contenttemplate'], $this->route['footertemplate']);
-        return "MainController";
+        return $page;
     }
 }
- 

@@ -32,7 +32,7 @@ class Util {
   public static function my_var_dump($var, string $info = null) {
     echo "<br>" . $info . "<br><pre>";
     var_dump($var);
-    echo "</pre";
+    echo "</pre>";
   }
 
   
