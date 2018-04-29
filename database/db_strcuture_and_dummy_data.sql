@@ -142,6 +142,9 @@ INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate,
 VALUES ('/messages' ,'PAGE', 'components/main/header.html', 'components/messages/content.html', 'components/main/footer.html', 'channelname', 'components/messages/', 'MessagesController', 'GET');
 
 
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/dev' ,'PAGE', 'components/dev/header.html', 'components/dev/content.html', 'components/dev/footer.html', NULL, 'components/dev/', 'DevController', 'GET');
+
 
 
 INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 

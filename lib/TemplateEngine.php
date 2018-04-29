@@ -2,8 +2,6 @@
 
 class TemplateEngine {
 
-    private $filename = null; 
-
     private static function findTemplate(string $tmpl)  {
         $posBegin = strpos($tmpl, "###");
         $ret["found"] = false; 
@@ -230,7 +228,7 @@ class TemplateEngine {
         if ($headertemplate !== null) {
             $headerBegin = self::findTemplateByName($template, \ApplicationConfig::$TEMPLATEHEADER);
             if  ($headerBegin !== FALSE) {
-                // echo "<br> found a '###TEMPLATE_HEADER###'";
+                echo "<br> found a '###TEMPLATE_HEADER###'";
                 // echo "<br><br> template BEFORE replacing = " . htmlspecialchars($template) . "<br><br>";
                 $template = str_replace(\ApplicationConfig::$TEMPLATEHEADER, self::renderPartial($headertemplate, $data), $template);
                 // echo "<br><br> template AFTER replacing = " . htmlspecialchars($template) . "<br><br>";

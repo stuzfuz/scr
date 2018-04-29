@@ -60,3 +60,6 @@ ERROR	192.168.33.1	Sun Apr 29, 2018 17:29	TemplateEngine::replaceVariable()   co
 ERROR	192.168.33.1	Sun Apr 29, 2018 17:29	TemplateEngine::replaceVariable()   could not find key #txt in object data 	
 ERROR	192.168.33.1	Sun Apr 29, 2018 17:30	TemplateEngine::replaceVariable()   could not find key #txt in object data 	
 ERROR	192.168.33.1	Sun Apr 29, 2018 17:30	TemplateEngine::replaceVariable()   could not find key #txt in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 18:27	TemplateEngine::replaceVariable()   could not find key BEGIN_TEMPLATE in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 18:29	TemplateEngine::replaceVariable()   could not find key BEGIN_TEMPLATE in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 18:29	TemplateEngine::replaceVariable()   could not find key BEGIN_TEMPLATE in object data 	
