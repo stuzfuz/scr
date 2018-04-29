@@ -43,7 +43,8 @@ class RouteHandler {
         // exit();
 
         if ($res->rowCount() == 0) {
-            \Logger::logWarning("404 - could not find page: " , $requestPath);
+            if ($_GET)
+            \Logger::logWarning("404 - could not find page: " , $self::$requestPath);
             readfile('static/404.html');
             exit();
         } else {

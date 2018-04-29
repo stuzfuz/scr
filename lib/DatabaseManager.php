@@ -28,7 +28,7 @@ class DatabaseManager {
     }
 
     public static function query($connection, $query, $parameters = array()) {
-        echo "query   querystring = " .$query . "<br>";
+        // echo "query   querystring = " .$query . "<br>";
         $statement = $connection->prepare($query);
         $i = 1; 
 

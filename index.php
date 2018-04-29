@@ -4,7 +4,7 @@ require_once('inc/bootstrap.php');
 
 
 
-echo "hello from index.php -> the path used was:  " . $_SERVER['REQUEST_URI'] ."<br/><br/><br/>";
+// echo "hello from index.php -> the path used was:  " . $_SERVER['REQUEST_URI'] ."<br/><br/><br/>";
 
 // var_dump($_GET);
 // echo "<br/><br/>";
@@ -26,14 +26,17 @@ $db_conn = \DatabaseManager::getConnection();
 
 $route = \RouteHandler::handleRoute($db_conn);
 
+// echo "<br>  index.php  route['headertemplate']  " . $route['headertemplate'] . "<br/>";
+
+
 // \Util::my_var_dump($route , "in index.php");
 
 require_once($route['controller'] . $route['controllername'] . ".php");
 
 $controllerName = $route['controllername'];
 
-$ctrl = new $controllerName('hello');
+$ctrl = new $controllerName($route);
 
-echo "<h2>" . $ctrl->justDoIt() . "</h2>";
+echo   $ctrl->justDoIt();
 
 ?>
