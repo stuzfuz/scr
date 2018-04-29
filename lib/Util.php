@@ -34,6 +34,4 @@ class Util {
     var_dump($var);
     echo "</pre>";
   }
-
-  
 }

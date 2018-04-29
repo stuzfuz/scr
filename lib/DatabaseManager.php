@@ -34,8 +34,6 @@ class DatabaseManager {
 
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
-
         foreach($parameters as $param) {
             if (is_int($param)) {
                 $statement->bindValue($i, $param, \PDO::PARAM_INT);
@@ -46,13 +44,13 @@ class DatabaseManager {
             }
             $i++;
         }
-       // echo "query   statement = " .$statement . "<br>";
 
-       try {
+        try {
             $statement->execute();
         }
         catch(PDOException $e)
         {
+            \Util::my_var_dump($e->getMessage(), "Fatal Error in 'query' - could not exeute query ");
             \Logger::logError("Fatal Error in 'query' - could not exeute query" , $e->getMessage());
             readfile('static/500.html');
             exit();

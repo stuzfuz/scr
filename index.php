@@ -35,7 +35,7 @@ require_once($route['controller'] . $route['controllername'] . ".php");
 
 $controllerName = $route['controllername'];
 
-$ctrl = new $controllerName($route);
+$ctrl = new $controllerName($db_conn, $route);
 
 echo   $ctrl->justDoIt();
 

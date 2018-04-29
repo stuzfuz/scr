@@ -18,6 +18,14 @@ class ApplicationConfig {
 
     public static $TEMPLATEBEGIN = "<!-- ###BEGIN_TEMPLATE### -->";
     public static $TEMPLATEEND = "<!-- ###END_TEMPLATE### -->";
+
+    public static $TEMPLATEFOREACHBEGIN = "FOREACHBEGIN";
+    public static $TEMPLATEFOREACHEND = "FOREACHEND";
+
+    public static $TEMPLATEIF= "IF";
+    public static $TEMPLATEIFELSE = "ELSE";
+    public static $TEMPLATEIFEND = "END";
+
 }
 
 ?>
