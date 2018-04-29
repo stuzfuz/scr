@@ -118,3 +118,18 @@ body {
   padding-top: 20px;
   border-top: 1px solid #ddd;
 }
+
+
+
+/*
+ * Cover
+ */
+ .cover {
+  padding: 0 1.5rem;
+  justify-content: center;
+}
+.cover .btn-lg {
+  padding: .75rem 1.25rem;
+  font-weight: 700;
+}
+
