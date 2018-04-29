@@ -17,7 +17,7 @@ class DevController extends SimpleController {
         $channels = array();
         $data = array(); 
         if ($res->rowCount() == 0) {
-            $data["channelsfound"] = false; 
+            $data["channelsfound"] = flase; 
         } else {
             // echo "<br><br> adding channels to array ... <br>";
             while ($channel = \DatabaseManager::fetchAssoz($res)) {
@@ -45,9 +45,12 @@ class DevController extends SimpleController {
                 $messages[] = $msg; 
             }
             
-            $data["messagesfound"] = true; 
+            $data["messagesfound"] = false; 
             $data["messages"] = $messages; 
         }
+
+        $data["channels2"] = false; 
+
         $this->data = $data; 
         // \Util::my_var_dump($this->data, "MainController this->data  = ");
     }

@@ -22,9 +22,9 @@ class ApplicationConfig {
     public static $TEMPLATEFOREACHBEGIN = "FOREACHBEGIN";
     public static $TEMPLATEFOREACHEND = "FOREACHEND";
 
-    public static $TEMPLATEIF= "IF";
-    public static $TEMPLATEIFELSE = "ELSE";
-    public static $TEMPLATEIFEND = "ENDIF";
+    public static $TEMPLATEIF= "###IF###";
+    public static $TEMPLATEIFELSE = "###ELSE###";
+    public static $TEMPLATEIFEND = "###ENDIF###";
 
     public static $BEGIN = "<!-- ###BEGIN### -->";
     public static $END = "<!-- ###END### -->";

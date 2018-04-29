@@ -70,3 +70,7 @@ ERROR	192.168.33.1	Sun Apr 29, 2018 19:12	TemplateEngine::renderIf()   could not
 ERROR	192.168.33.1	Sun Apr 29, 2018 19:13	TemplateEngine::renderIf()   could not find key CHANNELSFOUND in object data 	
 ERROR	192.168.33.1	Sun Apr 29, 2018 19:14	TemplateEngine::renderIf()   could not find IF for variable  'channelsfound' in html template	
 ERROR	192.168.33.1	Sun Apr 29, 2018 19:15	TemplateEngine::renderIf()   could not find IF for variable  'channelsfound' in html template	
+ERROR	192.168.33.1	Sun Apr 29, 2018 22:15	TemplateEngine::renderIf()   could not find key CHANNELS2 in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 22:15	TemplateEngine::renderIf()   could not find key CHANNELS2 in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 22:16	TemplateEngine::renderIf()   could not find key channels2 in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 22:39	TemplateEngine::renderIf()   could not find key if in object data 	

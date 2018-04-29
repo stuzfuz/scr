@@ -2,28 +2,39 @@
 
 class TemplateEngine {
 
-    private static function findTemplate(string $tmpl)  {
+    private static function findTemplateOld(string $tmpl)  {
         $posBegin = strpos($tmpl, "###");
         $ret["found"] = false; 
-        if ($posBegin > 0) {
-            // is it a <!-- ### or just a simple ###  ??? >
-            if (substr($tmpl, $posBegin - 5) == "<!-- ") {
-                $posBegin = strpos($tmpl, "<!-- ###");
-                $tmp = $posBegin + strlen("<!-- ###") ;
-                $posEnd = strpos($tmpl, "-->", $tmp) +3;
-                $ret["begin"] = $posBegin; 
-                $ret["end"] = $posEnd; 
-                $ret["found"] = true; 
-                $ret["tmplname"] = trim(substr($tmpl, $tmp, $posEnd - $tmp));
-            } else {
-                $tmp = $posBegin + strlen("###") ;
-                $posEnd = strpos($tmpl, "###", $tmp);
-                $ret["begin"] = $posBegin; 
-                $ret["end"] = $posEnd; 
-                $ret["found"] = true; 
-                $ret["tmplname"] = trim(substr($tmpl, $tmp, $posEnd - $tmp));
-            }
+        \Util::my_var_dump( $posBegin, "TemplateEngine::find_between()   posBegin" );
+        if ($posBegin !== false) {
+            $tmp = $posBegin + strlen("###") ;
+            $posEnd = strpos($tmpl, "###", $tmp);
+            $ret["begin"] = $posBegin; 
+            $ret["end"] = $posEnd; 
+            $ret["found"] = true; 
+            $ret["tmplname"] = trim(substr($tmpl, $tmp, $posEnd - $tmp));
         }
+        return $ret;
+    }
+
+    
+    private static function findTemplate(string $tmpl)  {
+        $start = "###";
+        $end = "###";
+        $pattern = '/' . preg_quote($start) . '(.*?';
+        $pattern .= ')' . preg_quote($end) . '/s';
+        // \Util::my_var_dump( $pattern, "TemplateEngine::find_between()   pattern" );
+        $i = preg_match($pattern, $tmpl, $matches);
+        $code = null;
+        if ($i) {
+            $code = $matches[0];
+        }$ret = null;
+        if ($code !== null ) {
+            \Util::my_var_dump( $code, "TemplateEngine::find_between()   code" );
+            $ret = array();
+            $ret["found"] = true; 
+            $ret["tmplname"] = $code;
+        } 
         return $ret;
     }
 
@@ -31,11 +42,17 @@ class TemplateEngine {
         $pattern = '/' . preg_quote($start) . '(.*?';
         $pattern .= ')' . preg_quote($end) . '/s';
         // \Util::my_var_dump( $pattern, "TemplateEngine::find_between()   pattern" );
-        preg_match($pattern, $string, $matches);
-        // \Util::my_var_dump( htmlspecialchars(  $matches[0]), "TemplateEngine::find_between()   matches" );
-        $string = $matches[0];
-        $string = substr($string, strlen($start));
-        $string = substr($string, 0, -strlen($start) + 1);
+        $i = preg_match($pattern, $string, $matches);
+        $string = null;
+        if ($i) {
+            $string = $matches[0];
+            $string = substr($string, strlen($start));
+            $string = substr($string, 0, -strlen($end));
+        }
+            
+        // \Util::my_var_dump( $i, "TemplateEngine::find_between()  " );
+        // \Util::my_var_dump( htmlspecialchars(  $string), "TemplateEngine::find_between()   string" );
+        
         return $string;
     }
 
@@ -43,18 +60,21 @@ class TemplateEngine {
         $pattern = '/' . preg_quote($start) . '(.*?';
         $pattern .= ')' . preg_quote($end) . '/s';
         // \Util::my_var_dump( $pattern, "TemplateEngine::find_between()   pattern" );
-        preg_match_all($pattern, $string, $matches);
+        $i = preg_match_all($pattern, $string, $matches);
         // \Util::my_var_dump( htmlspecialchars(  $matches[1][0]), "TemplateEngine::find_between()   matches[1][0]" );
         // \Util::my_var_dump( htmlspecialchars(  $matches[1][1]), "TemplateEngine::find_between()   matches[1][1]" );
-
-        $code = array();
-        foreach($matches[1] as $m) {
-            // \Util::my_var_dump( htmlspecialchars(  $m), "TemplateEngine::find_between_all()   m = " );
-            // $m = substr($m, strlen($start));
-            // $m = substr($m, 0, -strlen($end) + 1);
-            $code[] = $m;
+        $string = null;
+        if ($i) {
+            $code = array();
+            foreach($matches[1] as $m) {
+                // \Util::my_var_dump( htmlspecialchars(  $m), "TemplateEngine::find_between_all()   m = " );
+                // $m = substr($m, strlen($start));
+                // $m = substr($m, 0, -strlen($end) + 1);
+                $code[] = $m;
+            }
+            $string = implode ( "\n" , $code );
         }
-        $string = implode ( "\n" , $code );
+        
         //   $matches[0];
         
         return $string;
@@ -67,9 +87,13 @@ class TemplateEngine {
         // $regex = "/(BEGIN)(.+?)(END)/";
         // $matches = preg_split($regex, $tmpl);
         // echo "<br/><br/><br/><br/><br/>";
-        //  \Util::my_var_dump( htmlspecialchars(  $res), "TemplateEngine::find_between()   rrs" );
+        // \Util::my_var_dump( htmlspecialchars(  $res), "TemplateEngine::find_between() xxx   res" );
         // extract all comments - which are the real code here
-        $res = trim(self::find_between_all($res, "<!-- ", " -->"));
+        // 
+
+            // $res = trim(self::find_between_all($res, "<!-- ", " -->"));
+    
+        
         // echo "<br/><br/><br/><br/><br/>";
         // \Util::my_var_dump( htmlspecialchars($res), "TemplateEngine::getTemplate()   res with only  comments " );
         // echo "<br> hallo";
@@ -104,11 +128,25 @@ class TemplateEngine {
     }
     
 
-    private static function renderIf(string $template, $data, $variable): string {
+    private static function renderIf(string $template, $data): string {
+        $template = trim(self::find_between_all($template, "<!-- ", " -->"));
+        \Util::my_var_dump(htmlspecialchars($template), "renderIf()  template only comment = ");
+
+        $template = trim(self::find_between_all($template, \ApplicationConfig::$TEMPLATEIF, \ApplicationConfig::$TEMPLATEIFEND));
+        \Util::my_var_dump(htmlspecialchars($template), "renderIf()  template only HTML Code with ###ELSE### = ");
+        
+
+        $variable = self::readVariable($template);
+        // remove variable string
+        $tmp = strlen("###" . $variable . "###"); 
+        $template = trim(substr($template, $tmp+1, strlen($template)- $tmp));
+        \Util::my_var_dump(htmlspecialchars($variable), "renderIf()  IF clause variable = ");
+        \Util::my_var_dump(htmlspecialchars($template), "renderIf()  template only HTML Code with ###ELSE### = ");
+
         $objKey = strtolower($variable);
         if (!isset($data[$objKey])) {
-            // // \Util::my_var_dump( $data, "TemplateEngine::replaceVariable()   could not find key " . $variable . " in object data  ");
-            \Logger::logError("TemplateEngine::renderIf()   could not find key " . $variable . " in object data " , "");
+            \Util::my_var_dump( $data, "TemplateEngine::replaceVariable()   could not find key " . $objKey . " in object data  ");
+            \Logger::logError("TemplateEngine::renderIf()   could not find key " . $objKey . " in object data " , "");
             // readfile('static/500.html');
             exit();
         }
@@ -120,7 +158,7 @@ class TemplateEngine {
         // // \Util::my_var_dump( htmlspecialchars($template), "renderForEach()  template = ");
         $html = '';
 
-        $elseTag = "<!-- ###" . \ApplicationConfig::$TEMPLATEIFELSE . "### " . $variable ." -->";
+        $elseTag = \ApplicationConfig::$TEMPLATEIFELSE;
         $posElse = strpos($template,  $elseTag);
         if ($posElse == 0) {
             \Util::my_var_dump( $data, "TemplateEngine::renderIf()   could not find IF for variable  '" . $variable . "' in html template  ");
@@ -128,59 +166,11 @@ class TemplateEngine {
             // readfile('static/500.html');
             exit();
         }
-        $startTag = "<!-- ###" . \ApplicationConfig::$TEMPLATEIF . "### " . $variable ." -->";
-        $endTag = "<!-- ###" . \ApplicationConfig::$TEMPLATEIFEND . "### " . $variable ." -->";
-
-        $posStartTag = strpos($template, $startTag) + strlen($startTag);
-        $posEndTag = strpos($template, $endTag);
-
-        $trueHtmlTmp = trim(substr($template, $posStartTag, $posElse - $posStartTag));
-
-        // \Util::my_var_dump( htmlspecialchars($startTag), "TemplateEngine::renderIf()   startTag  ");
-        // \Util::my_var_dump( htmlspecialchars($elseTag), "TemplateEngine::renderIf()   elseTag  ");
-        // \Util::my_var_dump( htmlspecialchars($endTag), "TemplateEngine::renderIf()   endTag  ");
-
-
-        // \Util::my_var_dump( $posStartTag, "TemplateEngine::renderIf()   posStartTag  ");
-        // \Util::my_var_dump( $posElse, "TemplateEngine::renderIf()   posElse  ");
-        // \Util::my_var_dump( $posEndTag, "TemplateEngine::renderIf()   posEndTag  ");
-
-        $falseHtmlTmp = trim(substr($template, $posElse +strlen($elseTag), $posEndTag - $posElse -strlen($elseTag)));
-
-        // \Util::my_var_dump( htmlspecialchars($trueHtmlTmp), "TemplateEngine::renderIf()   trueHtmlTmp  ");
-        // \Util::my_var_dump( htmlspecialchars($falseHtmlTmp), "TemplateEngine::renderIf()   falseHtmlTmp  ");
-
-
-        // TRUE HTML
-        // only the code in the comment is relevant ...
-        $idxBeginComment = strpos($trueHtmlTmp, "<!--T") ;
-        $idxEndComment = strpos($trueHtmlTmp, "T-->");
-
-        if (($idxBeginComment < 0) || ($idxEndComment < 0 )) {
-            \Util::my_var_dump( $data, "TemplateEngine::renderIf()   could not find template code in comments for TRUE path  '" . $variable . "' in html template  ");
-            \Logger::logError("TemplateEngine::renderIf()   could not find template code in comments for TRUE path   '" . $variable . "' in html template" , "");
-            // readfile('static/500.html');
-            exit();
-        }
-        $idxBeginComment = $idxBeginComment + strlen("<!--T ");
-        $trueHtml = trim(substr($trueHtmlTmp, $idxBeginComment, $idxEndComment - $idxBeginComment));
+        
+        $trueHtml = trim(substr($template, 0, $posElse));
+        $falseHtml = trim(substr($template, $posElse +strlen($elseTag), strlen($template) - $posElse));
 
         \Util::my_var_dump( htmlspecialchars($trueHtml), "TemplateEngine::renderIf()   trueHtml  ");
-
-        // FALSE HTML
-        // only the code in the comment is relevant ...
-        $idxBeginComment = strpos($falseHtmlTmp, "<!--T") ;
-        $idxEndComment = strpos($falseHtmlTmp, "T-->");
-
-        if (($idxBeginComment < 0) || ($idxEndComment < 0 )) {
-            \Util::my_var_dump( $data, "TemplateEngine::renderIf()   could not find template code in comments for FALSE path  '" . $variable . "' in html template  ");
-            \Logger::logError("TemplateEngine::renderIf()   could not find template code in comments for FALSE path  '" . $variable . "' in html template" , "");
-            // readfile('static/500.html');
-            exit();
-        }
-        $idxBeginComment = $idxBeginComment + strlen("<!--T ");
-        $falseHtml = trim(substr($falseHtmlTmp, $idxBeginComment, $idxEndComment - $idxBeginComment));
-
         \Util::my_var_dump( htmlspecialchars($falseHtml), "TemplateEngine::renderIf()   falseHtml  ");
 
         if ($data[$objKey]) {
@@ -189,6 +179,8 @@ class TemplateEngine {
         } else {
             $html = self::renderPartialString($falseHtml, $data) . "\n";
         }
+        \Util::my_var_dump( htmlspecialchars($html), "TemplateEngine::renderIf()   newHtml =  ");
+
         return $html;
     }
 
@@ -229,6 +221,16 @@ class TemplateEngine {
         }
         return self::renderPartialString($partial, $data);
     } 
+    private static function readVariable($html) {
+        $var = self::findTemplate($html);
+        if (!$var["found"]) {
+            \Util::my_var_dump( htmlspecialchars($html), "Fatal Error - no variable found in template    ");
+            \Logger::logError("Fatal Error - no variable found in template" ,  "");
+            readfile('static/500.html');
+            exit();
+        }
+        return str_replace("###", "", $var["tmplname"]);
+    }
 
     private static function renderPartialString(string $partial, $data) : string {
         $templateBegin = self::findTemplateByName($partial,\ApplicationConfig::$TEMPLATEBEGIN);
@@ -249,143 +251,138 @@ class TemplateEngine {
 
 
         $template = self::getTemplate($partial);
+        echo "<br/><br/><br/>";
         \Util::my_var_dump( htmlspecialchars($template), "renderPartialString()    template  = ");
+        echo "<br/><br/><br/>";
+
+        if ($template !== null) {
+            $nextTemplate = self::findTemplate($template);
+
+            \Util::my_var_dump( $nextTemplate, "nextTemplate  = ");
+        
+            while ($nextTemplate["found"]) {
+                switch ($nextTemplate["tmplname"]) {
+                    case \ApplicationConfig::$TEMPLATEFOREACHBEGIN:
+                        echo "<br><br>xxxxxxxxxxxxxxxxxxxxxxx<br>found for each<br>xxxxxxxxxxxxxxxxxxxxxxx<br><br><br>";
+
+            //             $foreachEnd = self::findTemplateByName($partial, \ApplicationConfig::$TEMPLATEFOREACHEND);
+            //             if ($foreachEnd === FALSE) {
+            //                 \Logger::logError("Fatal Error - closing " . \ApplicationConfig::$TEMPLATEFOREACHEND . " not found in file " ,  $tmplFilename);
+            //                 readfile('static/500.html');
+            //                 exit();
+            //             }
+
+            //             // BIG TODO: remove this BS and use regexes
 
 
+            //             $tmp = trim(substr($partial, $nextTemplate["begin"], $nextTemplate["end"] - $nextTemplate["begin"]));
+            //             // // \Util::my_var_dump(htmlspecialchars( $tmp), "tmp  = ");
+
+            //             // read variable name 
+            //             $tmp = "<!-- ###" . \ApplicationConfig::$TEMPLATEFOREACHBEGIN . "### ";
+            //             $idxEndForEach = strpos($partial, $tmp ) +strlen($tmp);
+            //             $endComment = strpos($partial, "-->", $idxEndForEach);
+            //             // // \Util::my_var_dump(htmlspecialchars( $tmp), "tmp  = ");
+
+            //             // // \Util::my_var_dump(strlen($idxEndForEach), "idxEndForEach  = ");
+            //             // // \Util::my_var_dump(strlen($endComment), "endComment  = ");
+
+            //             $variable = trim(substr($partial, $idxEndForEach, $endComment - $idxEndForEach));
+            //             // // \Util::my_var_dump(strlen($variable), "strlen(variable)  = ");
+
+            //             // \Util::my_var_dump(htmlspecialchars( $variable), "variable  = ");
+
+            //             $tmp = $tmp . $variable . " -->";
+
+            //             // // \Util::my_var_dump(htmlspecialchars( $tmp), "full starting tag tmp  = ");
+            //             $posBeginFor = $nextTemplate["begin"] + strlen($tmp) ;
 
 
+            //             $endTagForEach = "<!-- ###" . \ApplicationConfig::$TEMPLATEFOREACHEND . "### " . $variable ." -->";
+            //             // // \Util::my_var_dump(htmlspecialchars( $endTagForEach), "full endTagForEach  = ");
+            //             $idxEnd = strpos($partial, $endTagForEach);
+            //             $forloopTmp = trim(substr($partial, $posBeginFor , $idxEnd - $posBeginFor));
+            //             // // \Util::my_var_dump(htmlspecialchars($forloopTmp), "html code forloopTmp  = ");
+                        
+            //             // forLoopTmp contains the foor loop in <!-- --> and the html code -> cut out the template code
+            //             $beginTag = "<!--T";
+            //             $endTag = "T-->";
+            //             $startIndex = strpos($forloopTmp, $beginTag) + strlen($beginTag);
+            //             $endIndex = strpos($forloopTmp, $endTag) ;
 
-        // find next ###
-        $nextTemplate = self::findTemplate($partial);
-        // // \Util::my_var_dump( $nextTemplate, "nextTemplate  = ");
+            //             $forLoopHtml = trim(substr($forloopTmp, $startIndex, $endIndex - $startIndex));
+                        
+            //             // \Util::my_var_dump(htmlspecialchars($forLoopHtml), "renderPartialString()   forLoopHtml  = ");
+            //             // // \Util::my_var_dump($data, "renderPartialString ()  data  = ");
+            //             // \Util::my_var_dump($variable, "renderPartialString ()  variable  = ");
 
-        // while ($nextTemplate["found"]) {
-        //     switch ($nextTemplate["tmplname"]) {
-        //         case \ApplicationConfig::$TEMPLATEFOREACHBEGIN:
+            //             $htmlForLoop = self::renderForEach($forLoopHtml, $data, $variable);
+            //             // renderForEach(string $template, $data, $variable)
 
-        //             // echo "<br><br>xxxxxxxxxxxxxxxxxxxxxxx<br>found for each<br>xxxxxxxxxxxxxxxxxxxxxxx<br><br><br>";
+            //             // // TODO: this is not the best way? replace the $$forloop with some ???
 
-        //             $foreachEnd = self::findTemplateByName($partial, \ApplicationConfig::$TEMPLATEFOREACHEND);
-        //             if ($foreachEnd === FALSE) {
-        //                 \Logger::logError("Fatal Error - closing " . \ApplicationConfig::$TEMPLATEFOREACHEND . " not found in file " ,  $tmplFilename);
-        //                 readfile('static/500.html');
-        //                 exit();
-        //             }
+            //             $startTag  = "<!-- ###" . \ApplicationConfig::$TEMPLATEFOREACHBEGIN . "### " . $variable ." -->";
+            //             $endTag  = "<!-- ###" . \ApplicationConfig::$TEMPLATEFOREACHEND . "### " . $variable ." -->";
 
-        //             // BIG TODO: remove this BS and use regexes
+            //             $startIdx = strpos($partial, $startTag);
+            //             $endIdx = strpos($partial, $endTag, $startIdx) + strlen($endTag);
 
-
-        //             $tmp = trim(substr($partial, $nextTemplate["begin"], $nextTemplate["end"] - $nextTemplate["begin"]));
-        //             // // \Util::my_var_dump(htmlspecialchars( $tmp), "tmp  = ");
-
-        //             // read variable name 
-        //             $tmp = "<!-- ###" . \ApplicationConfig::$TEMPLATEFOREACHBEGIN . "### ";
-        //             $idxEndForEach = strpos($partial, $tmp ) +strlen($tmp);
-        //             $endComment = strpos($partial, "-->", $idxEndForEach);
-        //             // // \Util::my_var_dump(htmlspecialchars( $tmp), "tmp  = ");
-
-        //             // // \Util::my_var_dump(strlen($idxEndForEach), "idxEndForEach  = ");
-        //             // // \Util::my_var_dump(strlen($endComment), "endComment  = ");
-
-        //             $variable = trim(substr($partial, $idxEndForEach, $endComment - $idxEndForEach));
-        //             // // \Util::my_var_dump(strlen($variable), "strlen(variable)  = ");
-
-        //             // \Util::my_var_dump(htmlspecialchars( $variable), "variable  = ");
-
-        //             $tmp = $tmp . $variable . " -->";
-
-        //             // // \Util::my_var_dump(htmlspecialchars( $tmp), "full starting tag tmp  = ");
-        //             $posBeginFor = $nextTemplate["begin"] + strlen($tmp) ;
+            //             // \Util::my_var_dump(htmlspecialchars($startTag), "renderPartialString()  startTag  = ");
+            //             // \Util::my_var_dump(htmlspecialchars($endTag), "renderPartialString()  endTag  = ");
+            //             // \Util::my_var_dump($startIdx, "renderPartialString()  startIdx  = ");
+            //             // // \Util::my_var_dump($endIdx, "renderPartialString()  endIdx  = ");
 
 
-        //             $endTagForEach = "<!-- ###" . \ApplicationConfig::$TEMPLATEFOREACHEND . "### " . $variable ." -->";
-        //             // // \Util::my_var_dump(htmlspecialchars( $endTagForEach), "full endTagForEach  = ");
-        //             $idxEnd = strpos($partial, $endTagForEach);
-        //             $forloopTmp = trim(substr($partial, $posBeginFor , $idxEnd - $posBeginFor));
-        //             // // \Util::my_var_dump(htmlspecialchars($forloopTmp), "html code forloopTmp  = ");
+            //             $strToBeReplaced = substr($partial, $startIdx, $endIdx - $startIdx);
+            //             // \Util::my_var_dump(htmlspecialchars($htmlForLoop), "renderPartialString()  this is the resulting html code  = ");
+            //             // // \Util::my_var_dump(htmlspecialchars($strToBeReplaced), "renderPartialString()  this is the code we want to replace  strToBeReplaced   = ");
+
+
+            //             $partial = str_replace($strToBeReplaced, $htmlForLoop, $partial);
+                        break;
+
+                    case \ApplicationConfig::$TEMPLATEIF:
+                        echo "<br><br>xxxxxxxxxxxxxxxxxxxxxxx<br>found IF<br>xxxxxxxxxxxxxxxxxxxxxxx<br><br><br>";
+                        
+                        $strToBeReplaced = $template;
+                        \Util::my_var_dump(htmlspecialchars($strToBeReplaced), "renderPartialString()  strToBeReplaced  = ");
+
+                        
+                        $newHtmlIf = self::renderIf($template, $data);
+                        die();
+                        
+                        $strToBeReplaced = $htmlIf; 
+
+                        \Util::my_var_dump(htmlspecialchars($template), "renderPartialString()  template  = ");
+                        
+                        \Util::my_var_dump(htmlspecialchars($htmlIf), "renderPartialString()  IF clause  = ");
+
+                       
+                        // // remove variable string
+                        // $tmp = strlen("###" . $variable . "###"); 
+                        // $htmlIf = trim(substr($htmlIf, $tmp+1, strlen($htmlIf)- $tmp));
+                        // \Util::my_var_dump(htmlspecialchars($htmlIf), "renderPartialString()  htmlIf ohne variable  = ");
+
+                        // $htmlIf = self::renderIf($htmlIf, $data, $variable);
+                        // \Util::my_var_dump(htmlspecialchars($htmlIf), "renderPartialString() IF  this is the new code    htmlIf   = ");
+
+
+                        // \Util::my_var_dump(htmlspecialchars($strToBeReplaced), "renderPartialString() IF  this strToBeReplaced  = ");
+
+                        // \Util::my_var_dump(htmlspecialchars($template), "renderPartialString() IF  this is the OLD template code  = ");
+                        // $template = str_replace($strToBeReplaced, $htmlIf, $template);
+                        // \Util::my_var_dump(htmlspecialchars($template), "renderPartialString() IF  this is theNEW  template code  = ");
+                        die();
+                        break;
                     
-        //             // forLoopTmp contains the foor loop in <!-- --> and the html code -> cut out the template code
-        //             $beginTag = "<!--T";
-        //             $endTag = "T-->";
-        //             $startIndex = strpos($forloopTmp, $beginTag) + strlen($beginTag);
-        //             $endIndex = strpos($forloopTmp, $endTag) ;
-
-        //             $forLoopHtml = trim(substr($forloopTmp, $startIndex, $endIndex - $startIndex));
-                    
-        //             // \Util::my_var_dump(htmlspecialchars($forLoopHtml), "renderPartialString()   forLoopHtml  = ");
-        //             // // \Util::my_var_dump($data, "renderPartialString ()  data  = ");
-        //             // \Util::my_var_dump($variable, "renderPartialString ()  variable  = ");
-
-        //             $htmlForLoop = self::renderForEach($forLoopHtml, $data, $variable);
-        //             // renderForEach(string $template, $data, $variable)
-
-        //             // // TODO: this is not the best way? replace the $$forloop with some ???
-
-        //             $startTag  = "<!-- ###" . \ApplicationConfig::$TEMPLATEFOREACHBEGIN . "### " . $variable ." -->";
-        //             $endTag  = "<!-- ###" . \ApplicationConfig::$TEMPLATEFOREACHEND . "### " . $variable ." -->";
-
-        //             $startIdx = strpos($partial, $startTag);
-        //             $endIdx = strpos($partial, $endTag, $startIdx) + strlen($endTag);
-
-        //             // \Util::my_var_dump(htmlspecialchars($startTag), "renderPartialString()  startTag  = ");
-        //             // \Util::my_var_dump(htmlspecialchars($endTag), "renderPartialString()  endTag  = ");
-        //             // \Util::my_var_dump($startIdx, "renderPartialString()  startIdx  = ");
-        //             // // \Util::my_var_dump($endIdx, "renderPartialString()  endIdx  = ");
-
-
-        //             $strToBeReplaced = substr($partial, $startIdx, $endIdx - $startIdx);
-        //             // \Util::my_var_dump(htmlspecialchars($htmlForLoop), "renderPartialString()  this is the resulting html code  = ");
-        //             // // \Util::my_var_dump(htmlspecialchars($strToBeReplaced), "renderPartialString()  this is the code we want to replace  strToBeReplaced   = ");
-
-
-        //             $partial = str_replace($strToBeReplaced, $htmlForLoop, $partial);
-        //             break;
-
-        //         case \ApplicationConfig::$TEMPLATEIF:
-        //             echo "<br><br>xxxxxxxxxxxxxxxxxxxxxxx<br>found IF<br>xxxxxxxxxxxxxxxxxxxxxxx<br><br><br>";
-                    
-        //             // read the variable name from the template
-        //             $tmp = trim(substr($partial, $nextTemplate["begin"], $nextTemplate["end"] - $nextTemplate["begin"]));
-        //             // // \Util::my_var_dump(htmlspecialchars( $tmp), "tmp  = ");
-
-        //             // read variable name 
-        //             $tmp = "<!-- ###" . \ApplicationConfig::$TEMPLATEIF . "### ";
-        //             $idxEndForEach = strpos($partial, $tmp ) +strlen($tmp);
-        //             $endComment = strpos($partial, "-->", $idxEndForEach);
-        //             // // \Util::my_var_dump(htmlspecialchars( $tmp), "tmp  = ");
-
-        //             // // \Util::my_var_dump(strlen($idxEndForEach), "idxEndForEach  = ");
-        //             // // \Util::my_var_dump(strlen($endComment), "endComment  = ");
-
-        //             $variable = trim(substr($partial, $idxEndForEach, $endComment - $idxEndForEach));
-
-        //             \Util::my_var_dump($variable, "IF   variable  = ");
-        //             $startTag  = "<!-- ###" . \ApplicationConfig::$TEMPLATEIF . "### " . $variable ." -->";
-        //             $endTag  = "<!-- ###" . \ApplicationConfig::$TEMPLATEIFEND . "### " . $variable ." -->";
-
-        //             $startIdx = strpos($partial, $startTag);
-        //             $endIdx = strpos($partial, $endTag, $startIdx) + strlen($endTag);
-
-        //             \Util::my_var_dump($startIdx, "IF   startIdx  = ");
-        //             \Util::my_var_dump($endIdx, "IF   endIdx  = ");
-
-        //             $strToBeReplaced = substr($partial, $startIdx, $endIdx - $startIdx);
-        //             \Util::my_var_dump(htmlspecialchars($strToBeReplaced), "renderPartialString() IF  this is the code we want to replace  strToBeReplaced   = ");
-
-        //             $htmlIf = self::renderIf($strToBeReplaced, $data, $variable);
-
-        //             \Util::my_var_dump(htmlspecialchars($htmlIf), "renderPartialString() IF  this is the new code    htmlIf   = ");
-
-        //             $partial = str_replace($strToBeReplaced, $htmlIf, $partial);
-        //             break;
-                
-        //         default:
-        //             // echo "<br><br>xxxxxxxxxxxxxxxxxxxxxxx<br>found a variable which should be subsituted<br>xxxxxxxxxxxxxxxxxxxxxxx<br><br><br>";
-        //             $partial = self::replaceVariable($partial, $data, $nextTemplate["tmplname"]);
-        //             break;
-        //     }
-        //     $nextTemplate = self::findTemplate($partial);
-        // }
+                    default:
+                        echo "<br><br>xxxxxxxxxxxxxxxxxxxxxxx<br>found a variable which should be subsituted<br>xxxxxxxxxxxxxxxxxxxxxxx<br><br><br>";
+            //             $partial = self::replaceVariable($partial, $data, $nextTemplate["tmplname"]);
+                        break;
+                }
+                $nextTemplate = self::findTemplate($partial);
+            }   
+        }
         // // \Util::my_var_dump($nextTemplate, "next template = ");
         // echo "<br><br> html = " . htmlspecialchars($html) . "<br><br>";
 
@@ -421,14 +418,14 @@ class TemplateEngine {
             }
         }
 
-        if ($footertemplate !== null) {
-            $footerBegin = self::findTemplateByName($template, \ApplicationConfig::$TEMPLATEFOOTER);
-            if  ($footerBegin !== FALSE) {
-                // echo "<br> found a '###TEMPLATE_FOOTER###'";
-                $template = str_replace(\ApplicationConfig::$TEMPLATEFOOTER, self::renderPartial($footertemplate, $data), $template);
+        // if ($footertemplate !== null) {
+        //     $footerBegin = self::findTemplateByName($template, \ApplicationConfig::$TEMPLATEFOOTER);
+        //     if  ($footerBegin !== FALSE) {
+        //         // echo "<br> found a '###TEMPLATE_FOOTER###'";
+        //         $template = str_replace(\ApplicationConfig::$TEMPLATEFOOTER, self::renderPartial($footertemplate, $data), $template);
 
-            }
-        }
+        //     }
+        // }
         // file_put_contents('tmp.html', $template);
         return $template;
     }
