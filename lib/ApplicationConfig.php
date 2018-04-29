@@ -24,7 +24,7 @@ class ApplicationConfig {
 
     public static $TEMPLATEIF= "IF";
     public static $TEMPLATEIFELSE = "ELSE";
-    public static $TEMPLATEIFEND = "END";
+    public static $TEMPLATEIFEND = "ENDIF";
 
 }
 

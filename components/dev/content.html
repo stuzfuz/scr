@@ -5,20 +5,29 @@
 xxxxxxxxxxxxxxxxxxxxxxxx
 CONTENT  BEGIN
 xxxxxxxxxxxxxxxxxxxxxxxx
+<!-- ###IF### CHANNELSFOUND -->
+<!--T    <h3>TRUE channels were found </h3>   T-->
+<h3>ssökfsöfksöfkölsdflödsfks ome channels have been found or not ...</h3>
+
+<!-- ###ELSE### CHANNELSFOUND -->
+<!--T   <h3>FALSE channels were found </h3>   T-->
+<h3>sdföskföskfölsdfsome channels have been found or not ...</h3>
+<!-- ###ENDIF### CHANNELSFOUND -->
 
 
+<!-- ###IF### CHANNELSFOUND -->
 
-                    <ul class="nav flex-column mb-2">
+               <!--T     <ul class="nav flex-column mb-2">
                         <!-- ###FOREACHBEGIN### CHANNELS -->
-                        <!--    
+                        <!--T    
                         <li class="nav-item">
                           <a class="nav-link" href="/messages/###id###">
                             <span data-feather="file-text"></span>
                             ###name###
                           </a>
                         </li>
-                        -->
-
+                        T-->
+                T-->
                         <li class="nav-item">
                             <a class="nav-link" href="#">
                                 <span data-feather="file-text"></span>
@@ -38,3 +47,48 @@ xxxxxxxxxxxxxxxxxxxxxxxx
 
 <!-- ###END_TEMPLATE### -->
 
+
+
+
+
+<!-- ###BEGIN_TEMPLATE### -->
+
+    <!-- ###IF### ###CHANNELS2###
+        
+        <h3>yeah we got it !</h3>
+        <ul>
+            ###FOREACH### ###CHANNELS###
+                <li>###name###</li>
+            ###FOREACHEND### CHANNELS
+        </ul>
+
+    ###ELSE### ###CHANNELS2###
+
+        <h3>Ohhh no - no channels!</h3>
+    
+    ###IFEND### ###CHANNELS2### -->
+
+    
+
+
+
+
+<h4>jetzt anders rum - in einer FRO Schleife ein IF</h4>
+
+
+<!-- ###FOREACH### ###CHANNELS###
+    <ul>
+        ###IF### ###VISIBLE###
+             <li style="color: red;">###name###</li>
+        ###ELSE### ###VISIBLE###
+            <li style="color: blue;">###name###</li>
+    </ul>
+    ###FOREACHEND### ###CHANNELS### -->
+            
+    
+
+
+
+
+
+<!-- ###END_TEMPLATE### -->
