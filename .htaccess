@@ -1,9 +1,7 @@
 Options -MultiViews
 Options +FollowSymLinks
 
-
 RewriteEngine On    # Turn on the rewriting engine
-#RewriteRule    ^pet-care/?$    pet_care_info_01_02_2008.php    [NC,L]    # Handle requests for "pet-care"
 
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
