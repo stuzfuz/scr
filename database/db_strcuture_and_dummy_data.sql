@@ -120,22 +120,22 @@ CREATE TABLE route (
 	routeparam VARCHAR(300)  NULL, 
 	controller VARCHAR(300) NOT NULL, 
 	controllername VARCHAR(300) NOT NULL, 
+	verb VARCHAR(30) NOT NULL, 
 	PRIMARY KEY (id),
 	UNIQUE KEY (route)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 
 
+INSERT INTO route (route, type, headertemplate, contenttemplate ,footertemplate, controller, controllername, verb)
+VALUES ('/', 'PAGE', 'components/main/header.html', 'components/main/content.html', 'components/main/footer.html', 'components/main/', 'MainController', 'GET');
 
-INSERT INTO route (route, type, headertemplate, contenttemplate ,footertemplate, controller, controllername)
-VALUES ('/', 'PAGE', 'components/main/header.html', 'components/main/content.html', 'components/main/footer.html', 'components/main/', 'MainController');
-
-INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, controller, controllername)
-VALUES ('/login' ,'PAGE', NULL, 'components/login/login.html', NULL, 'components/login/', 'LoginController');
-
-
-INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, controller, controllername)
-VALUES ('/register' ,'PAGE', NULL, 'components/register/register.html', NULL, 'components/register/', 'RegisterController');
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, controller, controllername, verb)
+VALUES ('/login' ,'PAGE', NULL, 'components/login/login.html', NULL, 'components/login/', 'LoginController', 'GET');
 
 
-INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername)
-VALUES ('/messages' ,'PAGE', 'components/main/header.html', 'components/messages/content.html', 'components/main/footer.html', 'channelname', 'components/messages/', 'MessagesController');
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, controller, controllername, verb)
+VALUES ('/register' ,'PAGE', NULL, 'components/register/register.html', NULL, 'components/register/', 'RegisterController', 'GET');
+
+
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/messages' ,'PAGE', 'components/main/header.html', 'components/messages/content.html', 'components/main/footer.html', 'channelname', 'components/messages/', 'MessagesController', 'GET');

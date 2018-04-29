@@ -4,10 +4,12 @@ class RouteHandler {
 
     public static function handleRoute($db_conn)  {
         $requestPath = $_SERVER['REDIRECT_URL'];
+        $verb = $_SERVER['REQUEST_METHOD'];
         $requestPath2 = $requestPath;
 
-        $sql = "SELECT * FROM route WHERE route = ?";
-        $params = array($requestPath);
+        $sql = "SELECT * FROM route WHERE verb = ? AND route = ?";
+        $params = array($verb);
+        $params[] = $requestPath;
         // possible parameter in path
         if (substr_count($requestPath, '/') > 1) {
             $pos = strrpos($requestPath, "/");
@@ -16,7 +18,7 @@ class RouteHandler {
 
             // \Util::my_var_dump($requestPath, "requestpath = ");
             // \Util::my_var_dump($requestPath2, "requestpath2 = ");
-            $sql = "SELECT * FROM route WHERE route = ? OR (route = ? AND routeparam IS NOT NULL)";
+            $sql = "SELECT * FROM route WHERE verb = ? AND (route = ? OR (route = ? AND routeparam IS NOT NULL))";
             $params[] = $requestPath2;
         }
         $res = \DatabaseManager::query($db_conn, $sql, $params);
