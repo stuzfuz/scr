@@ -6,9 +6,6 @@ class MainController extends SimpleController {
         $this->data["loggedin"] = false;
     }
 
-
-
-
     // TODO Delete this if not necessary
     public function justDoIt() : string {
         // echo "<br>  MarinController $this->route['headertemplate']  " . $this->route['headertemplate'] . "<br/>";

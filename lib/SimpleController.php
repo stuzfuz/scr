@@ -10,12 +10,11 @@ class SimpleController {
     }
 
     protected function gatherData() {
-        
-        $this->data = 'dkfjs';
+        // query data from db and session
+        // this will be implemented by each controller
     }
 
     public function justDoIt() : string {
-        echo "<br> " . $this->data . "<br/>";
         $page = \TemplateEngine::render('index.tmpl', $this->data, $this->route['headertemplate'], $this->route['contenttemplate'], $this->route['footertemplate']);
         return $page;
     }

@@ -51,6 +51,7 @@ CREATE TABLE message (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	user_id INT(11) NOT NULL,
 	channel_id INT(11) NOT NULL,
+	txt VARCHAR(1000) NOT NULL, 
 	created_at TIMESTAMP NOT NULL, 
 	deleted TINYINT(1) NOT NULL, 
 	PRIMARY KEY (id)
@@ -103,7 +104,7 @@ ADD CONSTRAINT message_id_flagged FOREIGN KEY (message_id) REFERENCES message (i
 -- INSERT INTO books VALUES (27, 3, 'C++ Primer Plus (5th Edition)', 'Stephan Prata', ' 9780672326974', 36.94);
 -- INSERT INTO books VALUES (29, 3, 'The C++ Programming Language', 'Bjarne Stroustrup', '0201700735', 67.49);
 	
-INSERT INTO user VALUES (1, 'admin', 'admin@poormansslack.at', 'admin', 'admin', 	NOW(), SHA1('admin'), 0);
+INSERT INTO user VALUES (1, 'admin', 'admin@poormansslack.at', 'admin', 'admin', 	NOW()-99999999, SHA1('admin'), 0);
 
 
 
@@ -139,3 +140,55 @@ VALUES ('/register' ,'PAGE', NULL, 'components/register/register.html', NULL, 'c
 
 INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
 VALUES ('/messages' ,'PAGE', 'components/main/header.html', 'components/messages/content.html', 'components/main/footer.html', 'channelname', 'components/messages/', 'MessagesController', 'GET');
+
+
+
+
+INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
+VALUES ( 'donaldduck', 'donald@poormansslack.at', 'donald', 'duck', 	NOW() - 30000, SHA1('donald'), 0);
+
+
+INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
+VALUES ( 'dagobertdduck', 'dagobert@poormansslack.at', 'dagobert', 'duck', 	NOW()-4000000, SHA1('dagobert'), 0);
+
+
+INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
+VALUES ( 'daisyduck', 'daisy@poormansslack.at', 'daisy', 'duck', 	NOW()-105000, SHA1('dais'), 0);
+
+
+INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
+VALUES ( 'goofy', 'goofy@poormansslack.at', 'goofy', 'duck', 	NOW()-2000000, SHA1('goofy'), 0);
+
+
+
+
+INSERT INTO channel (name, created_at, created_by_user_id, deleted) 
+VALUES ( 'money', NOW(), 3, 0);
+
+
+INSERT INTO channel (name, created_at, created_by_user_id, deleted) 
+VALUES ( 'bad luck', NOW(), 2, 0);
+
+
+INSERT INTO channel (name, created_at, created_by_user_id, deleted) 
+VALUES ( 'dogs', NOW(), 4, 0 );
+ 
+
+
+
+INSERT INTO message (user_id, channel_id, txt, created_at, deleted) 
+VALUES (3, 1,  'channel owner: dagobert, message by @dagobertduck, channel name is "money"', NOW()-1000000,  0 );
+
+INSERT INTO message (user_id, channel_id, txt, created_at, deleted) 
+VALUES (2, 1,  'channel owner: dagobert, message by @donaldduck, channel name is "money"', NOW()-1000,  0 );
+
+INSERT INTO message (user_id, channel_id, txt, created_at, deleted) 
+VALUES (4, 1,  'channel owner: dagobert, message by @daisyduck, channel name is "money"', NOW()-20000000,  0 );
+
+
+INSERT INTO message (user_id, channel_id, txt, created_at, deleted) 
+VALUES (4, 2,  'channel owner: donald, message by @daisyduck, channel name is "bad luck"', NOW()-12000000,  0 );
+
+
+INSERT INTO message (user_id, channel_id, txt, created_at, deleted) 
+VALUES (5, 2,  'channel owner: donald, message by @goofy, channel name is "bad luck"', NOW()-22000000,  0 );
