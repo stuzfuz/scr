@@ -8,4 +8,4 @@ RewriteEngine On    # Turn on the rewriting engine
 #RewriteCond %{REQUEST_URI} !=/favicon.ico
 #RewriteRule ^(.*)$ index.php?/$1 [L]
 
-RewriteRule !(\.gif|\.jpe?g|\.css|\.php|^scr/.*|^img/.*|^files/.*|^static/.*)$ index.php [NC,L,QSA]
+RewriteRule !(\.gif|\.jpe?g|\.css|\.php|^scr/.*|^img/.*|^files/.*|^static/.*|^static_template/.*)$ index.php [NC,L,QSA]

@@ -1,28 +1,37 @@
 <?php
-declare(strict_types = 1);
-error_reporting(E_ALL);
 
-// ist anscheinend in centos defaultmäßig auf off
-ini_set('display_errors', 'on');
-setlocale(LC_MONETARY, 'de_AT');
+require_once('inc/bootstrap.php');
 
-// https://docs.acquia.com/article/basic-rewrite-rule-examples
-// http.conf AllowOverride All
 
-echo "hello from index.php -> the path used was:  ?? <br/><br/><br/>";
 
-var_dump($_GET);
-echo "<br/><br/>";
+echo "hello from index.php -> the path used was:  " . $_SERVER['REQUEST_URI'] ."<br/><br/><br/>";
+
+// var_dump($_GET);
+// echo "<br/><br/>";
 // var_dump($_POST);echo "<br/><br/>";
 // var_dump($_REQUEST);echo "<br/><br/>";
 
-echo "SERVER[REQUEST_URI]:      ";
+// echo "SERVER[REQUEST_URI]:      ";
 
-var_dump($_SERVER['REQUEST_URI']);
-echo "<br/><br/>";
+// var_dump($_SERVER['REQUEST_URI']);
+// echo "<br/><br/>";
 
-echo "SERVER[REDIRECT_URL]:      ";
-var_dump($_SERVER['REDIRECT_URL']);
-echo "<br/><br/>";
+// echo "SERVER[REDIRECT_URL]:      ";
+// var_dump($_SERVER['REDIRECT_URL']);
+// echo "<br/><br/>";
+
+echo "connecting to DB <br/>";
+$db_conn = \DatabaseManager::getConnection();
+echo "<br/>AFTER connecting to DB <br/>";
+
+$route = \RouteHandler::handleRoute($db_conn);
+
+\Util::my_var_dump($route , "in index.php");
+
+require_once($route['controller']);
+
+$m = new MainController('hello');
+
+
 
 ?>

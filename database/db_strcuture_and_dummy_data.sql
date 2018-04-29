@@ -117,25 +117,24 @@ CREATE TABLE route (
 	headertemplate VARCHAR(300)  NULL, 
 	contenttemplate VARCHAR(300) NULL, 
 	footertemplate VARCHAR(300)  NULL, 
-
 	routeparam VARCHAR(300)  NULL, 
-
+	controller VARCHAR(300) NOT NULL, 
 	PRIMARY KEY (id),
 	UNIQUE KEY (route)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 
 
 
-INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate)
-VALUES ('/', 'PAGE', 'main/header.html', 'main/content.html', 'main/footer.html');
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, controller)
+VALUES ('/', 'PAGE', 'components/main/header.html', 'components/main/content.html', 'components/main/footer.html', 'components/main/MainController.php');
 
-INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate)
-VALUES ('/login' ,'PAGE', NULL, 'components/login/login.html', NULL);
-
-
-INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate)
-VALUES ('/register' ,'PAGE', NULL, 'components/register/register.html', NULL);
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, controller)
+VALUES ('/login' ,'PAGE', NULL, 'components/login/login.html', NULL, 'components/login/LoginController.php');
 
 
-INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam)
-VALUES ('/messages' ,'PAGE', 'main/header.html', 'components/messages/content.html', 'main/footer.html', 'channelname');
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, controller)
+VALUES ('/register' ,'PAGE', NULL, 'components/register/register.html', NULL, 'components/register/RegisterController.php');
+
+
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller)
+VALUES ('/messages' ,'PAGE', 'components/main/header.html', 'components/messages/content.html', 'components/main/footer.html', 'channelname', 'components/messages/MessagesController.php');

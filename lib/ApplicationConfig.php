@@ -7,6 +7,8 @@ class ApplicationConfig {
     public static $databasePassword = 'fh_2018_scm4';
     public static $databaseHost = 'localhost';
 
+    public static $logFile = 'log/poormansslack.log';
+
 }
 
 ?>
