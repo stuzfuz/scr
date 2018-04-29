@@ -5,90 +5,25 @@
 xxxxxxxxxxxxxxxxxxxxxxxx
 CONTENT  BEGIN
 xxxxxxxxxxxxxxxxxxxxxxxx
-<!-- ###IF### CHANNELSFOUND -->
-<!--T    <h3>TRUE channels were found </h3>   T-->
-<h3>ssökfsöfksöfkölsdflödsfks ome channels have been found or not ...</h3>
-
-<!-- ###ELSE### CHANNELSFOUND -->
-<!--T   <h3>FALSE channels were found </h3>   T-->
-<h3>sdföskföskfölsdfsome channels have been found or not ...</h3>
-<!-- ###ENDIF### CHANNELSFOUND -->
 
 
-<!-- ###IF### CHANNELSFOUND -->
-
-               <!--T     <ul class="nav flex-column mb-2">
-                        <!-- ###FOREACHBEGIN### CHANNELS -->
-                        <!--T    
-                        <li class="nav-item">
-                          <a class="nav-link" href="/messages/###id###">
-                            <span data-feather="file-text"></span>
-                            ###name###
-                          </a>
-                        </li>
-                        T-->
-                T-->
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Current month
-                            </a>
-                        </li>
-
-                        <!-- ###FOREACHEND### CHANNELS -->
-
-                    </ul>
-               
-
-xxxxxxxxxxxxxxxxxxxxxxxx
-CONTENT  END
-xxxxxxxxxxxxxxxxxxxxxxxx
-
-
-<!-- ###END_TEMPLATE### -->
-
-
-
-
-
-<!-- ###BEGIN_TEMPLATE### -->
-
+<!-- ###BEGIN### -->
+    <h1>hier sollte eine h3 kommen</h1>
+    
     <!-- ###IF### ###CHANNELS2###
         
-        <h3>yeah we got it !</h3>
-        <ul>
-            ###FOREACH### ###CHANNELS###
-                <li>###name###</li>
-            ###FOREACHEND### CHANNELS
-        </ul>
+        <h3>yeah we got it !</h3> -->
 
-    ###ELSE### ###CHANNELS2###
+   <!-- ###ELSE### ###CHANNELS2###   -->
+   <h2>oberhalb sollte eine h3 stehen</h2>
 
-        <h3>Ohhh no - no channels!</h3>
+    <!--  <h3>Ohhh no - no channels!</h3> -->   
+
+    <h2>oberhalb sollte eine h3 stehen</h2>
     
-    ###IFEND### ###CHANNELS2### -->
+    <!-- ###IFEND### ###CHANNELS2###  -->   
 
-    
-
-
-
-
-<h4>jetzt anders rum - in einer FRO Schleife ein IF</h4>
-
-
-<!-- ###FOREACH### ###CHANNELS###
-    <ul>
-        ###IF### ###VISIBLE###
-             <li style="color: red;">###name###</li>
-        ###ELSE### ###VISIBLE###
-            <li style="color: blue;">###name###</li>
-    </ul>
-    ###FOREACHEND### ###CHANNELS### -->
-            
-    
-
-
-
+    <!-- ###END### -->
 
 
 <!-- ###END_TEMPLATE### -->
