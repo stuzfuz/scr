@@ -5,7 +5,7 @@ class TemplateEngine {
     private static function getTemplateCode(string $tmpl)  {
         $start = \ApplicationConfig::$BEGIN;
         $end =  \ApplicationConfig::$END;
-        $pattern = '/' . preg_quote($start) . '(.*?';
+        $pattern = '/' . preg_quote($start) . '(.*';
         $pattern .= ')' . preg_quote($end) . '/s';
         // \Util::my_var_dump( $pattern, "TemplateEngine::find_between()   pattern" );
         $i = preg_match($pattern, $tmpl, $matches);
@@ -21,8 +21,6 @@ class TemplateEngine {
         $pattern .= ')' . preg_quote($end) . '/s';
         // \Util::my_var_dump( $pattern, "TemplateEngine::find_between()   pattern" );
         $i = preg_match_all($pattern, $string, $matches);
-        // \Util::my_var_dump( htmlspecialchars(  $matches[1][0]), "TemplateEngine::find_between()   matches[1][0]" );
-        // \Util::my_var_dump( htmlspecialchars(  $matches[1][1]), "TemplateEngine::find_between()   matches[1][1]" );
         $string = null;
         if ($i) {
             $code = array();
@@ -63,7 +61,6 @@ class TemplateEngine {
     }
     
     private static function renderPartial(string $tmplFilename, $data) : string {
-        // echo "<br> 'renderPartial with tmplFilename = " . $tmplFilename ."<br/>"; 
         $partial = file_get_contents ($tmplFilename);
         if (!$partial) {
             \Logger::logError("TemplateEngine::render()   could not open file : " , $tmplFilename);
@@ -84,40 +81,46 @@ class TemplateEngine {
                 readfile('static/500.html');
                 exit();
             }
-            // echo "<br>  found a TEMPLATEBEGIN keyowrd at pos  " . $templateBegin . "<br>";
-            // echo "<br>  found a TEMPLATEENDkeyowrd at pos  " . $templateEnd . "<br>";
-
             // well - there it is: subtract 2 and it works
             $partial =  substr($partial, $templateBegin + strlen(\ApplicationConfig::$TEMPLATEBEGIN), $templateEnd - $templateBegin  - strlen(\ApplicationConfig::$TEMPLATEEND)-2);
         } 
-        // \Util::my_var_dump( htmlspecialchars($partial), "renderPartialString()    partial  = ");
+        \Util::my_var_dump( htmlspecialchars($partial), "renderPartialString()    partial  = ");
 
         $templateCode = self::getTemplateCode($partial);
-        // \Util::my_var_dump( htmlspecialchars($templateCode), "renderPartialString()    templateCode from partial   = ");
+        \Util::my_var_dump( htmlspecialchars($templateCode), "renderPartialString()    templateCode from partial   = ");
 
         if ($templateCode != null) {
-            // echo "<br/><br/><br/>";
-            // \Util::my_var_dump( htmlspecialchars($templateCode), "renderPartialString()    templateCode from partial   = ");
-            // echo "<br/><br/><br/>";
+            echo "<br/><br/><br/>";
+            \Util::my_var_dump( htmlspecialchars($templateCode), "renderPartialString()    templateCode from partial   = ");
+            echo "<br/><br/><br/>";
         
             while ($templateCode!== null) {
-                // echo "<br/><br/><br/>";
-                // \Util::my_var_dump( htmlspecialchars($templateCode), "renderPartialString()   replacing tthis with 'REPLACED'   = ");
-                // echo "<br/><br/><br/>";
+                echo "<br/><br/><br/>";
+                \Util::my_var_dump( htmlspecialchars($templateCode), "renderPartialString()   replacing tthis with 'REPLACED'   = ");
+                echo "<br/><br/><br/>";
 
-                // $parser = new TemplateParser($templateCode, )
-
+                
                 $tmp = self::find_between_all($templateCode, "<!-- ", " -->");
                 echo "<br><br><br>";
                 \Util::my_var_dump( htmlspecialchars($tmp), "renderPartialString()   only code in comments   = ");
                 echo "<br><br><br>";
-                // $newHtml = 
 
+
+                $lexer = new TemplateLexer($tmp);
+                $parser = new TemplateParser($lexer);
+                $res = $parser->parseTemplate();
+
+                \Util::my_var_dump( $res, "renderPartialString()   partial res   = ");
+
+
+                
+                
                 $partial = str_replace($templateCode, "REPLACED", $partial);
     
-                // echo "<br/><br/><br/>";
-                // // \Util::my_var_dump( htmlspecialchars($partial), "renderPartialString()   partial now   = ");
-                // echo "<br/><br/><br/>";
+                echo "<br/><br/><br/>";
+                // \Util::my_var_dump( htmlspecialchars($partial), "renderPartialString()   partial now   = ");
+                echo "<br/><br/><br/>";
+   
                 $templateCode = self::getTemplateCode($partial);
 
                 // echo "<br/><br/><br/>";
