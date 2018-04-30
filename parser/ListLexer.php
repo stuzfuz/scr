@@ -6,22 +6,20 @@
 require_once('lexer.php');
  
 class ListLexer extends Lexer {
-    const NAME      = 2;
-    const COMMA     = 3;
-    const LBRACK    = 4;
-    const RBRACK    = 5;
-    const BEGIN    = 6;
-    const END    = 7;
-    const IF    = 8;
-    const ELSE    = 9;
-    const ENDIF    = 10;
-    const COMMAND   = 11; 
-    const FOREACH   = 12; 
-    const VARIABLE   = 13; 
+    const HTMLCODE      = 2;
+    const BEGIN    = 3;
+    const END    = 4;
+    const IF    = 5;
+    const ELSE    = 6;
+    const COMMAND   = 7; 
+    const FOREACH   = 8; 
+    const VARIABLE   = 9; 
+    const BEGINTEMPLATE   = 10; 
+    const ENDTEMPLATE   = 11; 
+
     static $tokenNames = array("n/a", "<EOF>",
-                                "NAME", "COMMA",
-                               "LBRACK", "RBRACK", "BEGIN", "END",
-                               "IF", "ELSE", "ENDIF", "COMMAND", "FOREACH", "VARIABLE" );
+                                "HTMLCODE","BEGIN", "END",
+                               "IF", "ELSE", "COMMAND", "FOREACH", "VARIABLE" , "BEGINTEMPLATE", "ENDTEMPLATE");
  
     public function getTokenName($x) {
         return ListLexer::$tokenNames[$x];
@@ -80,14 +78,18 @@ class ListLexer extends Lexer {
                $this->c == '_' ||
                $this->c == '\\' ||
                $this->c == '+' ||
+               $this->c == ',' ||
                $this->c == ':' ||
                $this->c == ';' ||
+               $this->c == '[' ||
+               $this->c == ']' ||
                $this->c == '#' ||
                $this->c == '.' ||
                $this->c == '?' ||
                $this->c == '!' ||
                $this->c == '|' ||
                $this->c == ' ' ||
+               $this->c == '\t' ||
                $this->c == '!';
     }
 
@@ -102,24 +104,17 @@ class ListLexer extends Lexer {
     public function nextToken() {
         while ( $this->c != self::EOF ) {
             switch ( $this->c ) {
-                case ' ' :  
-                case '\t': 
+                // case ' ' :  
+                // case '\t': 
                 case '\n': 
                 case Chr(10):
                 case '\r': $this->WS();
                            continue;
-                case ',' : $this->consume();
-                           return new Token(self::COMMA, ",");
-                case '[' : $this->consume();
-                           return new Token(self::LBRACK, "[");
-                case ']' : $this->consume();
-                           return new Token(self::RBRACK, "]");
-
                 case '#' : if ($this->isHash()) return $this->COMMAND();
                 case '@' : if ($this->isAt()) return $this->VARIABLE();
                 
                default:
-                    if ($this->isAnyCharacter() ) return $this->NAME();
+                    if ($this->isAnyCharacter() ) return $this->HTMLCODE();
                     throw new Exception("invalid character: " + $this->c);
             }
         }
@@ -181,15 +176,18 @@ class ListLexer extends Lexer {
         switch ($buf) {
             case "IF": return new Token(self::IF, "IF: " . $buf . ";   var: " . $var);
             case "ELSE": return new Token(self::ELSE, "ELSE: " . $buf . ";   var: " . $var);
-            case "ENDIF": return new Token(self::ENDIF, "ENDIF: " . $buf . ";   var: " . $var);
+            // case "ENDIF": return new Token(self::ENDIF, "ENDIF: " . $buf . ";   var: " . $var);
             case "FOREACH": return new Token(self::FOREACH, "FOREACH: " . $buf . ";   var: " . $var);
             case "BEGIN": return new Token(self::BEGIN, "BEGIN: " . $buf . ";   var: " . $var);
             case "END": return new Token(self::END, "END: " . $buf . ";   var: " . $var);
+            case "BEGINTEMPLATE": return new Token(self::BEGINTEMPLATE, "BEGINTEMPLATE: " . $buf . ";   var: " . $var);
+            case "ENDTEMPLATE": return new Token(self::ENDTEMPLATE, "ENDTEMPLATE: " . $buf . ";   var: " . $var);
         }
-        return new Token(self::COMMAND, "command: " . $buf . ";   var: " . $var);
+        echo "\n unknown command: $buf\n";
+        throw new Exception("unknown command found '$buf'   : " + $this->c);
     }
 
-    /** NAME : ('a'..'z'|'A'..'Z')+; // NAME is sequence of >=1 letter */
+    /** VARIABLE : ('a'..'z'|'A'..'Z')+; // VARIABLE is sequence of >=1 letter */
     public function VARIABLE() {
         $buf = '';
         if ($this->isAt()) {
@@ -216,26 +214,29 @@ class ListLexer extends Lexer {
 
 
 
-    /** NAME : ('a'..'z'|'A'..'Z')+; // NAME is sequence of >=1 letter */
-    public function NAME() {
+    /** HTMLCODE :  */
+    public function HTMLCODE() {
+        // echo "\n HTMLCODE()   c = $this->c \n";
         $buf = '';
         do {
+            // echo "\n HTMLCODE()  do-while  c = $this->c \n";
             if ($this->c == '#') {
                 $buf .= $this->c;
                 $this->consume(); 
                 if ($this->c == '#') {
                     $this->moveBack();
-                    $this->moveBack();
+                    // $this->moveBack();
+                    // die();
                     $buf = substr($buf, 0, strlen($buf)-1);
-                    // echo "'NAME()'   early exit buf = '$buf'";
-                    return new Token(self::NAME, $buf);
+                    // echo "'HTMLCODE()'   early exit buf = '$buf'";
+                    return new Token(self::HTMLCODE, $buf);
                 }
             }
             $buf .= $this->c;
             $this->consume();
         } while ($this->isAnyCharacter());      // isAnyCharacter
-        // echo "\n normal exit from NAME()";
-        return new Token(self::NAME, $buf);
+        // echo "\n normal exit from HTMLCODE()";
+        return new Token(self::HTMLCODE, $buf);
     }
  
     /** WS : (' '|'\t'|'\n'|'\r')* ; // ignore any whitespace */
