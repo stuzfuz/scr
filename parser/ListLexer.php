@@ -2,7 +2,7 @@
  
  // https://www.codediesel.com/php/building-a-simple-parser-and-lexer-in-php/
 
- 
+
 require_once('lexer.php');
  
 class ListLexer extends Lexer {
@@ -17,10 +17,11 @@ class ListLexer extends Lexer {
     const ENDIF    = 10;
     const COMMAND   = 11; 
     const FOREACH   = 12; 
+    const VARIABLE   = 13; 
     static $tokenNames = array("n/a", "<EOF>",
                                 "NAME", "COMMA",
                                "LBRACK", "RBRACK", "BEGIN", "END",
-                               "IF", "ELSE", "ENDIF", "COMMAND", "FOREACH" );
+                               "IF", "ELSE", "ENDIF", "COMMAND", "FOREACH", "VARIABLE" );
  
     public function getTokenName($x) {
         return ListLexer::$tokenNames[$x];
@@ -46,8 +47,56 @@ class ListLexer extends Lexer {
                $this->c <= 'Z')  ;
     }
 
+    public function isLetterOrUnderscore() {
+        return ($this->c >= 'a' &&
+               $this->c <= 'z' ||
+               $this->c >= 'A' &&
+               $this->c <= 'Z' || $this->c == '_' );
+    }
+
+    
+
+    public function isLETTERorNUMBER() {
+        return ($this->c >= 'a' &&
+               $this->c <= 'z' ||
+               $this->c >= 'A' &&
+               $this->c <= 'Z') || ( $this->c <= '9' && $this->c >= '0');
+    }
+    
+    public function isAnyCharacter() {
+        return ($this->c >= 'a' &&
+               $this->c <= 'z' ||
+               $this->c >= 'A' &&
+               $this->c <= 'Z') || ( $this->c <= '9' && $this->c >= '0') ||
+               $this->c == '>' ||
+               $this->c == '<' ||
+               $this->c == '(' ||
+               $this->c == ')' ||
+               $this->c == '/' ||
+               $this->c == '"' ||
+               $this->c == '=' ||
+               $this->c == '-' ||
+               $this->c == '\'' ||
+               $this->c == '_' ||
+               $this->c == '\\' ||
+               $this->c == '+' ||
+               $this->c == ':' ||
+               $this->c == ';' ||
+               $this->c == '#' ||
+               $this->c == '.' ||
+               $this->c == '?' ||
+               $this->c == '!' ||
+               $this->c == '|' ||
+               $this->c == ' ' ||
+               $this->c == '!';
+    }
+
     public function isHash() {
         return ($this->c == '#');
+    }
+
+    public function isAt() {
+        return ($this->c == '@');
     }
  
     public function nextToken() {
@@ -56,7 +105,8 @@ class ListLexer extends Lexer {
                 case ' ' :  
                 case '\t': 
                 case '\n': 
-                case '\r': echo "\ncalling WS()\n"; $this->WS();
+                case Chr(10):
+                case '\r': $this->WS();
                            continue;
                 case ',' : $this->consume();
                            return new Token(self::COMMA, ",");
@@ -66,9 +116,10 @@ class ListLexer extends Lexer {
                            return new Token(self::RBRACK, "]");
 
                 case '#' : if ($this->isHash()) return $this->COMMAND();
+                case '@' : if ($this->isAt()) return $this->VARIABLE();
                 
                default:
-                    if ($this->isLETTER() ) return $this->NAME();
+                    if ($this->isAnyCharacter() ) return $this->NAME();
                     throw new Exception("invalid character: " + $this->c);
             }
         }
@@ -77,48 +128,46 @@ class ListLexer extends Lexer {
 
     /** NAME : ('a'..'z'|'A'..'Z')+; // NAME is sequence of >=1 letter */
     public function COMMAND() {
-        // // echo "<br> in COMMAND()  ch = " . $this->c;
+        // echo "\n in COMMAND()  ch = " . $this->c;
         $buf = '';
         $var = '';
-        //$buf .= $this->c;
         if ($this->isHash()) {
-            //7$buf .= $this->c;
             $this->consume();
         }
         if ($this->isHash()) {
-            //$buf .= $this->c;
             $this->consume();
         }
         if ($this->isHash()) {
-            //$buf .= $this->c;
             $this->consume();
         }
-        // // echo "<br> in COMMAND()  after first 3# ch = " . $this->c;
+        // echo "\n in COMMAND()  after first 3# ch = " . $this->c;
 
         do {
             $buf .= $this->c;
-            // // echo "<br> in COMMAND() readin COmmand name   c  = " . $this->c;
+            // echo "\n in COMMAND() reading COmmand name   c  = " . $this->c . "\n";
             $this->consume();
         } while ($this->isLETTER());
+        
         // echo "COMMAND() after reading the COMMAND name   buf = $buf    this->c =  $this->c \n\n" ;
+        
         if ($this->isOpenParenthesis()) {
             // echo "in IF openParent()      c =  $this->c \n\n" ;
-            $this->consume();
-            $var = $this->c;
             $this->consume();
             do {
                 // echo "in IF  in DO     openParent()      c =  $this->c \n\n" ;
                 $var .= $this->c;
                 $this->consume();
-            } while ($this->isLETTER());
+            } while ($this->isLetterOrUnderscore());
             // echo "in IF  AFTER  DO     closeing parenthesis()      c =  $this->c \n\n" ;
             if (!$this->isCloseParenthesis()) {
                 throw new Exception("parenthis has to be close: " + $this->c);
             }
             $this->consume();
         } 
-        if ($this->isHash()) {
-            //$buf .= $this->c;
+        // echo "after IF openParent()      c =  $this->c \n\n" ;
+        if (!$this->isHash()) {
+            throw new Exception("command must be close with ###: " + $this->c);
+        } else {
             $this->consume();
         }
         if ($this->isHash()) {
@@ -141,19 +190,56 @@ class ListLexer extends Lexer {
     }
 
     /** NAME : ('a'..'z'|'A'..'Z')+; // NAME is sequence of >=1 letter */
+    public function VARIABLE() {
+        $buf = '';
+        if ($this->isAt()) {
+            $this->consume();
+        }
+        if ($this->isAt()) {
+            $this->consume();
+        } 
+        do {
+            $buf .= $this->c;
+            //  echo "\n in VARIABLE() reading variable name   c  = " . $this->c . "\n";
+            $this->consume();
+            // die();
+        } while ($this->isLETTERorNUMBER());
+        
+        if ($this->isAt()) {
+            $this->consume();
+        }
+        if ($this->isAt()) {
+            $this->consume();
+        }
+        return new Token(self::VARIABLE, $buf);
+    }
+
+
+
+    /** NAME : ('a'..'z'|'A'..'Z')+; // NAME is sequence of >=1 letter */
     public function NAME() {
         $buf = '';
         do {
+            if ($this->c == '#') {
+                $buf .= $this->c;
+                $this->consume(); 
+                if ($this->c == '#') {
+                    $this->moveBack();
+                    $this->moveBack();
+                    $buf = substr($buf, 0, strlen($buf)-1);
+                    // echo "'NAME()'   early exit buf = '$buf'";
+                    return new Token(self::NAME, $buf);
+                }
+            }
             $buf .= $this->c;
             $this->consume();
-        } while ($this->isLETTER());
- 
+        } while ($this->isAnyCharacter());      // isAnyCharacter
+        // echo "\n normal exit from NAME()";
         return new Token(self::NAME, $buf);
     }
  
     /** WS : (' '|'\t'|'\n'|'\r')* ; // ignore any whitespace */
     public function WS() {
-        echo "\n WS() \n";
         while(ctype_space($this->c)) {
             $this->consume();
         }

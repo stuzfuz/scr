@@ -23,6 +23,17 @@ abstract class Lexer {
         else {
             $this->c = substr($this->input, $this->p, 1);
         }
+       // echo "'consume()'  position in string  p = $this->p  old c = $old    new c = $this->c   ord(c) ". ord($this->c) .  " \n\n";
+    }
+     /** Move one character; detect "end of file" */
+     public function moveBack() {
+        $this->p--;
+        if ($this->p >= strlen($this->input)) {
+            $this->c = Lexer::EOF;
+        }
+        else {
+            $this->c = substr($this->input, $this->p, 1);
+        }
     }
  
     public abstract function nextToken();
