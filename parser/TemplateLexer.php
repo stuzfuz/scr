@@ -146,14 +146,14 @@ class ListLexer extends Lexer {
         // echo "COMMAND() after reading the COMMAND name   buf = $buf    this->c =  $this->c \n\n" ;
         
         if ($this->isOpenParenthesis()) {
-            // echo "in IF openParent()      c =  $this->c \n\n" ;
+            echo "in IF openParent()      c =  $this->c \n\n" ;
             $this->consume();
             do {
-                // echo "in IF  in DO     openParent()      c =  $this->c \n\n" ;
+                echo "in IF  in DO     openParent()      c =  $this->c \n\n" ;
                 $var .= $this->c;
                 $this->consume();
             } while ($this->isLetterOrUnderscore());
-            // echo "in IF  AFTER  DO     closeing parenthesis()      c =  $this->c \n\n" ;
+            echo "in IF  AFTER  DO     closeing parenthesis()      c =  $this->c \n\n" ;
             if (!$this->isCloseParenthesis()) {
                 throw new Exception("parenthis has to be close: " + $this->c);
             }
@@ -180,8 +180,8 @@ class ListLexer extends Lexer {
             case "FOREACH": return new Token(self::FOREACH, "FOREACH: " . $buf . ";   var: " . $var);
             case "BEGIN": return new Token(self::BEGIN, "BEGIN: " . $buf . ";   var: " . $var);
             case "END": return new Token(self::END, "END: " . $buf . ";   var: " . $var);
-            case "BEGINTEMPLATE": return new Token(self::BEGINTEMPLATE, "BEGINTEMPLATE: " . $buf . ";   var: " . $var);
-            case "ENDTEMPLATE": return new Token(self::ENDTEMPLATE, "ENDTEMPLATE: " . $buf . ";   var: " . $var);
+            // case "BEGINTEMPLATE": return new Token(self::BEGINTEMPLATE, "BEGINTEMPLATE: " . $buf . ";   var: " . $var);
+            // case "ENDTEMPLATE": return new Token(self::ENDTEMPLATE, "ENDTEMPLATE: " . $buf . ";   var: " . $var);
         }
         echo "\n unknown command: $buf\n";
         throw new Exception("unknown command found '$buf'   : " + $this->c);

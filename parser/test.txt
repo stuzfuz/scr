@@ -1,12 +1,44 @@
-###BEGIN### 
-    ignore me @@name@@
-    ###IF(bla)###
-        it is true?
-    ###ELSE###
-        it's false :-((
-        
-        ###FOREACH(dummy)###
-            show me your @@age@@
-        ###END###
-    ###END##
+###BEGIN###
+    fsfsfsd @@a1@@ gdfg
+    ###FOREACH(dummy)###
+        1show me your @@age@@
+    ###END###
+    2ignore me @@a2@@
+    @@kdfdf@@
+    ###FOREACH(dummy)###
+            3show me your @@a3@@
+            ###FOREACH(dummy)###
+                4show me your @@a4@@
+            ###END###
+            sfsd
+            @@kdfdf@@
+            ###IF(kdfj)###
+                5ksdjf @@a5@@
+            ###ELSE###
+                6ksjfskljf
+                @@kdfdf@@
+                ###IF(sd)###
+                    7ksjfksdjf @@kdfdf@@
+                ###END###
+                @@kdfdf@@
+                sfsf
+                ###FOREACH(lskfjs)###
+                    @@kdfdf@@  sfgsf
+                    ###IF(bla)###
+                        8kdsfjskjf
+                        @@kdfdf@@
+                    ###ELSE###
+                        9 kfjslkfjdslkf
+                        @@kdfdf@@ ssdfsf
+                    ###END###
+                    @@kdfdf@@ sfsf 
+                ###END###
+                @@kdfdf@@ sfdsf 
+            ###END###
+            @@kdfdf@@ sdfsdf 
+    ###END###
+    @@kdfdf@@ sfsdsfd
+
+    sfdsdfsfsdf
 ###END###
+

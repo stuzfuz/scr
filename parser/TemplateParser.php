@@ -1,99 +1,76 @@
 <?php
+ 
+require_once('Parser.php');
+ 
+class ListParser extends Parser {
 
-class Symbols {
-    public const syBegin = 1;
-    public const syEnd = 2;
+    // private $allCommands = array(ListLexer::BEGIN, ListLexer::END, ListLexer::IF, ListLexer::ELSE
+    //     , ListLexer::END, ListLexer::FOREACH);
 
-    public const syForEach = 3;
-    public const syForEachEnd = 4;
+    private $allTokens = array();
 
-    public const syIf = 5;
-    public const syIfEnd = 6;
-    public const syElse = 7;
+    public function ListParser(Lexer $input) {
+        parent::__construct($input);
+    }
+ 
+    /** template:   'BEGIN' expr() 'END'  */
+    public function rlist() {
+        echo "rlist()   lookahead:    '" . $this->lookahead ."'\n\n";
+        $this->match(ListLexer::BEGIN);
+        $this->allTokens[] = "BEGIN";
+        $this->expr();
+        $this->match(ListLexer::END);
+        $this->allTokens[] = "END";
+
+        echo "allTokens ... \n\n";
+        var_dump($this->allTokens);
+    }
+    /**  expr = HTMLCODE*  | VARIABLE* | COMMAND */
+    function expr() {
+        $this->allTokens[] = "EXPR";
+        echo "expr()   lookahead:    '" . $this->lookahead . "'\n\n";
+        while ($this->lookahead->type == ListLexer::HTMLCODE  ||
+            $this->lookahead->type == ListLexer::VARIABLE) {
+            if ($this->lookahead->type == ListLexer::HTMLCODE) {
+                $this->match(ListLexer::HTMLCODE);
+                $this->allTokens[] = "HTMLCODE";
+            } else {
+                $this->match(ListLexer::VARIABLE);
+                $this->allTokens[] = "VARIABLE";
+            }
+        } 
+        if ($this->lookahead->type == ListLexer::IF) {
+            $this->matchIf();
+        } else if ($this->lookahead->type == ListLexer::FOREACH) {
+            $this->matchForEach();
+        }
+    }
+    /** IF  : expr();  [ 'ELSE' expr] 'END'  */
+    function matchIf() {
+        $this->allTokens[] = "IF";
+        $this->match(ListLexer::IF);
+        $this->expr();
+
+        if ($this->lookahead->type == ListLexer::ELSE) {
+            $this->match(ListLexer::ELSE);
+            $this->allTokens[] = "IF";
+            $this->expr();
+        }
+        var_dump($this->allTokens);
+        $this->match(ListLexer::END);
+        $this->allTokens[] = "END";
+        $this->expr();
+    }
     
-    public const syVariable = 8;
-
-    public const syPlaceholder = 9;
-
-    public const syCommentOpen = 10;
-    public const syCommentClose = 11;
-
-    
-    public const syEOF = 12;
-
-    public const syLeftPar = 13;
-    public const syRightPar = 14;
-
-    public const syMinus = 15;
-    public const syExcl = 16;
-
-    public const sy3Hash = 17;
-
-
-    private function __construct() {
+    /** FOREACH  : expr(); 'END'  */
+    function matchForEach() {
+        $this->allTokens[] = "FOREACH";
+        $this->match(ListLexer::FOREACH);
+        $this->expr();
+        $this->match(ListLexer::END);
+        $this->allTokens[] = "END";
+        $this->expr();
     }
 }
-
-class TemplateParser {
-    private $templateCode = null;
-
-    private $symb = null; 
-    private $identifier = null;
-    private $placeholder = null;
-
-    private $chEOF = 0;
-
-    private $syCnr = -1;
-
-    private $ch = null;
-
-    public function __construct(string $templateCode) {
-        $this->templateCode = $templateCode;
-        self::newCh();
-        self::newSy
-        ();
-    }
-
-    private function newCh() {
-        if ($this->syCnr < strlen($this->templateCode)) {
-            $this->syCnr++;
-            $this->ch = substr($this->templateCode, $this->syCnr, 1);
-        } else {
-            $this->ch = $this->chEOF;
-        }
-    }
-
-    private function isCharacter()
-    private function newSy() {
-        while (ctype_space ( $this->ch)) {
-            self::newCh();
-        }
-        
-        if ($this->ch >= 'A') || ($this->ch <= 'Z') ||  {
-            case '<':       $this->sy  = Symbols::syLeftPar; 
-                            break;
-            case '>':       $this->sy  = Symbols::syRightPar; 
-                            break;
-            case '!':       $this->sy  = Symbols::syExcl; 
-                            break;
-            case '-':       $this->sy  = Symbols::syMinus; 
-                            break;
-        }
-    }
-
-
-    
-}
-
-
-$filename ="test1.html";
-$s = file_get_contents($filename);
-
-echo "<br> reading file: $filename";
-echo "<br> <br> contents of $filename";
-var_dump(htmlspecialchars($s));
-echo "<br><br>";
-
-$parser = new TemplateParser($s);
-
-echo "<br><br> DONE <br><br>";
+ 
+?>

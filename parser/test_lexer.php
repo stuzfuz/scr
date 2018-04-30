@@ -1,6 +1,6 @@
 <?php
  
-require_once('ListLexer.php');
+require_once('TemplateLexer.php');
 require_once('Token.php');
  
 $s = trim(file_get_contents('test.txt'));

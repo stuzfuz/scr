@@ -4,8 +4,8 @@ require_once('Parser.php');
  
 class ListParser extends Parser {
 
-    private $allCommands = array(ListLexer::BEGIN, ListLexer::END, ListLexer::IF, ListLexer::ELSE
-        , ListLexer::ENDIF, ListLexer::FOREACH);
+    // private $allCommands = array(ListLexer::BEGIN, ListLexer::END, ListLexer::IF, ListLexer::ELSE
+    //     , ListLexer::END, ListLexer::FOREACH);
 
     public function ListParser(Lexer $input) {
         parent::__construct($input);
@@ -14,15 +14,16 @@ class ListParser extends Parser {
     /** list : '[' elements ']' ; // match bracketed list */
     public function rlist() {
         $this->match(ListLexer::BEGIN);
-        $this->CommandOrName();
+        $this->expr();
         $this->match(ListLexer::END);
     }
-    /** elements : element (',' element)* ; */
-    function CommandOrName() {
-        $this->element();
-        while ($this->lookahead->type == ListLexer::COMMA ) {
-            $this->match(ListLexer::COMMA);
-            $this->element();
+    /**  expr = HTMLCODE* | COMMAND */
+    function expr() {
+        if ($this->lookahead->type == ListLexer::HTMLCODE ) {
+            while ($this->lookahead->type == ListLexer::HTMLCODE) {
+                $this->match(ListLexer::HTMLCODE);
+            }
+                
         }
     }
     /** element : name | list ; // element is name or nested list */
