@@ -4,7 +4,7 @@ abstract class Parser {
     public $input;     // from where do we get tokens?
     public $lookahead; // the current lookahead token
  
-    public function Parser(ListLexer $input) {
+    public function __construct(TemplateLexer $input) {
         $this->input = $input;
         $this->consume();
     }

@@ -2,10 +2,9 @@
  
  // https://www.codediesel.com/php/building-a-simple-parser-and-lexer-in-php/
 
-
 require_once('lexer.php');
- 
-class ListLexer extends Lexer {
+
+class TemplateLexer extends Lexer {
     const HTMLCODE      = 2;
     const BEGIN    = 3;
     const END    = 4;
@@ -19,13 +18,13 @@ class ListLexer extends Lexer {
 
     static $tokenNames = array("n/a", "<EOF>",
                                 "HTMLCODE","BEGIN", "END",
-                               "IF", "ELSE", "COMMAND", "FOREACH", "VARIABLE" , "BEGINTEMPLATE", "ENDTEMPLATE");
+                               "IF", "ELSE", "COMMAND", "FOREACH", "VARIABLE");
  
     public function getTokenName($x) {
-        return ListLexer::$tokenNames[$x];
+        return TemplateLexer::$tokenNames[$x];
     }
  
-    public function ListLexer($input) {
+    public function TemplateLexer($input) {
         parent::__construct($input);
     }
 
@@ -51,8 +50,6 @@ class ListLexer extends Lexer {
                $this->c >= 'A' &&
                $this->c <= 'Z' || $this->c == '_' );
     }
-
-    
 
     public function isLETTERorNUMBER() {
         return ($this->c >= 'a' &&

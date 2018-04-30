@@ -8,7 +8,7 @@ abstract class Lexer {
     protected $p = 0;     // index into input of current character
     protected $c;         // current character
  
-    public function Lexer($input) {
+    public function __construct($input) {
         $this->input = $input;
         // prime lookahead
         $this->c = substr($input, $this->p, 1);
