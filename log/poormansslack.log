@@ -74,3 +74,22 @@ ERROR	192.168.33.1	Sun Apr 29, 2018 22:15	TemplateEngine::renderIf()   could not
 ERROR	192.168.33.1	Sun Apr 29, 2018 22:15	TemplateEngine::renderIf()   could not find key CHANNELS2 in object data 	
 ERROR	192.168.33.1	Sun Apr 29, 2018 22:16	TemplateEngine::renderIf()   could not find key channels2 in object data 	
 ERROR	192.168.33.1	Sun Apr 29, 2018 22:39	TemplateEngine::renderIf()   could not find key if in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:13	TemplateEngine::renderIf()   could not find key else in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:15	TemplateEngine::renderIf()   could not find key else in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:16	TemplateEngine::renderIf()   could not find key else in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:18	TemplateEngine::renderIf()   could not find key if in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:18	TemplateEngine::renderIf()   could not find key if in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:19	TemplateEngine::renderIf()   could not find key if in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:20	TemplateEngine::renderIf()   could not find key if in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:21	TemplateEngine::renderIf()   could not find key if in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:23	Fatal Error - no variable found in template	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:23	Fatal Error - no variable found in template	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:24	Fatal Error - no variable found in template	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:25	Fatal Error - no variable found in template	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:26	Fatal Error - no variable found in template	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:27	Fatal Error - no variable found in template	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:30	Fatal Error - no variable found in template	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:44	TemplateEngine::replaceVariable()   could not find key ###FOREACH### in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:45	TemplateEngine::replaceVariable()   could not find key ###FOREACH### in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:45	TemplateEngine::replaceVariable()   could not find key ###FOREACH### in object data 	
+ERROR	192.168.33.1	Sun Apr 29, 2018 23:50	TemplateEngine::renderForEach()   could not find key  in object data 	

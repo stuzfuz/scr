@@ -44,13 +44,10 @@ class DevController extends SimpleController {
                 // \Util::my_var_dump($channel, "MainController channel  = ");
                 $messages[] = $msg; 
             }
-            
             $data["messagesfound"] = false; 
             $data["messages"] = $messages; 
         }
-
-        $data["channels2"] = false; 
-
+        $data["channels2"] = true; 
         $this->data = $data; 
         // \Util::my_var_dump($this->data, "MainController this->data  = ");
     }
