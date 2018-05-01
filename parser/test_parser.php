@@ -132,7 +132,7 @@ function traverseAST____($ast, $level) {
     }
 }
 
-function traverseForEach1($ast, $level, $data, &$html) {
+function traverseAstForEach($ast, $level, $data, &$html) {
     echo "\n\n\n";
     var_dump($ast);
     echo "\n\n\n";
@@ -140,19 +140,19 @@ function traverseForEach1($ast, $level, $data, &$html) {
     echo "FOREACH forvariable = " . $ast["forvariable"];
 
     if (!isset($ast['forvariable'])) {
-        die("'traverseForEach1'  Ano forvariable set :-((");
+        die("'traverseAstForEach'  Ano forvariable set :-((");
     }
     $forvariable = strtolower($ast['forvariable']);
-    echo "\n'traverseForEach1'  found variable = $forvariable\n";
+    echo "\n'traverseAstForEach'  found variable = $forvariable\n";
 
     if (!isset($data[$forvariable])) {
-        die("\n'traverseForEach1'   forvariable  $forvariable NOT found in 'data'");
+        die("\n'traverseAstForEach'   forvariable  $forvariable NOT found in 'data'");
     }
 
     $arr = $data[$forvariable];
 
     foreach ($arr as $entry) {
-        traverseAST1($ast["fortemplate"], $level+1, $entry, $html);
+        traverseAST($ast["fortemplate"], $level+1, $entry, $html);
         $html  .= "\n";
     }
 
@@ -160,16 +160,16 @@ function traverseForEach1($ast, $level, $data, &$html) {
     // // foreach ($ast as $key => $node) {
     //     // if ($key === "FOREACH") {
             
-    //         traverseForEach1($node, $level+1, $data, $html);
+    //         traverseAstForEach($node, $level+1, $data, $html);
     // //     } else if ($key === "IF") {
     // //         echo "\n" . str_pad("", $level * 3) ." FOREACHNODE  IF\n";
-    // //         traverseIf1($node, $level+1, $data, $html);
+    // //         traverseAstIf($node, $level+1, $data, $html);
     // //     } else if ($key === "IFTRUE") {
     //         echo "\n" . str_pad("", $level * 3) ." FOREACHNODE  IFTRUE\n";
-    //         traverseAST1($node, $level+1, $data, $html);
+    //         traverseAST($node, $level+1, $data, $html);
     //     } else if ($key === "IFFALSE") {
     //         echo "\n" . str_pad("", $level * 3) ." FOREACHNODE  IFFALSE\n";
-    //         traverseAST1($node, $level+1, $data, $html);
+    //         traverseAST($node, $level+1, $data, $html);
     //     } else if ($key === "ifvariable") {
     //         echo "\n" . str_pad("", $level * 3) ." FOREACHNODE  ifvariable\n";
     //     } else if ($key === "forvariable") {
@@ -183,7 +183,7 @@ function traverseForEach1($ast, $level, $data, &$html) {
 }
 
 
-function traverseIf1($ast, $level, $data, &$html) {
+function traverseAstIf($ast, $level, $data, &$html) {
         
     if (!isset($ast['ifvariable'])) {
         die("no ifvariable set :-((");
@@ -200,38 +200,38 @@ function traverseIf1($ast, $level, $data, &$html) {
     }
 
     if ($data[$variable]) {
-        traverseAST1($ast["IFTRUE"], $level+1, $data, $html);
+        traverseAST($ast["IFTRUE"], $level+1, $data, $html);
         $html  .= "\n";
     } else if (!isset($data["IFFALSE"])) {
-        traverseAST1($ast["IFFALSE"], $level+1, $data, $html);
+        traverseAST($ast["IFFALSE"], $level+1, $data, $html);
         $html  .= "\n";
     }    
 }
 
 
-function traverseAST1($ast, $level, $data, &$html) {
+function traverseAST($ast, $level, $data, &$html) {
     foreach ($ast as $key => $node) {
         if ($key === "FOREACH") {
             echo "\n" . str_pad("", $level * 3) . " FOREACH\n";
-            traverseForEach1($node, $level+1, $data, $html);
+            traverseAstForEach($node, $level+1, $data, $html);
         } else if ($key === "IF") {
             echo "\n" . str_pad("", $level * 3) ." IF\n";
-            traverseIf1($node, $level+1, $data, $html);
+            traverseAstIf($node, $level+1, $data, $html);
         } else if ($key === "IFTRUE") {
             echo "\n" . str_pad("", $level * 3) ." IFTRUE\n";
-            die("this should be handled by  'traverseIf1' ");
+            die("this should be handled by  'traverseAstIf' ");
         } else if ($key === "IFFALSE") {
             echo "\n" . str_pad("", $level * 3) ." IFFALSE\n";
-            die("this should be handled by  'traverseIf1' ");
+            die("this should be handled by  'traverseAstIf' ");
         } else if ($key === "ifvariable") {
             echo "\n" . str_pad("", $level * 3) ." ifvariable\n";
-            die("this should be handled by  'traverseIf1' ");
+            die("this should be handled by  'traverseAstIf' ");
         } else if ($key === "forvariable") {
             echo "\n" . str_pad("", $level * 3) ." forvariable\n";
-            die("this should be handled by  'traverseForEach1' ");
+            die("this should be handled by  'traverseAstForEach' ");
         } else if ($key === "ELSE") {
             echo "\n" . str_pad("", $level * 3) ." ELSE\n";
-            die("this should be handled by  'traverseIf1' ");
+            die("this should be handled by  'traverseAstIf' ");
         // } // else if ($key === "ELSE") {
         //     echo "\n" . str_pad("", $level * 3) ." HTML\n";
         //     $html .= $node->txt . "\n"; 
@@ -246,10 +246,10 @@ function traverseAST1($ast, $level, $data, &$html) {
                 echo "\n" . str_pad("", $level * 3) ." VARIABLE   name = $variable \n";
 
                 if (!isset($data[$variablename])) {
-                    die("'traverseAST1()'  variablename '$variablename' not set in 'data' ");
+                    die("'traverseAST()'  variablename '$variablename' not set in 'data' ");
                 }
                 $html .= $data[$variablename];
-                
+
             } else {
                 echo "\n\n\n\n";
                 echo "node which lead to die()\n\n"; 
@@ -269,7 +269,7 @@ function traverseAST1($ast, $level, $data, &$html) {
 echo "\n\n --------------------------------";
 echo "\n\n traversing the AST \n\n";
 $html = '';
-traverseAST1($ast, 1, $data, $html);
+traverseAST($ast, 1, $data, $html);
 
 
 echo "\n\n --------------------------------";
