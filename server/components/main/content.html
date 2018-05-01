@@ -20,146 +20,42 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">PoorMansSlack</a>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-        <ul class="navbar-nav px-3">
-            <li class="nav-item text-nowrap">
-                <a class="nav-link" href="#">Sign out</a>
-            </li>
-        </ul>
-    </nav>
+
 
     <!-- ###BEGIN_TEMPLATE### -->
 
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
 
 
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                        <span>Channels</span>
-                        <a class="d-flex align-items-center text-muted" href="#">
-                            <span data-feather="plus-circle"></span>
-                        </a>
-                    </h6>
-                    <ul class="nav flex-column mb-2">
-
-                        <!-- ###BEGIN_PARTIAL### -->
-                            <!-- ###BEGIN### -->
-                                <!-- ###FOREACH(CHANNELS)###  -->
-                                    <!--    
-                                        <li class="nav-item">
-                                        <a class="nav-link" href="/messages/@@nameasurl@@">
-                                            <span data-feather="file-text"></span>
-                                            @@name@@
-                                        </a>
-                                        </li>
-                                    -->
-                                <!-- ###END### -->
-                            
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 inner cover">
+                <!-- ###BEGIN_PARTIAL### -->
+                <!-- ###BEGIN### -->
+                    <!-- ###IF(loggedin)###   
                         
+                        <h4>Hi @@username@@</h4>
+                        <p class="lead">Good to see you again!</p>
+                        ###ELSE###  
+                        
+                        <h1 class="cover-heading">Welcome to PoorMansSlack</h1>
+                        <p class="lead">Looks like your not logged in yet!</p>
+                        <p class="lead">If you have already an account you can login or if you are new you can register!</p>
 
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Current month
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Last quarter
-                            </a>
-                        </li>
-                        <!-- ###END### -->
-                       
-                        <!-- ###END_PARTIAL### -->
-
-                    </ul>
-                </div>
-            </nav>
-
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Messages</h1>
-
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group mr-2">
-                            <button class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button class="btn btn-sm btn-outline-secondary">Export</button>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                            <span data-feather="calendar"></span>
-                            This week
-                        </button>
-                    </div>
-                </div>
-
-
-                <!-- our messages-->
-                <div class="container scrollable-messages">
+                        <p class="lead">
+                            <a href="/login" class="btn btn-lg btn-secondary">login</a>
+                            <a href="/register" class="btn btn-lg btn-secondary">register</a>
+                        </p>
                     
-                    <!-- ###BEGIN_PARTIAL### -->
-                        <!-- ###BEGIN### -->
-                            
-                            <!-- ###FOREACH(MESSAGES)### -->
-                                <!-- 
-                                <div class="card  mb-5">
-                                    <div class="card-header bg-transparent ">
-                                        <h5 class="card-title">@@userid@@</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
-                                    </div>
-                                    <div class="card-body ">
-                                        <p class="card-text">@@txt@@</p>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-right">
-                                        <span data-feather="thumbs-up"></span>
-                                        <span data-feather="edit"></span>
-                                        <span data-feather="trash-2"></span>
-                                    </div>
-                                </div>
-                                -->
-                            <!-- ###END### -->
-                                <div class="card  mb-5">
-                                    <div class="card-header bg-transparent ">
-                                        <h5 class="card-title">@donaldduck</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
-                                    </div>
-                                    <div class="card-body ">
-                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-right">
-                                        <span data-feather="thumbs-up"></span>
-                                        <span data-feather="edit"></span>
-                                        <span data-feather="trash-2"></span>
-                                    </div>
-                                </div>
-
-                         <!-- ###END### -->
-                    <!-- ###END_PARTIAL### -->
-                </div>
-                <div class="container new-message">
-                    <form>
-                        <div class="form-group">
-                            <!-- <label for="validationCustomUsername">Username</label> -->
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupPrepend">+</span>
-                                </div>
-                                <input type="text" class="form-control" id="new_message" placeholder="Talk to us!" required>
-
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    -->
+                    <!-- ###END### -->
+                <!-- ###END### -->
+                <!-- ###END_PARTIAL### -->
             </main>
         </div>
     </div>
 
     <!-- ###END_TEMPLATE### -->
+
 
 
 
