@@ -8,15 +8,14 @@ class AuthenticationManager {
 
         \Logger::logDebugPrintR("AuthenticationManager::authenticate  username = $username, $password = $password  ", "");
 
-        // $user = \DatabaseManager::getUserByUserName($username);
-        // // TODO: change back to hash('sha1', "$username|$password")
-        // if ($user != null && $user->getPassword() == hash('sha1', $password)) {
-        //     $_SESSION['user'] = $user->getId();
-        //     return true;
-        // }
-        // self::signOut();
-        // return false;
-        return true;
+        $user = \DatabaseManager::getUserByUserName($username);
+        // TODO: change back to hash('sha1', "$username|$password")
+        if ($user != null && $user->getPassword() == hash('sha1', $password)) {
+            $_SESSION['user'] = $user->getId();
+            return true;
+        }
+        self::signOut();
+        return false;
     }
     
 

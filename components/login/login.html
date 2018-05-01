@@ -25,23 +25,22 @@
   <div class="container-fluid  ">
     <div class="row  text-center">
 
-      <form class="form-signin">
+        <form id="formSignIn" class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <label for="inputUsername" class="sr-only">Email address</label>
         <input type="text" id="signInUsername" class="form-control" placeholder="Username" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="signInPassword" class="form-control" placeholder="Password" required>
 
-        <button id="btnsign"  class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
+        <button id="btnsign"  class="btn btn-lg btn-primary btn-block">Sign in</button>
 
-   
+      </form>
 
 
     </div>
     <div class="row ">
         <div class="alert alert-danger login-error" role="alert">
-            This is a danger alert—check it out!
+            An error occured with your login credentials - please try again.
         </div>
     </div>
   </div>
