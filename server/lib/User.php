@@ -13,22 +13,22 @@
 class User {
 
   private $id;
-  private $userName;
+  private $username;
   private $password;
 
-  public function __construct(int $id, string $userName, string $password) {
-    $this->userName = $userName;
+  public function __construct(int $id, string $username, string $password) {
+    $this->username = $username;
     $this->id = $id;
     $this->password = $password;
   }
 
   /**
-   * getter for the private parameter $userName
+   * getter for the private parameter $username
    *
    * @return string
    */
-  public function getUserName() : string {
-    return $this->userName;
+  public function getusername() : string {
+    return $this->username;
   }
 
   /**
