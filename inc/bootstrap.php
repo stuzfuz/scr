@@ -13,10 +13,10 @@ setlocale(LC_MONETARY, 'de_AT');
 // autoload triggert, wenn irgendwo ein Object instantiert wird also zB b = new Book()
 spl_autoload_register(function ($Class) {
     // __DIR__ wo das aktuelle file liegt (bootstrap in 'inc')
-    echo $Class . '<br/>'; 
-    echo DIRECTORY_SEPARATOR . '<br/>'; 
+    // echo $Class . '<br/>'; 
+    // echo DIRECTORY_SEPARATOR . '<br/>'; 
     $filename = __DIR__ . '/../lib/' .  str_replace('\\', DIRECTORY_SEPARATOR, $Class) . '.php';
-    echo $filename; 
+    // echo $filename; 
     if (file_exists($filename)) {
         include($filename);
     }

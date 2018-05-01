@@ -3,7 +3,7 @@
 class DevController extends SimpleController {
 
     protected function gatherData() {
-        // echo "<br> MainControiller - in 'gather data'";
+        // echo "<br> DevController - in 'gather data'";
 
         // \Util::my_var_dump($this->db_conn, "MainController this->db_conn  = ");
 
@@ -13,11 +13,11 @@ class DevController extends SimpleController {
         //  \Util::my_var_dump($res, "res = ");
         // exit();
 
-        // echo "<br> MainControiller - in 'gather data' after  query";
+        // echo "<br> DevController - in 'gather data' after  query";
         $channels = array();
         $data = array(); 
         if ($res->rowCount() == 0) {
-            $data["channelsfound"] = flase; 
+            $data["channelsfound"] = false; 
         } else {
             // echo "<br><br> adding channels to array ... <br>";
             while ($channel = \DatabaseManager::fetchAssoz($res)) {
@@ -34,7 +34,7 @@ class DevController extends SimpleController {
         //  \Util::my_var_dump($res, "res = ");
         // exit();
 
-        // // echo "<br> MainControiller - in 'gather data' after  query";
+        // // echo "<br> DevController - in 'gather data' after  query";
         $messages = array();
         if ($res->rowCount() == 0) {
             $data["messagesfound"] = false; 
@@ -44,17 +44,17 @@ class DevController extends SimpleController {
                 // \Util::my_var_dump($channel, "MainController channel  = ");
                 $messages[] = $msg; 
             }
-            $data["messagesfound"] = false; 
+            
+            $data["messagesfound"] = true; 
             $data["messages"] = $messages; 
         }
-        $data["channels2"] = true; 
         $this->data = $data; 
-        // \Util::my_var_dump($this->data, "MainController this->data  = ");
+        \Logger::logDebugPrintR("DevCOntroller::gatherData()  [".  __LINE__  . "]  $data  = ", $data);
     }
 
     // // TODO Delete this if not necessary
     public function justDoIt() : string {
-        // echo "<br> MainControiller - in 'justDoIt'";
+        // echo "<br> DevController - in 'justDoIt'";
         self::gatherData();
         // echo "<br>  MarinController $this->route['headertemplate']  " . $this->route['headertemplate'] . "<br/>";
         // echo "<br>  MarinController $this->route['contenttemplate']  " . $this->route['contenttemplate'] . "<br/>";

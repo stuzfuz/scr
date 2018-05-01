@@ -8,9 +8,10 @@ class ApplicationConfig {
     public static $databaseHost = 'localhost';
 
     public static $logFile = 'log/poormansslack.log';
+    public static $logFileError = 'log/err_poormansslack.log';
+    public static $logFileDebug = 'log/debug_poormansslack.log';
 
     public static $indexTmpl = 'index.tmpl';
-
     
     public static $TEMPLATEHEADER = "<!-- ###TEMPLATE_HEADER### -->";
     public static $TEMPLATECONTENT = "<!-- ###TEMPLATE_CONTENT### -->";
@@ -19,16 +20,8 @@ class ApplicationConfig {
     public static $TEMPLATEBEGIN = "<!-- ###BEGIN_TEMPLATE### -->";
     public static $TEMPLATEEND = "<!-- ###END_TEMPLATE### -->";
 
-    public static $TEMPLATEFOREACHBEGIN = "###FOREACHBEGIN###";
-    public static $TEMPLATEFOREACHEND = "###FOREACHEND###";
-
-    public static $TEMPLATEIF= "###IF###";
-    public static $TEMPLATEIFELSE = "###ELSE###";
-    public static $TEMPLATEIFEND = "###ENDIF###";
-
-    public static $BEGIN = "<!-- ###BEGIN### -->";
-    public static $END = "<!-- ###END### -->";
-
+    public static $PARTIALBEGIN = "<!-- ###BEGIN_PARTIAL### -->";
+    public static $PARTIALEND = "<!-- ###END_PARTIAL### -->";
 }
 
 ?>

@@ -45,15 +45,22 @@
                         </a>
                     </h6>
                     <ul class="nav flex-column mb-2">
-                        <!-- ###FOREACHBEGIN### CHANNELS -->
-                        <!--    
-                        <li class="nav-item">
-                          <a class="nav-link" href="/messages/###name###">
-                            <span data-feather="file-text"></span>
-                            ###name###
-                          </a>
-                        </li>
-                        -->
+
+                        <!-- ###BEGIN_PARTIAL### -->
+                            <!-- ###BEGIN### -->
+                                <!-- ###FOREACH(CHANNELS)###  -->
+                                    <!--    
+                                        <li class="nav-item">
+                                        <a class="nav-link" href="/messages/@@name@@">
+                                            <span data-feather="file-text"></span>
+                                            @@name@@
+                                        </a>
+                                        </li>
+                                    -->
+                                <!-- ###END### -->
+                            <!-- ###END### -->
+                        
+
 
                         <li class="nav-item">
                             <a class="nav-link" href="#">
@@ -80,7 +87,7 @@
                             </a>
                         </li>
 
-                        <!-- ###FOREACHEND### CHANNELS -->
+                        <!-- ###END_PARTIAL### -->
 
                     </ul>
                 </div>
@@ -105,40 +112,44 @@
 
                 <!-- our messages-->
                 <div class="container scrollable-messages">
+                    
+                    <!-- ###BEGIN_PARTIAL### -->
+                        <!-- ###BEGIN### -->
+                            
+                            <!-- ###FOREACH(MESSAGES)### -->
+                                <!-- 
+                                <div class="card  mb-5">
+                                    <div class="card-header bg-transparent ">
+                                        <h5 class="card-title">###user_id###</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
+                                    </div>
+                                    <div class="card-body ">
+                                        <p class="card-text">###txt###</p>
+                                    </div>
+                                    <div class="card-footer bg-transparent text-right">
+                                        <span data-feather="thumbs-up"></span>
+                                        <span data-feather="edit"></span>
+                                        <span data-feather="trash-2"></span>
+                                    </div>
+                                </div>
+                                -->
+                                <div class="card  mb-5">
+                                    <div class="card-header bg-transparent ">
+                                        <h5 class="card-title">@donaldduck</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
+                                    </div>
+                                    <div class="card-body ">
+                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    </div>
+                                    <div class="card-footer bg-transparent text-right">
+                                        <span data-feather="thumbs-up"></span>
+                                        <span data-feather="edit"></span>
+                                        <span data-feather="trash-2"></span>
+                                    </div>
+                                </div>
 
-                    <!-- ###FOREACHBEGIN### MESSAGES -->
-                        <!-- 
-                        <div class="card  mb-5">
-                            <div class="card-header bg-transparent ">
-                                <h5 class="card-title">###user_id###</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
-                            </div>
-                            <div class="card-body ">
-                                <p class="card-text">###txt###</p>
-                            </div>
-                            <div class="card-footer bg-transparent text-right">
-                                <span data-feather="thumbs-up"></span>
-                                <span data-feather="edit"></span>
-                                <span data-feather="trash-2"></span>
-                            </div>
-                        </div>
-                        -->
-                    <div class="card  mb-5">
-                        <div class="card-header bg-transparent ">
-                            <h5 class="card-title">@donaldduck</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
-                        </div>
-                        <div class="card-body ">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                        <div class="card-footer bg-transparent text-right">
-                            <span data-feather="thumbs-up"></span>
-                            <span data-feather="edit"></span>
-                            <span data-feather="trash-2"></span>
-                        </div>
-                    </div>
-
-                    <!-- ###FOREACHEND### MESSAGES -->
+                         <!-- ###END### -->
+                    <!-- ###BEGIN_PARTIAL### -->
                 </div>
                 <div class="container new-message">
                     <form>

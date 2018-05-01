@@ -204,8 +204,6 @@ class TemplateLexer extends Lexer {
         return new Token(self::VARIABLE, $buf);
     }
 
-
-
     /** HTMLCODE :  */
     public function HTMLCODE() {
         // echo "\n HTMLCODE()   c = $this->c \n";
