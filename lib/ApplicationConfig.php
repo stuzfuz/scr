@@ -14,9 +14,9 @@ class ApplicationConfig {
 
     public static $indexTmpl = 'index.tmpl';
     
-    public static $TEMPLATEHEADER = "###TEMPLATE_HEADER###";
-    public static $TEMPLATECONTENT = "###TEMPLATE_CONTENT###";
-    public static $TEMPLATEFOOTER = "###TEMPLATE_FOOTER###";
+    public static $TEMPLATEHEADER = "<!-- ###TEMPLATE_HEADER### -->";
+    public static $TEMPLATECONTENT = "<!-- ###TEMPLATE_CONTENT### -->" ;
+    public static $TEMPLATEFOOTER = "<!-- ###TEMPLATE_FOOTER### -->";
 
     public static $TEMPLATEBEGIN = "<!-- ###BEGIN_TEMPLATE### -->";
     public static $TEMPLATEEND = "<!-- ###END_TEMPLATE### -->";
