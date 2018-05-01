@@ -22,6 +22,7 @@ class MainController extends SimpleController {
             // echo "<br><br> adding channels to array ... <br>";
             while ($channel = \DatabaseManager::fetchAssoz($res)) {
                 // \Util::my_var_dump($channel, "MainController channel  = ");
+                $channel["nameasurl"] = urlencode($channel["name"]);
                 $channels[] = $channel; 
             }
             
@@ -29,7 +30,7 @@ class MainController extends SimpleController {
             $data["channels"] = $channels; 
         }
 
-        $sql = "SELECT id, txt, user_id FROM message WHERE deleted = 0 ";
+        $sql = "SELECT id, txt, user_id AS userid FROM message WHERE deleted = 0 ";
         $res = \DatabaseManager::query($this->db_conn, $sql, array());
         //  \Util::my_var_dump($res, "res = ");
         // exit();

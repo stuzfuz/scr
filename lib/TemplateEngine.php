@@ -97,8 +97,8 @@ class TemplateEngine {
                     // \Logger::logDebug( "\n" . str_pad("", $level * 3) ." VARIABLE   name = $variablename \n");
 
                     if (!isset($data[$variablename])) {
-                        \Logger::logDebugPrintR("'traverseAST' [" . __LINE__ ."]  'ELSE' found   this should be handled by  'traverseAstIf'  node =  ", $node); 
-                        \Util::quit500("Fatal Error - 'traverseAST' [" . __LINE__ ."] 'ELSE'  found  this should be handled by  'traverseAstIf'  ", $node);
+                        \Logger::logDebugPrintR("'traverseAST' [" . __LINE__ ."]  variable '$variablename' not found in data   =  ", $data); 
+                        \Util::quit500("Fatal Error - 'traverseAST' [" . __LINE__ ."]  variable '$variablename' not found in data   ", $data);
                     }
                     $html .= $data[$variablename];
 
@@ -112,7 +112,7 @@ class TemplateEngine {
 
     private static function findTemplateByName(string $tmpl, string $tmplname) : int  {
         // $searchString = "<!-- ###" . $tmplname . "###";
-        return  strpos($tmpl, $tmplname);
+        return strpos($tmpl, $tmplname);
     }
 
     private static function getPartial(string $tmpl)  {
@@ -163,31 +163,10 @@ class TemplateEngine {
         if (!$partial) {
             \Util::quit500("Fatal Error - TemplateEngine::render()   could not open file : " , $tmplFilename);
         }
+        \Logger::logDebug("renderTemplate() [".  __LINE__  . "]  partial = ", $partial);
+
         return self::renderTemplateString($partial, $data);
     } 
-
-    // private static function getPartials(string $template) {
-    //     $start = \ApplicationConfig::$PARTIALBEGIN;
-    //     $end = \ApplicationConfig::$PARTIALEND;
-
-    //     $pattern = '/' . preg_quote($start) . '(.*?';
-    //     $pattern .= ')' . preg_quote($end) . '/s';
-    //     // \Util::my_var_dump( $pattern, "TemplateEngine::find_between()   pattern" );
-    //     $i = preg_match_all($pattern, $template, $matches);
-    //     $string = null;
-    //     if ($i) {
-    //         // \Logger::logDebug("getPartials()  [".  __LINE__  . "]  matches  = ",$matches);
-    //         $code = array();
-    //         foreach($matches[1] as $m) {
-    //             // \Util::my_var_dump( htmlspecialchars(  $m), "TemplateEngine::find_between_all()   m = " );
-    //             // $m = substr($m, strlen($start));
-    //             // $m = substr($m, 0, -strlen($end) + 1);
-    //             // \Logger::logDebug("getPartials()  [".  __LINE__  . "]  m  = ",$m);
-    //             $code[] = $m;
-    //         }
-    //     }
-    //     return $code;
-    // }
 
     private static function renderTemplateString(string $html, $data) : string {
         // var_dump($html);
@@ -265,37 +244,49 @@ class TemplateEngine {
     public static function render(string $tmplFilename, $data,  $headertemplate,  $contenttemplate,  $footertemplate) : string {
         $template = file_get_contents ( $tmplFilename);
         if (!$template) {
+            \Logger::logDebug("TemplateEngine::render() [".  __LINE__  . "]  could not open file = $tmplFilename", "");
             \Util::quit500("Fatal Error - TemplateEngine::render()   could not open file : " , $tmplFilename);
         }
+
+        \Logger::logDebug("render() [".  __LINE__  . "] template    = ", $template);
+        \Logger::logDebug("render() [".  __LINE__  . "] headertemplate    = ", $headertemplate);
+
 
         // check if there is a header, footer or content template
         if ($headertemplate !== null) {
             $headerBegin = self::findTemplateByName($template, \ApplicationConfig::$TEMPLATEHEADER);
+            \Logger::logDebug("render() [".  __LINE__  . "] headerBegin = $headerBegin   = ", "");
+
+
             if  ($headerBegin !== FALSE) {
                 // echo "<br> found a '###TEMPLATE_HEADER###'";
                 // echo "<br><br> template BEFORE replacing = " . htmlspecialchars($template) . "<br><br>";
+                $tmp = self::renderTemplate($headertemplate, $data);
+                \Logger::logDebug("render() [".  __LINE__  . "] headertemplate  after renderTemplate()   = ", $tmp);
                 $template = str_replace(\ApplicationConfig::$TEMPLATEHEADER, self::renderTemplate($headertemplate, $data), $template);
                 // echo "<br><br> template AFTER replacing = " . htmlspecialchars($template) . "<br><br>";
             }
         }
+        \Logger::logDebug("render() [".  __LINE__  . "] template after header is inserted    = ", $template);
+ 
+        if ($contenttemplate !== null) {
+            $contentBegin = self::findTemplateByName($template, \ApplicationConfig::$TEMPLATECONTENT);
+            if  ($contentBegin !== FALSE) {
+                // echo "<br> found a '###TEMPLATE_CONTENT###'";
+                $template = str_replace(\ApplicationConfig::$TEMPLATECONTENT, self::renderTemplate($contenttemplate, $data), $template);
+            }
+        }
+
+        if ($footertemplate !== null) {
+            $footerBegin = self::findTemplateByName($template, \ApplicationConfig::$TEMPLATEFOOTER);
+            if  ($footerBegin !== FALSE) {
+                // echo "<br> found a '###TEMPLATE_FOOTER###'";
+                $template = str_replace(\ApplicationConfig::$TEMPLATEFOOTER, self::renderTemplate($footertemplate, $data), $template);
+
+            }
+        }
+
         
-        // if ($contenttemplate !== null) {
-        //     $contentBegin = self::findTemplateByName($template, \ApplicationConfig::$TEMPLATECONTENT);
-        //     if  ($contentBegin !== FALSE) {
-        //         // echo "<br> found a '###TEMPLATE_CONTENT###'";
-        //         $template = str_replace(\ApplicationConfig::$TEMPLATECONTENT, self::renderTemplate($contenttemplate, $data), $template);
-        //     }
-        // }
-
-        // if ($footertemplate !== null) {
-        //     $footerBegin = self::findTemplateByName($template, \ApplicationConfig::$TEMPLATEFOOTER);
-        //     if  ($footerBegin !== FALSE) {
-        //         // echo "<br> found a '###TEMPLATE_FOOTER###'";
-        //         $template = str_replace(\ApplicationConfig::$TEMPLATEFOOTER, self::renderTemplate($footertemplate, $data), $template);
-
-        //     }
-        // }
-        // file_put_contents('tmp.html', $template);
         return $template;
     }
 }
