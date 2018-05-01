@@ -18,15 +18,14 @@ class TemplateLexer extends Lexer {
                                 "HTMLCODE","BEGIN", "END",
                                "IF", "ELSE", "COMMAND", "FOREACH", "VARIABLE");
  
+    public function __construct($input) {
+        parent::__construct($input);
+    }
+    
     public function getTokenName($x) {
         return TemplateLexer::$tokenNames[$x];
     }
  
-    public function TemplateLexer($input) {
-        parent::__construct($input);
-    }
-
-    
     public function isOpenParenthesis() {
         return ($this->c == '(');
     }
@@ -118,7 +117,7 @@ class TemplateLexer extends Lexer {
 
     /** NAME : ('a'..'z'|'A'..'Z')+; // NAME is sequence of >=1 letter */
     public function COMMAND() {
-        // echo "\n in COMMAND()  ch = " . $this->c;
+        // // echo "\n in COMMAND()  ch = " . $this->c;
         $buf = '';
         $var = '';
         if ($this->isHash()) {
@@ -130,31 +129,31 @@ class TemplateLexer extends Lexer {
         if ($this->isHash()) {
             $this->consume();
         }
-        // echo "\n in COMMAND()  after first 3# ch = " . $this->c;
+        // // echo "\n in COMMAND()  after first 3# ch = " . $this->c;
 
         do {
             $buf .= $this->c;
-            // echo "\n in COMMAND() reading COmmand name   c  = " . $this->c . "\n";
+            // // echo "\n in COMMAND() reading COmmand name   c  = " . $this->c . "\n";
             $this->consume();
         } while ($this->isLETTER());
         
-        // echo "COMMAND() after reading the COMMAND name   buf = $buf    this->c =  $this->c \n\n" ;
+        // // echo "COMMAND() after reading the COMMAND name   buf = $buf    this->c =  $this->c \n\n" ;
         
         if ($this->isOpenParenthesis()) {
-            echo "in IF openParent()      c =  $this->c \n\n" ;
+            // // echo "in IF openParent()      c =  $this->c \n\n" ;
             $this->consume();
             do {
-                echo "in IF  in DO     openParent()      c =  $this->c \n\n" ;
+                // echo "in IF  in DO     openParent()      c =  $this->c \n\n" ;
                 $var .= $this->c;
                 $this->consume();
             } while ($this->isLetterOrUnderscore());
-            echo "in IF  AFTER  DO     closeing parenthesis()      c =  $this->c \n\n" ;
+            // echo "in IF  AFTER  DO     closeing parenthesis()      c =  $this->c \n\n" ;
             if (!$this->isCloseParenthesis()) {
                 throw new Exception("parenthis has to be close: " + $this->c);
             }
             $this->consume();
         } 
-        // echo "after IF openParent()      c =  $this->c \n\n" ;
+        // // echo "after IF openParent()      c =  $this->c \n\n" ;
         if (!$this->isHash()) {
             throw new Exception("command must be close with ###: " + $this->c);
         } else {
@@ -175,7 +174,7 @@ class TemplateLexer extends Lexer {
             case "BEGIN": return new Token(self::BEGIN, "BEGIN");
             case "END": return new Token(self::END, "END");
         }
-        echo "\n unknown command: $buf\n";
+        // echo "\n unknown command: $buf\n";
         throw new Exception("unknown command found '$buf'   : " + $this->c);
     }
 
@@ -190,7 +189,7 @@ class TemplateLexer extends Lexer {
         } 
         do {
             $buf .= $this->c;
-            //  echo "\n in VARIABLE() reading variable name   c  = " . $this->c . "\n";
+            //  // echo "\n in VARIABLE() reading variable name   c  = " . $this->c . "\n";
             $this->consume();
             // die();
         } while ($this->isLETTERorNUMBER());
@@ -206,10 +205,10 @@ class TemplateLexer extends Lexer {
 
     /** HTMLCODE :  */
     public function HTMLCODE() {
-        // echo "\n HTMLCODE()   c = $this->c \n";
+        // // echo "\n HTMLCODE()   c = $this->c \n";
         $buf = '';
         do {
-            // echo "\n HTMLCODE()  do-while  c = $this->c \n";
+            // // echo "\n HTMLCODE()  do-while  c = $this->c \n";
             if ($this->c == '#') {
                 $buf .= $this->c;
                 $this->consume(); 
@@ -218,14 +217,14 @@ class TemplateLexer extends Lexer {
                     // $this->moveBack();
                     // die();
                     $buf = substr($buf, 0, strlen($buf)-1);
-                    // echo "'HTMLCODE()'   early exit buf = '$buf'";
+                    // // echo "'HTMLCODE()'   early exit buf = '$buf'";
                     return new Token(self::HTMLCODE, $buf);
                 }
             }
             $buf .= $this->c;
             $this->consume();
         } while ($this->isAnyCharacter());      // isAnyCharacter
-        // echo "\n normal exit from HTMLCODE()";
+        // // echo "\n normal exit from HTMLCODE()";
         return new Token(self::HTMLCODE, $buf);
     }
  

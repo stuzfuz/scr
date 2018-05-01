@@ -29,7 +29,7 @@ class DevController extends SimpleController {
             $data["channels"] = $channels; 
         }
 
-        $sql = "SELECT id, txt, user_id FROM message WHERE deleted = 0 ";
+        $sql = "SELECT id, txt, user_id  AS userid FROM message WHERE deleted = 0 ";
         $res = \DatabaseManager::query($this->db_conn, $sql, array());
         //  \Util::my_var_dump($res, "res = ");
         // exit();
@@ -49,7 +49,7 @@ class DevController extends SimpleController {
             $data["messages"] = $messages; 
         }
         $this->data = $data; 
-        \Logger::logDebugPrintR("DevCOntroller::gatherData()  [".  __LINE__  . "]  $data  = ", $data);
+        \Logger::logDebugPrintR("DevCOntroller::gatherData()  [".  __LINE__  . "]  data  = ", $data);
     }
 
     // // TODO Delete this if not necessary

@@ -1,12 +1,13 @@
-###BEGIN###
-###FOREACH(channels)###
-
+    
+    ###BEGIN### 
+                                 ###FOREACH(CHANNELS)### 
+                                        
                                         <li class="nav-item">
                                         <a class="nav-link" href="/messages/@@name@@">
                                             <span data-feather="file-text"></span>
                                             @@name@@
                                         </a>
                                         </li>
-
-###END###
-###END###
+                                    
+                                 ###END### 
+                             ###END### 

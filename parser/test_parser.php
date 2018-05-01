@@ -60,7 +60,7 @@ $data["channels"][] = $channel2;
 
 $s = file_get_contents('test.txt');
 echo "s = " . var_dump($s);
-$lexer = new TemplateLexer($s);
+$lexer = new TemplateLexer(trim($s));
 $parser = new TemplateParser($lexer);
 try {
     $ast = $parser->parseTemplate($data); // begin parsing at rule list
@@ -75,7 +75,7 @@ try {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
     //var_dump($e);
 }
-
+die();
 
 function traverseAstForEach($ast, $level, $data, &$html) {
     echo "\n\n\n";
