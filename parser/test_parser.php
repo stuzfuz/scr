@@ -14,39 +14,46 @@ $data = array();
 
 
 
-$date1 = "17.3.1977";
-$date2 = "17.4.1978";
+// $date1 = "17.3.1977";
+// $date2 = "17.4.1978";
 
-$day["days"] =  
+// $day["days"] =  
 
-$msg1['username'] = '@donalduck';
-$msg1['txt'] = 'Lorem ipsum und so weiter';
-$msg1['important'] = false;
+// $msg1['username'] = '@donalduck';
+// $msg1['txt'] = 'Lorem ipsum und so weiter';
+// $msg1['important'] = false;
 
-$msg2['username'] = '@dagobertduck';
-$msg2['txt'] = 'ein adneres lorem ipsum und so weiter';
-$msg2['important'] = true;
-
-
-$msg3['username'] = '@daisyduck';
-$msg3['txt'] = 'schubidududu ein adneres lorem ipsum und so weiter';
-$msg3['important'] = false;
-
-$msg4['username'] = '@goofy';
-$msg4['txt'] = 'oin oink schubidududu ein adneres lorem ipsum und so weiter';
-$msg4['important'] = true;
+// $msg2['username'] = '@dagobertduck';
+// $msg2['txt'] = 'ein adneres lorem ipsum und so weiter';
+// $msg2['important'] = true;
 
 
-$day1["msgs"][] = $msg1;
-$day2["msgs"][] = $msg2;
-$day2["msgs"][] = $msg3;
-$day2["msgs"][] = $msg4;
+// $msg3['username'] = '@daisyduck';
+// $msg3['txt'] = 'schubidududu ein adneres lorem ipsum und so weiter';
+// $msg3['important'] = false;
 
-$day1["date"] = $date1;
-$day2["date"] = $date2;
-$days = array($day1, $day2);
+// $msg4['username'] = '@goofy';
+// $msg4['txt'] = 'oin oink schubidududu ein adneres lorem ipsum und so weiter';
+// $msg4['important'] = true;
 
-$data["days"] = $days;
+
+// $day1["msgs"][] = $msg1;
+// $day2["msgs"][] = $msg2;
+// $day2["msgs"][] = $msg3;
+// $day2["msgs"][] = $msg4;
+
+// $day1["date"] = $date1;
+// $day2["date"] = $date2;
+// $days = array($day1, $day2);
+
+// $data["days"] = $days;
+
+
+$channel1["name"] = "SWE";
+$channel2["name"] = "SWE"; 
+
+$data["channels"][] = $channel1;
+$data["channels"][] = $channel2;
 
 // var_dump($data);
 // print_r($data);
@@ -78,7 +85,7 @@ function traverseAstForEach($ast, $level, $data, &$html) {
     echo "FOREACH forvariable = " . $ast["forvariable"];
 
     if (!isset($ast['forvariable'])) {
-        die("'traverseAstForEach'  Ano forvariable set :-((");
+        die("'traverseAstForEach'  no forvariable set :-((");
     }
     $forvariable = strtolower($ast['forvariable']);
     echo "\n'traverseAstForEach'  found variable = $forvariable\n";
@@ -153,7 +160,7 @@ function traverseAST($ast, $level, $data, &$html) {
                 $html .= $node["text"];
             } else if ($node["name"] === "VARIABLE") {
                 $variablename = strtolower(  $node["text"]);
-                echo "\n" . str_pad("", $level * 3) ." VARIABLE   name = $variable \n";
+                echo "\n" . str_pad("", $level * 3) ." VARIABLE   name = $variablename \n";
 
                 if (!isset($data[$variablename])) {
                     die("'traverseAST()'  variablename '$variablename' not set in 'data' ");

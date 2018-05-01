@@ -1,20 +1,12 @@
-###BEGIN### 
+###BEGIN###
+###FOREACH(channels)###
 
-###FOREACH(days)###
-            <h3>@@date@@</h3>
-            <ul>
-                ###FOREACH(msgs)###
-                    <li>@@username@@ wrote: @@txt@@
-                    ###IF(important)### 
-                        IMPORTANT
-                    ###ELSE###
-                        Nicht wichtig
-                    ###END###
-                    
-                    </li>
-                ###END### 
-            </ul>
-        
-         ###END###
+                                        <li class="nav-item">
+                                        <a class="nav-link" href="/messages/@@name@@">
+                                            <span data-feather="file-text"></span>
+                                            @@name@@
+                                        </a>
+                                        </li>
 
+###END###
 ###END###
