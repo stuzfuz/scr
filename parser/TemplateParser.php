@@ -76,7 +76,7 @@ class TemplateParser extends Parser {
         $this->allTokens[] = "FOREACH";
         $ast["forvariable"] = $this->lookahead->variable;
         $this->match(TemplateLexer::FOREACH);
-        $this->expr($ast);
+        $this->expr($ast["fortemplate"]);
         // $ast[] = $this->lookahead->asObject();
         $this->match(TemplateLexer::END);
         $this->allTokens[] = "END";

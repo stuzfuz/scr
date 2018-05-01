@@ -4,8 +4,8 @@
             <h3>@@date@@</h3>
             <ul>
                 ###FOREACH(msgs)###
-                    <li> @@username@@ wrote: @@txt@@
-                    ###IF(wichtig)### 
+                    <li>@@username@@ wrote: @@txt@@
+                    ###IF(important)### 
                         IMPORTANT
                     ###ELSE###
                         Nicht wichtig
