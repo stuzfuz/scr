@@ -74,4 +74,18 @@ class DatabaseManager {
     public static function closeConnection() {
         self::$__connection == null; 
     }
+
+    public static function getUserByUserName(string $username) {
+        $user = null; 
+        $con = self::getConnection();
+        
+        $sql = "SELECT id, username, password FROM user WHERE username = ?";
+
+        $res = self::query($con, $sql, array($username));
+        if ($u = self::fetchObject($res)) {
+            $user = new User($u->id, $u->username, $u->password);
+        }
+        self::closeConnection();
+        return $user;
+      }
 }

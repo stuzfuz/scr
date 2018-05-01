@@ -147,6 +147,14 @@ VALUES ('/dev' ,'PAGE', 'components/dev/header.html', 'components/dev/content.ht
 
 
 
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/api/login' ,'API', NULL, NULL, NULL, NULL, 'components/login/', 'LoginController', 'POST');
+
+
+
+
+
+
 INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
 VALUES ( 'donaldduck', 'donald@poormansslack.at', 'donald', 'duck', 	NOW() - 30000, SHA1('donald'), 0);
 

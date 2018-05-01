@@ -5,8 +5,12 @@ class RouteHandler {
     private static $requestParams = null;
     private static $requestPath = null; 
 
-    private function sanitizeRequestParams() {
-        //TODO iterate over $_REQUEST and extract all params with prefix grg_ and sanitize them 
+    private static function sanitizeRequestParams() {
+        \Logger::logDebugPrintR("'RouteHandler::sanitizeRequestParams()' [" . __LINE__ ."]  _REQUEST =   ", $_REQUEST); 
+        foreach ($_REQUEST as $key => $param) {
+            self::$requestParams[$key] = \Util::escape($param);
+        }
+        \Logger::logDebugPrintR("'RouteHandler::sanitizeRequestParams()' [" . __LINE__ ."]  xxx requestParams =   ", self::$requestParams); 
     }
 
     private static function sanitizeURL() {
@@ -21,10 +25,8 @@ class RouteHandler {
         $requestPath2 = self::$requestPath;
 
         if ($verb == "POST") {
-            sanitizeRequestParams();
+            self::sanitizeRequestParams();
         }
-
-
 
         $sql = "SELECT * FROM route WHERE verb = ? AND route = ?";
         $params = array($verb);
@@ -46,21 +48,25 @@ class RouteHandler {
         // exit();
 
         if ($res->rowCount() == 0) {
-            if ($_GET)
-            \Logger::logWarning("404 - could not find page: " , $self::$requestPath);
-            readfile('static/404.html');
-            exit();
+            if ($_GET) {
+                \Logger::logWarning("404 - could not find page: " , $self::$requestPath);
+                readfile('static/404.html');
+                exit();
+            }
         } else {
             $route = \DatabaseManager::fetchAssoz($res);
             // \Util::my_var_dump($route, "route = ");
-            \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  route =   ", $route); 
-            \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  param =   ", $param); 
+            \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  route =   ", $route); 
+            \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  param =   ", $param); 
 
 
             if ($param != null) {
                 $route[$route["routeparam"]] = urldecode($param);
             }
+            $route["requestparameter"] = self::$requestParams;
         }
+
+        \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  route =   ", $route);
 
         return $route; 
     }

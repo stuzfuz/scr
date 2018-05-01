@@ -1,3 +1,6 @@
+<!-- https://getbootstrap.com/docs/4.0/examples/dashboard/#   -->
+
+
 <!doctype html>
 <html lang="en">
 
@@ -7,31 +10,51 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>PoorMansSlack Login </title>
+  <title>PoorMansSlack</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="css/signin.css" rel="stylesheet">
+  <link href="../../css/poormansslack.css" rel="stylesheet">
 </head>
 
-<body class="text-center">
+<body>
+
+  <!-- ###BEGIN_TEMPLATE### -->
+  <div class="container-fluid signin-page ">
+    <div class="row row-height text-center">
+
+      <form class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <label for="inputUsername" class="sr-only">Email address</label>
+        <input type="text" id="signInUsername" class="form-control" placeholder="Username" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="signInPassword" class="form-control" placeholder="Password" required>
+
+        <button id="btnsign"  class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
 
 
-<!-- ###BEGIN_TEMPLATE### -->
+    </div>
+  </div>
 
-<form class="form-signin">
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+  <!-- ###END_TEMPLATE### -->
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-  </form>
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+  <script src="dist/js/vendor/popper.min.js"></script>
+  <script src="dist/js/bootstrap.min.js"></script>
 
-<!-- ###END_TEMPLATE### -->
+  <!-- Icons -->
+  <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+  <script>
+    feather.replace()
+  </script>
+
 
 </body>
 
