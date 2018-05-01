@@ -28,4 +28,12 @@ class Logger {
     $output = print_r($blupp, true);
     $myfile = file_put_contents(\ApplicationConfig::$logFileDebug, $s . "\n "  . $bla."\n" . $output . "\n\n", FILE_APPEND | LOCK_EX);
   }
+
+  public static function logQuery($query, $params) {
+    $date = date("D M d, Y G:i");
+    $s = "-------------------------------------------------------------------------------------";
+    $output = print_r($params, true);
+    $myfile = file_put_contents(\ApplicationConfig::$logQuery, $s . "\n "  . "sql = " . $query."\n" . $output ."\n\n", FILE_APPEND | LOCK_EX);
+  }
+
 }

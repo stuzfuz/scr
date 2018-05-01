@@ -24,14 +24,17 @@ class RouteHandler {
             sanitizeRequestParams();
         }
 
+
+
         $sql = "SELECT * FROM route WHERE verb = ? AND route = ?";
         $params = array($verb);
         $params[] = self::$requestPath;
+        $param = null;
         // possible parameter in path
         if (substr_count(self::$requestPath, '/') > 1) {
             $pos = strrpos(self::$requestPath, "/");
-
             $requestPath2 = substr(self::$requestPath, 0, $pos);
+            $param = substr(self::$requestPath, $pos+1);
 
             // \Util::my_var_dump($requestPath, "requestpath = ");
             // \Util::my_var_dump($requestPath2, "requestpath2 = ");
@@ -50,6 +53,13 @@ class RouteHandler {
         } else {
             $route = \DatabaseManager::fetchAssoz($res);
             // \Util::my_var_dump($route, "route = ");
+            \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  route =   ", $route); 
+            \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  param =   ", $param); 
+
+
+            if ($param != null) {
+                $route[$route["routeparam"]] = urldecode($param);
+            }
         }
 
         return $route; 

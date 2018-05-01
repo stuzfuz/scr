@@ -20,10 +20,12 @@ class TemplateEngine {
         }
 
         $arr = $data[$forvariable];
-
-        foreach ($arr as $entry) {
-            self::traverseAST($ast["fortemplate"], $level+1, $entry, $html);
-            $html  .= "\n";
+        \Logger::logDebugPrintR("'traverseAstForEach' [" . __LINE__ ."]    count(arr)  =    ", count($arr)); 
+        if (count($arr) > 0) {
+            foreach ($arr as $entry) {
+                self::traverseAST($ast["fortemplate"], $level+1, $entry, $html);
+                $html  .= "\n";
+            }
         }
     }
 
@@ -41,21 +43,26 @@ class TemplateEngine {
             \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    variale $variable  NOT set in data  ", $data);
         }
 
-        if (!isset($data["IFTRUE"])) {
-            \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]    IFTRUE  NOT set in data   ", $data); 
-            \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    IFTRUE  NOT set in data  ", $data);
+        if (!isset($ast["IFTRUE"])) {
+            \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]    IFTRUE  NOT set in ast   ", $ast); 
+            \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    IFTRUE  NOT set in ast  ", $ast);
         }
 
         if ($data[$variable]) {
             self::traverseAST($ast["IFTRUE"], $level+1, $data, $html);
             $html  .= "\n";
-        } else if (!isset($data["IFFALSE"])) {
+        } else if (isset($ast["IFFALSE"])) {
+            \Logger::logDebugPrintR("'traverseAstIf' [" . __LINE__ ."] calling IFFALSE part of ast  =  ", $ast); 
             self::traverseAST($ast["IFFALSE"], $level+1, $data, $html);
             $html  .= "\n";
-        }    
+        }  else {
+            \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]    IFFALSE  NOT set in ast   ", $ast); 
+            \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    IFFALSE  NOT set in ast  ", $ast);
+        }
     }
 
     private static function traverseAST($ast, $level, $data, &$html) {
+        // \Logger::logDebugPrintR("'traverseAST' [" . __LINE__ ."] ast  =  ", $ast); 
         foreach ($ast as $key => $node) {
             if ($key === "FOREACH") {
                 // \Logger::logDebug( "\n" . str_pad("", $level * 3) . " FOREACH\n");
@@ -119,7 +126,7 @@ class TemplateEngine {
         $start = \ApplicationConfig::$PARTIALBEGIN;
         $end =  \ApplicationConfig::$PARTIALEND;
 
-        \Logger::logDebug("getPartial() [".  __LINE__  . "]    start  =  $start,   end = $end", "");
+        // \Logger::logDebug("getPartial() [".  __LINE__  . "]    start  =  $start,   end = $end", "");
 
 
         $pattern = '/' . preg_quote($start) . '(.*?';
@@ -127,7 +134,7 @@ class TemplateEngine {
         // \Util::my_var_dump( $pattern, "TemplateEngine::find_between()   pattern" );
         $i = preg_match($pattern, $tmpl, $matches);
 
-        \Logger::logDebugPrintR("getPartial() [".  __LINE__  . "]    matches", $matches);
+        // \Logger::logDebugPrintR("getPartial() [".  __LINE__  . "]    matches", $matches);
 
         // $code = null;
         // if ($i) {
@@ -163,7 +170,7 @@ class TemplateEngine {
         if (!$partial) {
             \Util::quit500("Fatal Error - TemplateEngine::render()   could not open file : " , $tmplFilename);
         }
-        \Logger::logDebug("renderTemplate() [".  __LINE__  . "]  partial = ", $partial);
+        // \Logger::logDebug("renderTemplate() [".  __LINE__  . "]  partial = ", $partial);
 
         return self::renderTemplateString($partial, $data);
     } 
@@ -192,14 +199,11 @@ class TemplateEngine {
         $partial = self::getPartial($template);
         // $i = 0; 
         while ($partial != null) {
-            \Logger::logDebug("renderTemplateString() [".  __LINE__  . "]   partial[0] with BEGIN_PARTIAL and END_PARTIAL     = ", $partial[0]);
-            \Logger::logDebug("renderTemplateString() [".  __LINE__  . "]   partial[1] WITHOUT  BEGIN_PARTIAL and END_PARTIAL     = ", $partial[1]);
-            // remove all html code and convert the comments to the template code for the parser
+            // \Logger::logDebug("renderTemplateString() [".  __LINE__  . "]   partial[0] with BEGIN_PARTIAL and END_PARTIAL     = ", $partial[0]);
+            // \Logger::logDebug("renderTemplateString() [".  __LINE__  . "]   partial[1] WITHOUT  BEGIN_PARTIAL and END_PARTIAL     = ", $partial[1]);
             $tmplCode = self::find_between_all($partial[1], "<!-- ", " -->");
-            \Logger::logDebug("renderTemplateString() [".  __LINE__  . "] the  template code for the parser  = ", $tmplCode);
-            // $partialTrimmed = trim ($partial);
-            // \Logger::logDebug("renderTemplateString() [".  __LINE__  . "] the TRIMMED partial for the parser  = ", $partial);
-
+            // \Logger::logDebug("renderTemplateString() [".  __LINE__  . "] the  template code for the parser  = ", $tmplCode);
+           
             try {
                 $lexer = new TemplateLexer($tmplCode);
                 $parser = new TemplateParser($lexer);
@@ -216,13 +220,13 @@ class TemplateEngine {
             $level = 1;
             self::traverseAST($ast, $level, $data, $renderedPartial);
 
-            \Logger::logDebug("renderTemplateString() [".  __LINE__  . "] the rendered html for the partial   = ", $renderedPartial);
+            // \Logger::logDebug("renderTemplateString() [".  __LINE__  . "] the rendered html for the partial   = ", $renderedPartial);
 
             // replace the code in the template with the rendere html 
 
             $template = str_replace($partial[0], $renderedPartial, $template);
 
-            \Logger::logDebug("renderTemplateString() [".  __LINE__  . "] the template with the partial replaced by the rendered html    = ", $template);
+            // \Logger::logDebug("renderTemplateString() [".  __LINE__  . "] the template with the partial replaced by the rendered html    = ", $template);
 
             // get next partial 
             $partial = self::getPartial($template);
@@ -231,14 +235,10 @@ class TemplateEngine {
             // // for debugging this makes sense :-)
             // $i++;
             // if ($i > 10) { die(); };
-
         }
-
-        \Logger::logDebug("renderTemplateString() [".  __LINE__  . "] the rendered html for the whole template   = ", $template);
-        
+        // \Logger::logDebug("renderTemplateString() [".  __LINE__  . "] the rendered html for the whole template   = ", $template);
         return $template;
     } 
-
 
     // template names can be null -> no string type  
     public static function render(string $tmplFilename, $data,  $headertemplate,  $contenttemplate,  $footertemplate) : string {
@@ -248,26 +248,25 @@ class TemplateEngine {
             \Util::quit500("Fatal Error - TemplateEngine::render()   could not open file : " , $tmplFilename);
         }
 
-        \Logger::logDebug("render() [".  __LINE__  . "] template    = ", $template);
-        \Logger::logDebug("render() [".  __LINE__  . "] headertemplate    = ", $headertemplate);
+        // \Logger::logDebug("render() [".  __LINE__  . "] template    = ", $template);
+        // \Logger::logDebug("render() [".  __LINE__  . "] headertemplate    = ", $headertemplate);
 
 
         // check if there is a header, footer or content template
         if ($headertemplate !== null) {
             $headerBegin = self::findTemplateByName($template, \ApplicationConfig::$TEMPLATEHEADER);
-            \Logger::logDebug("render() [".  __LINE__  . "] headerBegin = $headerBegin   = ", "");
-
+            // \Logger::logDebug("render() [".  __LINE__  . "] headerBegin = $headerBegin   = ", "");
 
             if  ($headerBegin !== FALSE) {
                 // echo "<br> found a '###TEMPLATE_HEADER###'";
                 // echo "<br><br> template BEFORE replacing = " . htmlspecialchars($template) . "<br><br>";
                 $tmp = self::renderTemplate($headertemplate, $data);
-                \Logger::logDebug("render() [".  __LINE__  . "] headertemplate  after renderTemplate()   = ", $tmp);
+                // \Logger::logDebug("render() [".  __LINE__  . "] headertemplate  after renderTemplate()   = ", $tmp);
                 $template = str_replace(\ApplicationConfig::$TEMPLATEHEADER, self::renderTemplate($headertemplate, $data), $template);
                 // echo "<br><br> template AFTER replacing = " . htmlspecialchars($template) . "<br><br>";
             }
         }
-        \Logger::logDebug("render() [".  __LINE__  . "] template after header is inserted    = ", $template);
+        // \Logger::logDebug("render() [".  __LINE__  . "] template after header is inserted    = ", $template);
  
         if ($contenttemplate !== null) {
             $contentBegin = self::findTemplateByName($template, \ApplicationConfig::$TEMPLATECONTENT);
@@ -285,7 +284,6 @@ class TemplateEngine {
 
             }
         }
-
         
         return $template;
     }
