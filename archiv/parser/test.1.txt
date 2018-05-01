@@ -1,0 +1,37 @@
+<!-- ###BEGIN### -->
+                        <!-- ###FOREACHBEGIN(channels)### -->
+                        <!--    
+                        <li class="nav-item">
+                          <a class="nav-link" href="/messages/@@name@@">
+                            <span data-feather="file-text"></span>
+                            @@name@@
+                          </a>
+                        </li>
+                        -->
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Current month
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Last quarter
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Social engagement
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Year-end sale
+                            </a>
+                        </li>
+
+                        <!-- ###END### -->

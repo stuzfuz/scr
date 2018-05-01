@@ -146,7 +146,7 @@ VALUES ('/dev' ,'PAGE', 'client/header.html', 'server/components/dev/content.htm
 
 
 INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
-VALUES ('/api/login' ,'API', NULL, NULL, NULL, NULL, 'server/components/login/', 'LoginController', 'POST');
+VALUES ('/api/login' ,'API', NULL, NULL, NULL, NULL, 'server/components/login/', 'LoginApiController', 'POST');
 
 
 

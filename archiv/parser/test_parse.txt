@@ -1,0 +1,33 @@
+###BEGIN###
+
+xxxxxxxxxxxxxxxxxxxxxxxx
+CONTENT  BEGIN
+xxxxxxxxxxxxxxxxxxxxxxxx
+    
+        <!-- ###IF(CHANNELS)###      -->
+            <h4>IGNORE</h4>
+            <!-- <h3>SHOW ME IF  @@name@@</h3> -->
+        <!-- ###ELSE### -->
+        <h4>IGNORE</h4>
+            <!--   <h3>SHOW ME ELSE @@name@@ </h3> --> -->  
+            <h4>IGNORE</h4>
+        <!-- ###END### -->   
+
+    <!-- ###END### -->
+
+
+    <h4>IGNORE BEWEEN TEMPLATE CODE</h4>
+
+
+    <!-- ###BEGIN### -->
+
+        <h3>IGNORE ME FOREACH !</h3>
+        <ul>
+            <!-- ###FOREACH(CHANNELS)###
+                <li>@@name@@</li>
+            ###FOREACH### -->
+        </ul>
+
+    <!-- ###END### -->
+
+###END###
