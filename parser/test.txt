@@ -1,12 +1,14 @@
 ###BEGIN### 
 
-        ###FOREACH(days)###
+###FOREACH(days)###
             <h3>@@date@@</h3>
             <ul>
                 ###FOREACH(msgs)###
-                    <li>@@username@@ wrote: @@†xt@@
+                    <li> @@username@@ wrote: @@txt@@
                     ###IF(wichtig)### 
                         IMPORTANT
+                    ###ELSE###
+                        Nicht wichtig
                     ###END###
                     
                     </li>

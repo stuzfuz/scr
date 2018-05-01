@@ -6,7 +6,7 @@ require_once('Token.php');
 $s = trim(file_get_contents('test.txt'));
 echo "s = " . var_dump($s);
 
-$lexer = new ListLexer($s);
+$lexer = new TemplateLexer($s);
 $token = $lexer->nextToken();
  
 $out = '';

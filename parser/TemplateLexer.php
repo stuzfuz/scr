@@ -13,8 +13,6 @@ class TemplateLexer extends Lexer {
     const COMMAND   = 7; 
     const FOREACH   = 8; 
     const VARIABLE   = 9; 
-    const BEGINTEMPLATE   = 10; 
-    const ENDTEMPLATE   = 11; 
 
     static $tokenNames = array("n/a", "<EOF>",
                                 "HTMLCODE","BEGIN", "END",
@@ -171,14 +169,11 @@ class TemplateLexer extends Lexer {
             $this->consume();
         }
         switch ($buf) {
-            case "IF": return new Token(self::IF, "IF: " . $buf . ";   var: " . $var);
-            case "ELSE": return new Token(self::ELSE, "ELSE: " . $buf . ";   var: " . $var);
-            // case "ENDIF": return new Token(self::ENDIF, "ENDIF: " . $buf . ";   var: " . $var);
-            case "FOREACH": return new Token(self::FOREACH, "FOREACH: " . $buf . ";   var: " . $var);
-            case "BEGIN": return new Token(self::BEGIN, "BEGIN: " . $buf . ";   var: " . $var);
-            case "END": return new Token(self::END, "END: " . $buf . ";   var: " . $var);
-            // case "BEGINTEMPLATE": return new Token(self::BEGINTEMPLATE, "BEGINTEMPLATE: " . $buf . ";   var: " . $var);
-            // case "ENDTEMPLATE": return new Token(self::ENDTEMPLATE, "ENDTEMPLATE: " . $buf . ";   var: " . $var);
+            case "IF": return new Token(self::IF, "IF", $var);
+            case "ELSE": return new Token(self::ELSE, "ELSE:");
+            case "FOREACH": return new Token(self::FOREACH, "FOREACH", $var);
+            case "BEGIN": return new Token(self::BEGIN, "BEGIN");
+            case "END": return new Token(self::END, "END");
         }
         echo "\n unknown command: $buf\n";
         throw new Exception("unknown command found '$buf'   : " + $this->c);
