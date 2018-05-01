@@ -56,7 +56,7 @@ class TemplateEngine {
                 self::traverseAstForEach($node, $level+1, $data, $html);
             } else if ($key === "IF") {
                 // \Logger::logDebug( "\n" . str_pad("", $level * 3) ." IF\n");
-                self:: traverseAstIf($node, $level+1, $data, $html);
+                self::traverseAstIf($node, $level+1, $data, $html);
             } else if ($key === "IFTRUE") {
                 // \Logger::logDebug( "\n" . str_pad("", $level * 3) ." IFTRUE\n");
                 die("this should be handled by  'traverseAstIf' ");
