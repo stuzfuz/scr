@@ -12,7 +12,7 @@ class TemplateParser extends Parser {
  
     /** template:   'BEGIN' expr() 'END'  */
     public function parseTemplate() {
-        echo "parseTemplate()   lookahead:    '" . $this->lookahead ."'\n\n";
+        // echo "parseTemplate()   lookahead:    '" . $this->lookahead ."'\n\n";
         // $ast[] = $this->lookahead->asObject();
         $this->match(TemplateLexer::BEGIN);
         $this->allTokens[] = "BEGIN";
@@ -21,8 +21,8 @@ class TemplateParser extends Parser {
         $this->match(TemplateLexer::END);
         $this->allTokens[] = "END";
 
-        echo "allTokens ... \n\n";
-        var_dump($this->allTokens);
+        // echo "allTokens ... \n\n";
+        // var_dump($this->allTokens);
 
         return $ast; 
     }
@@ -30,7 +30,7 @@ class TemplateParser extends Parser {
     /**  expr = HTMLCODE*  | VARIABLE* | COMMAND */
     function expr(&$ast) {
         $this->allTokens[] = "EXPR";
-        echo "expr()   lookahead:    '" . $this->lookahead . "'\n\n";
+        // echo "expr()   lookahead:    '" . $this->lookahead . "'\n\n";
         while ($this->lookahead->type == TemplateLexer::HTMLCODE  ||
             $this->lookahead->type == TemplateLexer::VARIABLE) {
             if ($this->lookahead->type == TemplateLexer::HTMLCODE) {

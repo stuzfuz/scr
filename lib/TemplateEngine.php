@@ -2,32 +2,32 @@
 
 class TemplateEngine {
 
-    private function traverseAstForEach($ast, $level, $data, &$html) {
+    private static function traverseAstForEach($ast, $level, $data, &$html) {
         // \Logger::logDebug(var_dump($ast));
         // \Logger::logDebug( "\n" . str_pad("", $level * 3) . "  FOREACHNODE  FOREACH\n");
         // \Logger::logDebug( "FOREACH forvariable = " . $ast["forvariable"]);
 
         if (!isset($ast['forvariable'])) {
-            die("'traverseAstForEach'  Ano forvariable set :-((");
+            die("'traverseAstForEach'   [" . __LINE__ ."]   no forvariable set :-((");
         }
         $forvariable = strtolower($ast['forvariable']);
         // \Logger::logDebug( "\n'traverseAstForEach'  found variable = $forvariable\n");
 
         if (!isset($data[$forvariable])) {
-            die("\n'traverseAstForEach'   forvariable  $forvariable NOT found in 'data'");
+            die("\n'traverseAstForEach' [" . __LINE__ ."]    forvariable  $forvariable NOT found in 'data'");
         }
 
         $arr = $data[$forvariable];
 
         foreach ($arr as $entry) {
-            traverseAST($ast["fortemplate"], $level+1, $entry, $html);
+            self::traverseAST($ast["fortemplate"], $level+1, $entry, $html);
             $html  .= "\n";
         }
     }
 
-    private function traverseAstIf($ast, $level, $data, &$html) {      
+    private static function traverseAstIf($ast, $level, $data, &$html) {      
         if (!isset($ast['ifvariable'])) {
-            die("no ifvariable set :-((");
+            die("traversAstIf()   [" . __LINE__ ."]  no ifvariable set :-((");
         }
         $variable = strtolower($ast['ifvariable']);
         // \Logger::logDebug( "\nIF found variable = $variable\n");
@@ -41,22 +41,22 @@ class TemplateEngine {
         }
 
         if ($data[$variable]) {
-            traverseAST($ast["IFTRUE"], $level+1, $data, $html);
+            self::traverseAST($ast["IFTRUE"], $level+1, $data, $html);
             $html  .= "\n";
         } else if (!isset($data["IFFALSE"])) {
-            traverseAST($ast["IFFALSE"], $level+1, $data, $html);
+            self::traverseAST($ast["IFFALSE"], $level+1, $data, $html);
             $html  .= "\n";
         }    
     }
 
-    private function traverseAST($ast, $level, $data, &$html) {
+    private static function traverseAST($ast, $level, $data, &$html) {
         foreach ($ast as $key => $node) {
             if ($key === "FOREACH") {
                 // \Logger::logDebug( "\n" . str_pad("", $level * 3) . " FOREACH\n");
-                traverseAstForEach($node, $level+1, $data, $html);
+                self::traverseAstForEach($node, $level+1, $data, $html);
             } else if ($key === "IF") {
                 // \Logger::logDebug( "\n" . str_pad("", $level * 3) ." IF\n");
-                traverseAstIf($node, $level+1, $data, $html);
+                self:: traverseAstIf($node, $level+1, $data, $html);
             } else if ($key === "IFTRUE") {
                 // \Logger::logDebug( "\n" . str_pad("", $level * 3) ." IFTRUE\n");
                 die("this should be handled by  'traverseAstIf' ");
@@ -77,22 +77,22 @@ class TemplateEngine {
             //     $html .= $node->txt . "\n"; 
             } else  {
                 // HTMLCODE or VARIABLE
-                print_r($node);
+                // print_r($node);
                 if ($node["name"] ==="HTMLCODE") {
                     // \Logger::logDebug( "\n" . str_pad("", $level * 3) ." HTMLCODE\n");
                     $html .= $node["text"];
                 } else if ($node["name"] === "VARIABLE") {
                     $variablename = strtolower(  $node["text"]);
-                    // \Logger::logDebug( "\n" . str_pad("", $level * 3) ." VARIABLE   name = $variable \n");
+                    // \Logger::logDebug( "\n" . str_pad("", $level * 3) ." VARIABLE   name = $variablename \n");
 
                     if (!isset($data[$variablename])) {
-                        die("'traverseAST()'  variablename '$variablename' not set in 'data' ");
+                        die("'traverseAST()'  [" . __LINE__ ."]   variablename '$variablename' not set in 'data' ");
                     }
                     $html .= $data[$variablename];
 
                 } else {
                     // \Logger::logDebug( "node which lead to die()\n\n", var_dump($node)); 
-                    die("well - we should never end up here :-(");
+                    die("'traverseAST()'      [" . __LINE__ ."] well - we should never end up here :-(");
                 }
             }
         }
@@ -173,10 +173,10 @@ class TemplateEngine {
     }
 
     private static function renderTemplateString(string $html, $data) : string {
-        var_dump($html);
-        $template = '';
+        // var_dump($html);
+        // $template = '';
 
-        \Logger::logDebug("renderPartialString() [".  __LINE__  . "]  html = ", $html);
+        // \Logger::logDebug("renderPartialString() [".  __LINE__  . "]  html = ", $html);
 
         $templateBegin = self::findTemplateByName($html,\ApplicationConfig::$TEMPLATEBEGIN);
         if ($templateBegin !== 0) {
@@ -189,18 +189,38 @@ class TemplateEngine {
         } else {
             \Logger::logDebug("renderPartialString()  [".  __LINE__  . "]  could not find a  " . \ApplicationConfig::$TEMPLATEBEGIN  ." in the template = ", $template);
             \Util::quit500("Fatal Error - renderPartialString()  [".  __LINE__  . "]  could not find a  " . \ApplicationConfig::$TEMPLATEBEGIN  ." in the template = ", $template);
-
         }
-        \Logger::logDebug("renderPartialString()  [".  __LINE__  . "]  template  = ",$template);
+        // \Logger::logDebug("renderPartialString()  [".  __LINE__  . "]  template  = ",$template);
 
         $partials = self::getPartials($template);
+        $renderedTemplate  = '';
+        \Logger::logDebug("renderPartialString() [".  __LINE__  . "]     partials.length   = ", count($partials));
 
         if ($partials != null) {
             foreach ($partials as $partial) {
-                \Logger::logDebug("renderPartialString() [".  __LINE__  . "]  partial   = ", $partial);
+
+                \Logger::logDebug("renderPartialString() [".  __LINE__  . "] the  partial with HTML code   = ", $partial);
+
+                // remove all html code and convert the comments to the template code for the parser
+                $partial = self::find_between_all($partial, "<!-- ", " -->");
+                \Logger::logDebug("renderPartialString() [".  __LINE__  . "] the  partial for the parser  = ", $partial);
+
+                
+                $lexer = new TemplateLexer($partial);
+                $parser = new TemplateParser($lexer);
+                $ast = $parser->parseTemplate();
+
+                \Logger::logDebugPrintR("renderPartialString() [".  __LINE__  . "] the AST    = ", $ast);
+                \Logger::logDebugPrintR("renderPartialString() [".  __LINE__  . "] the data    = ", $data);
+
+die();
+                $renderedTemplate = '';
+                $level = 1;
+                self::traverseAST($ast, $level, $data, $renderedTemplate);
+
+                \Logger::logDebug("renderPartialString() [".  __LINE__  . "] the rendered html for the partial   = ", $renderedTemplate);
             }
         }
-        \Logger::logDebug("renderPartialString() [".  __LINE__  . "]     partials.length   = ", count($partials));
 
         // if ($templateCode != null) {
         //     echo "<br/><br/><br/>";

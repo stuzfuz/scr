@@ -13,6 +13,12 @@ class Token {
         $tname = TemplateLexer::$tokenNames[$this->type];
         return "<'" . $this->text . "'," . $tname . ">";
     }
+    public function asObject() {
+        $ret["name"] = TemplateLexer::$tokenNames[$this->type];
+        $ret["text"] = $this->text;
+        $ret["variable"] = $this->variable;
+        return $ret;
+    }
 }
  
 ?>
