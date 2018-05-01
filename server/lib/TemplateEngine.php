@@ -242,7 +242,12 @@ class TemplateEngine {
 
     // template names can be null -> no string type  
     public static function render(string $tmplFilename, $data,  $headertemplate,  $contenttemplate,  $footertemplate) : string {
-        $template = file_get_contents ( $tmplFilename);
+        \Logger::logDebug("render() [".  __LINE__  . "] headertemplate    = ", $headertemplate);
+        \Logger::logDebug("render() [".  __LINE__  . "] contenttemplate    = ", $contenttemplate);
+        \Logger::logDebug("render() [".  __LINE__  . "] footertemplate    = ", $footertemplate);
+        \Logger::logDebug("render() [".  __LINE__  . "] tmplFilename    = ", $tmplFilename);
+
+        $template = file_get_contents ($tmplFilename);
         if (!$template) {
             \Logger::logDebug("TemplateEngine::render() [".  __LINE__  . "]  could not open file = $tmplFilename", "");
             \Util::quit500("Fatal Error - TemplateEngine::render()   could not open file : " , $tmplFilename);

@@ -7,12 +7,12 @@ class ApplicationConfig {
     public static $databasePassword = 'fh_2018_scm4';
     public static $databaseHost = 'localhost';
 
-    public static $logFile = 'log/poormansslack.log';
-    public static $logFileError = 'log/err_poormansslack.log';
-    public static $logFileDebug = 'log/debug_poormansslack.log';
-    public static $logQuery = 'log/query_poormansslack.log';
+    public static $logFile = 'server/log/poormansslack.log';
+    public static $logFileError = 'server/log/err_poormansslack.log';
+    public static $logFileDebug = 'server/log/debug_poormansslack.log';
+    public static $logQuery = 'server/log/query_poormansslack.log';
 
-    public static $indexTmpl = 'index.tmpl';
+    public static $indexTmpl = 'client/index.tmpl';
     
     public static $TEMPLATEHEADER = "<!-- ###TEMPLATE_HEADER### -->";
     public static $TEMPLATECONTENT = "<!-- ###TEMPLATE_CONTENT### -->" ;

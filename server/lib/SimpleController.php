@@ -20,7 +20,7 @@ class SimpleController {
     public function justDoIt() : string {
         // echo "<br> simple controiller - call gather data";
         self::gatherData();
-        $page = \TemplateEngine::render('index.tmpl', $this->data, $this->route['headertemplate'], $this->route['contenttemplate'], $this->route['footertemplate']);
+        $page = \TemplateEngine::render(\ApplicationConfig::$indexTmpl, $this->data, $this->route['headertemplate'], $this->route['contenttemplate'], $this->route['footertemplate']);
         return $page;
     }
 }
