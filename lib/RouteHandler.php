@@ -59,7 +59,6 @@ class RouteHandler {
             \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  route =   ", $route); 
             \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  param =   ", $param); 
 
-
             if ($param != null) {
                 $route[$route["routeparam"]] = urldecode($param);
             }

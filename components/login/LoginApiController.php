@@ -16,7 +16,6 @@ class LoginApiController extends SimpleController {
         \Logger::logDebug("LoginApiController::justDoIt() values in route 'username' $username ", "");
         \Logger::logDebug("LoginApiController::justDoIt() values in route 'password' $password ", "");
         
-
         $ret = null; 
         if (\AuthenticationManager::authenticate($username, $password)) {
             \Logger::logDebug("LoginApiController::justDoIt() authenitcation successful'  ", "");
@@ -27,8 +26,9 @@ class LoginApiController extends SimpleController {
         } else {
             \Logger::logDebug("LoginApiController::justDoIt() authenitcation NOTTTT  successful'  ", "");
 
+            // 401 not authorized is the "best" fit
             header_remove();
-            http_response_code(200);
+            http_response_code(401);
             $ret["status"] = "ERROR";
         }
 
@@ -36,7 +36,8 @@ class LoginApiController extends SimpleController {
         // header_remove();
         // http_response_code(404);
 
-        // \Logger::logDebugPrintR("MessagesController this->data  = ", $this->data);
+
+        \Logger::logDebugPrintR("LoginApiController json_encode( ret ) = ", json_encode( $ret ));
         
         return json_encode( $ret );
     }    
