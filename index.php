@@ -6,6 +6,9 @@ $db_conn = \DatabaseManager::getConnection();
 
 $route = \RouteHandler::handleRoute($db_conn);
 
+echo "\n $route[controller] " . $route['controller'] . " \n"  ;
+echo "\n $route[controllername] = " . $route['controllername'] . "\n";
+
 require_once($route['controller'] . $route['controllername'] . ".php");
 
 $controllerName = $route['controllername'];

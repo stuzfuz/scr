@@ -49,18 +49,19 @@ $data = array();
 // $data["days"] = $days;
 
 
-$channel1["name"] = "SCR";
-$channel2["name"] = "SWE"; 
+// $channel1["name"] = "SCR";
+// $channel2["name"] = "SWE"; 
 
-$data["channels"][] = $channel1;
-$data["channels"][] = $channel2;
+// $data["channels"][] = $channel1;
+// $data["channels"][] = $channel2;
 
-// $data["channelsfound"] = true;
-$data["loggedin"] = false;
-$data["username"] = "skgjsjf";
+// // $data["channelsfound"] = true;
+// $data["loggedin"] = false;
+// $data["username"] = "skgjsjf";
 
  // var_dump($data);
 
+ $data["stepone"] = true;
  print_r($data);
 
 $s = file_get_contents('test.txt');

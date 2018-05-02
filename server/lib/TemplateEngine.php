@@ -27,6 +27,26 @@ class TemplateEngine {
                 $html  .= "\n";
             }
         }
+
+        // ohhh boy - that's an ugly hack. somehow there has to be a better way
+        // to traverse the code after the IF [ELSE] END block
+        // but it works
+        // create a tempoary AST with only the nodes after the current IF block nodes
+        $newAst= array();
+        $i = 0;
+        // ignore  2 nodes with forvariable and fortemplate
+        foreach ($ast as $key => $value) {
+            $i++;
+            if ($i == 1) continue;
+            if ($i == 2) continue;
+            
+            $newAst[$key] =$value;
+            $i++;
+        }
+        // echo "\n\n newAst=";
+        // print_r($newAst);
+        
+        self::traverseAST($newAst, $level, $data, $html);
     }
 
     private static function traverseAstIf($ast, $level, $data, &$html) {      
@@ -61,9 +81,7 @@ class TemplateEngine {
         }
 
         // ohhh boy - that's an ugly hack. somehow there has to be a better way
-        // to traverse the code after the IF [ELSE] END block
-        // but it works
-        // create a tempoary AST with only the nodes after the current IF block nodes
+        // same hack as in the traversesForEach function
         $newAst= array();
         $i = 0;
         // max 3 nodes with ifvariable, IFTRUE, optional IFFALSE
@@ -220,7 +238,7 @@ class TemplateEngine {
             // \Logger::logDebug("renderTemplateString() [".  __LINE__  . "]   partial[0] with BEGIN_PARTIAL and END_PARTIAL     = ", $partial[0]);
             // \Logger::logDebug("renderTemplateString() [".  __LINE__  . "]   partial[1] WITHOUT  BEGIN_PARTIAL and END_PARTIAL     = ", $partial[1]);
             $tmplCode = self::find_between_all($partial[1], "<!-- ", " -->");
-            \Logger::logDebug("renderTemplateString() [".  __LINE__  . "] the  template code for the parser  = ", $tmplCode);
+            // \Logger::logDebug("renderTemplateString() [".  __LINE__  . "] the  template code for the parser  = ", $tmplCode);
            
             try {
                 $lexer = new TemplateLexer($tmplCode);
@@ -231,12 +249,11 @@ class TemplateEngine {
                 \Util::quit500("Fatal Error - TemplateEngine::render()   could not open file : " , $tmplFilename);
             }
             
-            \Logger::logDebugPrintR("renderTemplateString() [".  __LINE__  . "] the AST    = ", $ast);
-            \Logger::logDebugPrintR("renderTemplateString() [".  __LINE__  . "] the data    = ", $data);
+            // \Logger::logDebugPrintR("renderTemplateString() [".  __LINE__  . "] the AST    = ", $ast);
+            // \Logger::logDebugPrintR("renderTemplateString() [".  __LINE__  . "] the data    = ", $data);
             
             $renderedPartial = '';
             $level = 1;
-
 
             self::traverseAST($ast, $level, $data, $renderedPartial);
 
@@ -273,7 +290,7 @@ class TemplateEngine {
             \Util::quit500("Fatal Error - TemplateEngine::render()   could not open file : " , $tmplFilename);
         }
 
-        // \Logger::logDebug("render() [".  __LINE__  . "] template    = ", $template);
+        \Logger::logDebug("render() [".  __LINE__  . "] template    = ", $template);
         // \Logger::logDebug("render() [".  __LINE__  . "] headertemplate    = ", $headertemplate);
 
 

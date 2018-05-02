@@ -124,4 +124,50 @@ class DatabaseManager {
         }
         return $data; 
     }
+
+    public static function getAllChannels() {
+        // TODO: only those for the user who is logged in
+        $sql = "SELECT id, name FROM channel WHERE deleted = 0 ORDER BY name";
+        $res = \DatabaseManager::query(self::getConnection(), $sql, array($id));
+
+        $channels = array();
+        $data = array(); 
+        if ($res->rowCount() == 0) {
+            $data["channelsfound"] = false; 
+        } else {
+            // echo "<br><br> adding channels to array ... <br>";
+            while ($channel = \DatabaseManager::fetchAssoz($res)) {
+                // \Util::my_var_dump($channel, "MessagesController channel  = ");
+                $channel["nameasurl"] = urlencode($channel["name"]);
+                $channels[] = $channel; 
+            }
+            
+            $data["channelsfound"] = true; 
+            $data["channels"] = $channels; 
+        }
+        return $data; 
+    }
+
+    public static function insertUser(string $username, string $password, string $firstname, string $lastname) {
+        $con = self::getConnection();
+        $con->beginTransaction();
+        try {
+            // TODO: change back to hash('sha1', "$username|$password")
+            $password = hash('sha1', $password);
+
+            $sql = "INSERT INTO user (username, password, firstname, lastname, created_at, deleted)";
+            $sql .= " VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), 0)";
+            
+            self::query($con, $sql, array($username, $password, $firstname, $lastname));
+
+            $userid = $con->lastInsertid();
+
+            $con->commit();
+        } catch (Exception $e) {
+            $con->rollBack();
+            $orderId = null;
+        }
+        self::closeConnection();
+        return $userid;
+    }
 }

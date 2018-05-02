@@ -89,11 +89,11 @@ class TemplateLexer extends Lexer {
     }
 
     public function isHash() {
-        return ($this->c == '#');
+        return ($this->c === '#');
     }
 
     public function isAt() {
-        return ($this->c == '@');
+        return ($this->c === '@');
     }
  
     public function nextToken() {
@@ -183,14 +183,24 @@ class TemplateLexer extends Lexer {
     public function VARIABLE() {
         $buf = '';
         if ($this->isAt()) {
-            $this->consume();
+            $buf .= $this->c;
+            $this->consume();   
         }
         if ($this->isAt()) {
+            $buf .= $this->c;
             $this->consume();
-        } 
+            
+        } else {
+            //$this->moveBack();
+            // $this->moveBack();
+            // $buf = substr($buf, 0, strlen($buf)-1);
+            echo "'VARIABLE()'   early exit buf = '$buf'";
+            return new Token(self::HTMLCODE, $buf);
+        }
+        $buf = '';
         do {
             $buf .= $this->c;
-            //  // echo "\n in VARIABLE() reading variable name   c  = " . $this->c . "\n";
+            echo "\n in VARIABLE() reading variable name   c  = " . $this->c . "\n";
             $this->consume();
             // die();
         } while ($this->isLETTERorNUMBER());

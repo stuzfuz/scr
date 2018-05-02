@@ -6,7 +6,6 @@ USE fh_2018_scm4_S1610307036;
 CREATE TABLE user (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	username VARCHAR(255) NOT NULL,
-	email VARCHAR(255) NOT NULL,
 	firstname VARCHAR(255) NOT NULL,
 	lastname VARCHAR(255) NOT NULL,
 	created_at INT(14) NOT NULL, 
@@ -102,7 +101,7 @@ ADD CONSTRAINT message_id_flagged FOREIGN KEY (message_id) REFERENCES message (i
 -- INSERT INTO books VALUES (27, 3, 'C++ Primer Plus (5th Edition)', 'Stephan Prata', ' 9780672326974', 36.94);
 -- INSERT INTO books VALUES (29, 3, 'The C++ Programming Language', 'Bjarne Stroustrup', '0201700735', 67.49);
 	
-INSERT INTO user VALUES (1, 'admin', 'admin@poormansslack.at', 'admin', 'admin',UNIX_TIMESTAMP(NOW())-343434, SHA1('admin'), 0);
+INSERT INTO user VALUES (1, 'admin', 'admin', 'admin',UNIX_TIMESTAMP(NOW())-343434, SHA1('admin'), 0);
 
 
 
@@ -135,6 +134,13 @@ VALUES ('/login' ,'PAGE', NULL, 'server/components/login/login.html', NULL, 'ser
 INSERT INTO route (route, type, headertemplate, contenttemplate,	footertemplate, controller, controllername, verb)
 VALUES ('/register' ,'PAGE', NULL, 'server/components/register/register.html', NULL, 'server/components/register/', 'RegisterController', 'GET');
 
+INSERT INTO route (route, type, headertemplate, contenttemplate,	footertemplate, controller, controllername, verb)
+VALUES ('/registerstep2' ,'PAGE', NULL, 'server/components/register/register.html', NULL, 'server/components/register/', 'RegisterStep2Controller', 'POST');
+
+INSERT INTO route (route, type, headertemplate, contenttemplate,	footertemplate, controller, controllername, verb)
+VALUES ('/api/checkusername' ,'API', NULL, NULL, NULL, 'server/components/register/', 'CheckusernameController', 'POST');
+
+
 
 INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
 VALUES ('/messages' ,'PAGE', 'client/header.html', 'server/components/messages/content.html', 'client/footer.html', 'channelname', 'server/components/messages/', 'MessagesController', 'GET');
@@ -157,20 +163,20 @@ VALUES ('/api/signout' ,'API', NULL, NULL, NULL, NULL, 'server/components/signou
 
 
 
-INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
-VALUES ( 'donaldduck', 'donald@poormansslack.at', 'donald', 'duck', 	UNIX_TIMESTAMP(NOW())-444444, SHA1('donald'), 0);
+INSERT INTO user (username,  firstname, lastname, created_at, password, deleted) 
+VALUES ( 'donaldduck',  'donald', 'duck', 	UNIX_TIMESTAMP(NOW())-444444, SHA1('donald'), 0);
 
 
-INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
-VALUES ( 'dagobertduck', 'dagobert@poormansslack.at', 'dagobert', 'duck', 	UNIX_TIMESTAMP(NOW())-5555555, SHA1('dagobert'), 0);
+INSERT INTO user (username,  firstname, lastname, created_at, password, deleted) 
+VALUES ( 'dagobertduck',  'dagobert', 'duck', 	UNIX_TIMESTAMP(NOW())-5555555, SHA1('dagobert'), 0);
 
 
-INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
-VALUES ( 'daisyduck', 'daisy@poormansslack.at', 'daisy', 'duck', 	UNIX_TIMESTAMP(NOW())-6666666, SHA1('dais'), 0);
+INSERT INTO user (username,  firstname, lastname, created_at, password, deleted) 
+VALUES ( 'daisyduck',  'daisy', 'duck', 	UNIX_TIMESTAMP(NOW())-6666666, SHA1('dais'), 0);
 
 
-INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
-VALUES ( 'goofy', 'goofy@poormansslack.at', 'goofy', 'duck', 	UNIX_TIMESTAMP(NOW())-777777, SHA1('goofy'), 0);
+INSERT INTO user (username,  firstname, lastname, created_at, password, deleted) 
+VALUES ( 'goofy', 'goofy', 'duck', 	UNIX_TIMESTAMP(NOW())-777777, SHA1('goofy'), 0);
 
 
 
