@@ -149,6 +149,10 @@ INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate,
 VALUES ('/api/login' ,'API', NULL, NULL, NULL, NULL, 'server/components/login/', 'LoginApiController', 'POST');
 
 
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/api/signout' ,'API', NULL, NULL, NULL, NULL, 'server/components/signout/',  'SignoutController', 'GET');
+
+
 
 
 
@@ -158,7 +162,7 @@ VALUES ( 'donaldduck', 'donald@poormansslack.at', 'donald', 'duck', 	UNIX_TIMEST
 
 
 INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
-VALUES ( 'dagobertdduck', 'dagobert@poormansslack.at', 'dagobert', 'duck', 	UNIX_TIMESTAMP(NOW())-5555555, SHA1('dagobert'), 0);
+VALUES ( 'dagobertduck', 'dagobert@poormansslack.at', 'dagobert', 'duck', 	UNIX_TIMESTAMP(NOW())-5555555, SHA1('dagobert'), 0);
 
 
 INSERT INTO user (username, email, firstname, lastname, created_at, password, deleted) 
@@ -182,7 +186,8 @@ VALUES ( 'bad luck', UNIX_TIMESTAMP(NOW())-717777, 2, 0);
 INSERT INTO channel (name, created_at, created_by_user_id, deleted) 
 VALUES ( 'dogs', UNIX_TIMESTAMP(NOW())-177777, 4, 0 );
  
-
+INSERT INTO channel (name, created_at, created_by_user_id, deleted) 
+VALUES ( 'emptychannel', UNIX_TIMESTAMP(NOW())-277777, 5, 0 );
 
 
 INSERT INTO message (user_id, channel_id, txt, created_at, deleted) 

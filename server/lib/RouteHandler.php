@@ -56,8 +56,8 @@ class RouteHandler {
         } else {
             $route = \DatabaseManager::fetchAssoz($res);
             // \Util::my_var_dump($route, "route = ");
-            \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  route =   ", $route); 
-            \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  param =   ", $param); 
+            // \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  route =   ", $route); 
+            // \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  param =   ", $param); 
 
             if ($param != null) {
                 $route[$route["routeparam"]] = urldecode($param);
@@ -65,7 +65,7 @@ class RouteHandler {
             $route["requestparameter"] = self::$requestParams;
         }
 
-        \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  route =   ", $route);
+        // \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  route =   ", $route);
 
         return $route; 
     }

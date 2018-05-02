@@ -32,7 +32,6 @@ class DatabaseManager {
         $statement = $connection->prepare($query);
         $i = 1; 
 
-
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         foreach($parameters as $param) {
@@ -102,4 +101,27 @@ class DatabaseManager {
         self::closeConnection();
         return $user;
     }    
+
+    public static function getChannelsForUser($id) {
+        // TODO: only those for the user who is logged in
+        $sql = "SELECT id, name FROM channel WHERE deleted = 0 AND created_by_user_id = ? ORDER BY name";
+        $res = \DatabaseManager::query(self::getConnection(), $sql, array($id));
+
+        $channels = array();
+        $data = array(); 
+        if ($res->rowCount() == 0) {
+            $data["channelsfound"] = false; 
+        } else {
+            // echo "<br><br> adding channels to array ... <br>";
+            while ($channel = \DatabaseManager::fetchAssoz($res)) {
+                // \Util::my_var_dump($channel, "MessagesController channel  = ");
+                $channel["nameasurl"] = urlencode($channel["name"]);
+                $channels[] = $channel; 
+            }
+            
+            $data["channelsfound"] = true; 
+            $data["channels"] = $channels; 
+        }
+        return $data; 
+    }
 }

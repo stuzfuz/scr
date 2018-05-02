@@ -19,7 +19,7 @@ class Util {
    * @return null
    */
 	public static function redirect(string $page = null) {
-    die("redirect NOT IMPLEMENTED ");
+    // die("redirect NOT IMPLEMENTED ");
 		// if ($page == null) {
 		// 	$page = isset($_REQUEST[Controller::PAGE]) ?
 		// 		$_REQUEST[Controller::PAGE] :
