@@ -49,14 +49,19 @@ $data = array();
 // $data["days"] = $days;
 
 
-$channel1["name"] = "SWE";
+$channel1["name"] = "SCR";
 $channel2["name"] = "SWE"; 
 
 $data["channels"][] = $channel1;
 $data["channels"][] = $channel2;
 
-// var_dump($data);
-// print_r($data);
+// $data["channelsfound"] = true;
+$data["loggedin"] = false;
+$data["username"] = "skgjsjf";
+
+ // var_dump($data);
+
+ print_r($data);
 
 $s = file_get_contents('test.txt');
 echo "s = " . var_dump($s);
@@ -75,20 +80,19 @@ try {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
     //var_dump($e);
 }
-die();
 
 function traverseAstForEach($ast, $level, $data, &$html) {
-    echo "\n\n\n";
-    var_dump($ast);
-    echo "\n\n\n";
-    echo "\n" . str_pad("", $level * 3) . "  FOREACHNODE  FOREACH\n";
-    echo "FOREACH forvariable = " . $ast["forvariable"];
+    // echo "\n\n\n";
+    // var_dump($ast);
+    // echo "\n\n\n";
+    // echo "\n" . str_pad("", $level * 3) . "  FOREACHNODE  FOREACH\n";
+    // echo "FOREACH forvariable = " . $ast["forvariable"];
 
     if (!isset($ast['forvariable'])) {
         die("'traverseAstForEach'  no forvariable set :-((");
     }
     $forvariable = strtolower($ast['forvariable']);
-    echo "\n'traverseAstForEach'  found variable = $forvariable\n";
+    // echo "\n'traverseAstForEach'  found variable = $forvariable\n";
 
     if (!isset($data[$forvariable])) {
         die("\n'traverseAstForEach'   forvariable  $forvariable NOT found in 'data'");
@@ -107,29 +111,61 @@ function traverseAstIf($ast, $level, $data, &$html) {
         die("no ifvariable set :-((");
     }
     $variable = strtolower($ast['ifvariable']);
-    echo "\nIF found variable = $variable\n";
+    // echo "\nIF found variable = $variable\n";
 
     if (!isset($data[$variable])) {
-        echo("\nIF  variable  $variable NOT found in 'data'");
+        die("\nIF  variable  $variable NOT found in 'data'");
     }
 
-    if (!isset($data["IFTRUE"])) {
-        echo("\nIF  could not find a IFTRUE in  'data'");
+    if (!isset($ast["IFTRUE"])) {
+        die("\nIF  could not find a IFTRUE in  'ast'");
     }
 
+    echo "\n" . str_pad("", $level * 3) .  "\n IF ast = ";
+    print_r($ast);
+
+    // echo "\n\n in traverseAstIf() ast = ";
+    // print_r($ast);
+    // echo "\n\n in traverseAstIf() data = ";
+    // print_r($data);
     if ($data[$variable]) {
         traverseAST($ast["IFTRUE"], $level+1, $data, $html);
         $html  .= "\n";
+        
+        echo "\n" . str_pad("", $level * 3) .  "\n AFTER IFTRUE in traverseIF() \n\n";
     } else if (!isset($data["IFFALSE"])) {
         traverseAST($ast["IFFALSE"], $level+1, $data, $html);
         $html  .= "\n";
+        echo "\n" . str_pad("", $level * 3) .  "\n AFTER IFFALSE in traverseIF() \n\n";
     }    
+
+    // remove the 2 
+    $newAst= array();
+    $i = 0;
+    // max 3 nodes with ifvariable, IFTRUE, optional IFFALSE
+    foreach ($ast as $key => $value) {
+        $i++;
+        echo "\n key = $key,  i = $i";
+        if ($i == 1) continue;
+        if ($i == 2) continue;
+        if ($i == 3 && $key=="IFFALSE") continue;
+        $newAst[$key] =$value;
+        $i++;
+    }
+    echo "\n\n newAst=";
+    print_r($newAst);
+    
+    traverseAST($newAst, $level, $data, $html, true );
 }
 
-function traverseAST($ast, $level, $data, &$html) {
+function traverseAST($ast, $level, $data, &$html, $newAst = false) {
+    if ($newAst) {
+        echo "\n" . str_pad("", $level * 3) ." parsing the newAst: \n";
+        print_r($ast);
+    }
     foreach ($ast as $key => $node) {
         if ($key === "FOREACH") {
-            echo "\n" . str_pad("", $level * 3) . " FOREACH\n";
+            // echo "\n" . str_pad("", $level * 3) . " FOREACH\n";
             traverseAstForEach($node, $level+1, $data, $html);
         } else if ($key === "IF") {
             echo "\n" . str_pad("", $level * 3) ." IF\n";
@@ -154,9 +190,9 @@ function traverseAST($ast, $level, $data, &$html) {
         //     $html .= $node->txt . "\n"; 
         } else  {
             // HTMLCODE or VARIABLE
-            print_r($node);
+            // print_r($node);
             if ($node["name"] ==="HTMLCODE") {
-                echo "\n" . str_pad("", $level * 3) ." HTMLCODE\n";
+                // echo "\n" . str_pad("", $level * 3) ." HTMLCODE\n";
                 $html .= $node["text"];
             } else if ($node["name"] === "VARIABLE") {
                 $variablename = strtolower(  $node["text"]);
@@ -183,12 +219,11 @@ $html = '';
 traverseAST($ast, 1, $data, $html);
 
 
-echo "\n\n --------------------------------";
+echo "\n\n --------------------------------\n";
 echo "final html =  ";
 var_dump($html);
+echo "\n --------------------------------\n";
 
-echo "\n\n -------------------xxxxxx-------------";
-echo "\n\n ".  $ast["FOREACH"]["forvariable"]  . " \n\n";
 
 echo "\n\n DONE \n\n";
 ?>
