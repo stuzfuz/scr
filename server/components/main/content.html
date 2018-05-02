@@ -28,29 +28,62 @@
         <div class="row">
 
 
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 inner cover">
+            
                 <!-- ###BEGIN_PARTIAL### -->
                 <!-- ###BEGIN### -->
                     <!-- ###IF(loggedin)###   
-                        
-                        <h4>Hi @@username@@</h4>
-                        <p class="lead">Good to see you again!</p>
-                        ###ELSE###  
-                        
-                        <h1 class="cover-heading">Welcome to PoorMansSlack</h1>
-                        <p class="lead">Looks like your not logged in yet!</p>
-                        <p class="lead">If you have already an account you can login or if you are new you can register!</p>
+                        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                            <div class="sidebar-sticky">
 
-                        <p class="lead">
-                            <a href="/login" class="btn btn-lg btn-secondary">login</a>
-                            <a href="/register" class="btn btn-lg btn-secondary">register</a>
-                        </p>
-                    
+                                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                                    <span>Channels</span>
+                                    <a class="d-flex align-items-center text-muted" href="#">
+                                        <span data-feather="plus-circle"></span>
+                                    </a>
+                                </h6>
+
+                                <ul class="nav flex-column mb-2">
+                                    ###IF(CHANNELSFOUND)### 
+                                        ###FOREACH(CHANNELS)###  
+                                           <li class="nav-item">
+                                            <a class="nav-link" href="/messages/@@nameasurl@@">
+                                                <span data-feather="file-text"></span>
+                                                @@name@@
+                                            </a>
+                                            </li>
+                                            
+                                        ###END### 
+                                    ###ELSE### 
+                                        <h6>no channels available</h6>
+                                    ###END###
+                                </ul>
+                            </div>
+                        </nav>       
+
+                        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+                            <h4>Hi @@username@@</h4>
+                            <p class="lead">Good to see you again!</p>
+                        </main>
+                        
+                        
+                    ###ELSE###  
+                        
+                        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 inner cover">
+                            <h1 class="cover-heading">Welcome to PoorMansSlack</h1>
+                            <p class="lead">Looks like your not logged in yet!</p>
+                            <p class="lead">If you have already an account you can login or if you are new you can register!</p>
+
+                            <p class="lead">
+                                <a href="/login" class="btn btn-lg btn-secondary">login</a>
+                                <a href="/register" class="btn btn-lg btn-secondary">register</a>
+                            </p>
+                        </main>
     -->
                     <!-- ###END### -->
                 <!-- ###END### -->
-                <!-- ###END_PARTIAL### -->
-            </main>
+            <!-- ###END_PARTIAL### -->
+            
         </div>
     </div>
 

@@ -5,33 +5,22 @@ class MessagesController extends SimpleController {
     protected function gatherData() {
 
         \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  route =   ", $this->route); 
-        // echo "<br> MessagesController - in 'gather data'";
-        // \Util::my_var_dump($this->db_conn, "MessagesController this->db_conn  = ");
 
-        // TODO: only those for the user who is logged in
-        $sql = "SELECT id, name FROM channel WHERE deleted = 0 ORDER BY name";
-        $res = \DatabaseManager::query($this->db_conn, $sql, array());
-        //  \Util::my_var_dump($res, "res = ");
-        // exit();
-
-        // echo "<br> MessagesController - in 'gather data' after  query";
-        $channels = array();
-        $data = array(); 
-        if ($res->rowCount() == 0) {
-            $data["channelsfound"] = false; 
+        // user logged in? NO -> then redirect to /
+        if (\AuthenticationManager::isAuthenticated()) {
+            $user = \AuthenticationManager::getAuthenticatedUser();
+            $data["username"] = '@' . $user->getUserName();
+            $data["loggedin"] = true;
         } else {
-            // echo "<br><br> adding channels to array ... <br>";
-            while ($channel = \DatabaseManager::fetchAssoz($res)) {
-                // \Util::my_var_dump($channel, "MessagesController channel  = ");
-                $channel["nameasurl"] = urlencode($channel["name"]);
-                $channels[] = $channel; 
-            }
-            
-            $data["channelsfound"] = true; 
-            $data["channels"] = $channels; 
+            \Util::redirect("/");
         }
 
-        // if (isset($this->route["routeparam"]) &&  $this->route["routeparam"] != null) {
+        $tmp = \DatabaseManager::getChannelsForUser($user->getId());
+        
+        $data = array_merge($data, $tmp);
+
+        // if a channelname is provided in the URL - load the data 
+        // check if the channelname really exists!
         if (isset($this->route["channelname"])) {
             $sql = "SELECT user.id AS userid, user.username, message.txt, message.created_at FROM message ";
             $sql .= "LEFT JOIN channel ON (channel.id = message.channel_id) ";
@@ -42,13 +31,17 @@ class MessagesController extends SimpleController {
             \Util::quit500("Fatal Error - 'traverseAST' [" . __LINE__ ."] no routeparam provided   ", "");
         }
         $res = \DatabaseManager::query($this->db_conn, $sql, array($this->route["channelname"]));
-
         \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  res =   ", $res);
+ 
+        if ($res->rowCount() == 0) {
+            // TODO: show info -> channelname not found
+        }
+        
+        // TODO read meta dat of channel and add those here 
+        $data["channelname"] = $this->route["channelname"];
 
-        //  \Util::my_var_dump($res, "res = ");
-        // exit();
 
-        // // echo "<br> MessagesController - in 'gather data' after  query";
+        // read all message from this channel
         $messages = array();
         if ($res->rowCount() == 0) {
             $data["messagesfound"] = 0;     // false does not  work ...
@@ -60,10 +53,10 @@ class MessagesController extends SimpleController {
                 \Logger::logDebugPrintR("MessagesController msg = ", $msg);
                 $messages[] = $msg; 
             }
-            
             $data["messagesfound"] = true; 
             $data["messages"] = $messages; 
         }
+        
         $this->data = $data; 
         \Logger::logDebugPrintR("MessagesController this->data  = ", $this->data);
     }

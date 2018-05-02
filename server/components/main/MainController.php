@@ -10,9 +10,23 @@ class MainController extends SimpleController {
             $ret["loggedin"] = true;
         } else {
             $ret["loggedin"] = false;
+            $this->data = $ret; 
+            return; 
         }
-        $this->data = $ret; 
-        // \Util::my_var_dump($this->data, "MainController this->data  = ");
+       
+        $tmp = \DatabaseManager::getChannelsForUser($user->getId());
+        // \Logger::logDebugPrintR("'MainController::gatherData()' [" . __LINE__ ."]  channels for user  ", $tmp); 
+
+        // $ret= \DatabaseManager::getChannelsForUser($user->getId());
+
+        $bla = array_merge($tmp, $ret);
+        $this->data = $bla; 
+
+        // \Logger::logDebugPrintR("'MainController::gatherData()' [" . __LINE__ ."]  merged arrays  ", $bla); 
+ 
+        \Logger::logDebugPrintR("'MainController::gatherData()' [" . __LINE__ ."]  this->data  ", $this->data); 
+        // \Logger::logDebugPrintR("'MainController::gatherData()' [" . __LINE__ ."]  ret  ", $ret); 
+
     }
 
     // // TODO Delete this if not necessary
