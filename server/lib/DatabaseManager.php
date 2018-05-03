@@ -128,7 +128,7 @@ class DatabaseManager {
     public static function getAllChannels() {
         // TODO: only those for the user who is logged in
         $sql = "SELECT id, name FROM channel WHERE deleted = 0 ORDER BY name";
-        $res = \DatabaseManager::query(self::getConnection(), $sql, array($id));
+        $res = \DatabaseManager::query(self::getConnection(), $sql, array());
 
         $channels = array();
         $data = array(); 
@@ -138,7 +138,6 @@ class DatabaseManager {
             // echo "<br><br> adding channels to array ... <br>";
             while ($channel = \DatabaseManager::fetchAssoz($res)) {
                 // \Util::my_var_dump($channel, "MessagesController channel  = ");
-                $channel["nameasurl"] = urlencode($channel["name"]);
                 $channels[] = $channel; 
             }
             
@@ -165,7 +164,7 @@ class DatabaseManager {
             $con->commit();
         } catch (Exception $e) {
             $con->rollBack();
-            $orderId = null;
+            $userid = null;
         }
         self::closeConnection();
         return $userid;

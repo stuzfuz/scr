@@ -15,8 +15,8 @@ class TemplateEngine {
         // \Logger::logDebug( "\n'traverseAstForEach'  found variable = $forvariable\n");
 
         if (!isset($data[$forvariable])) {
-            \Logger::logDebugPrintR("'traverseAstForEach' [" . __LINE__ ."]    forvariable  $forvariable NOT found in 'data' ", $data); 
-            \Util::quit500("Fatal Error - 'traverseAstForEach' [" . __LINE__ ."]    forvariable  $forvariable NOT found in 'data' ", $data);
+            \Logger::logDebugPrintR("'traverseAstForEach' [" . __LINE__ ."]    forvariable  forvariable NOT found in 'data' ", $data); 
+            \Util::quit500("Fatal Error - 'traverseAstForEach' [" . __LINE__ ."]    forvariable  forvariable NOT found in 'data' ", $data);
         }
 
         $arr = $data[$forvariable];
@@ -28,25 +28,30 @@ class TemplateEngine {
             }
         }
 
+        if (isset($ast["AFTERFOREACH"])) {
+            traverseAST($ast["AFTERFOREACH"], $level, $data, $html, true );
+        }
+
+
         // ohhh boy - that's an ugly hack. somehow there has to be a better way
         // to traverse the code after the IF [ELSE] END block
         // but it works
         // create a tempoary AST with only the nodes after the current IF block nodes
-        $newAst= array();
-        $i = 0;
-        // ignore  2 nodes with forvariable and fortemplate
-        foreach ($ast as $key => $value) {
-            $i++;
-            if ($i == 1) continue;
-            if ($i == 2) continue;
+        // $newAst= array();
+        // $i = 0;
+        // // ignore  2 nodes with forvariable and fortemplate
+        // foreach ($ast as $key => $value) {
+        //     $i++;
+        //     if ($i == 1) continue;
+        //     if ($i == 2) continue;
             
-            $newAst[$key] =$value;
-            $i++;
-        }
+        //     $newAst[$key] =$value;
+        //     $i++;
+        // }
         // echo "\n\n newAst=";
         // print_r($newAst);
         
-        self::traverseAST($newAst, $level, $data, $html);
+        // self::traverseAST($newAst, $level, $data, $html);
     }
 
     private static function traverseAstIf($ast, $level, $data, &$html) {      
@@ -79,25 +84,29 @@ class TemplateEngine {
             \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]    IFFALSE  NOT set in ast   ", $ast); 
             \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    IFFALSE  NOT set in ast  ", $ast);
         }
+        if (isset($ast["AFTERFOREACH"])) {
+            traverseAST($ast["AFTERFOREACH"], $level, $data, $html, true );
+        }
+
 
         // ohhh boy - that's an ugly hack. somehow there has to be a better way
         // same hack as in the traversesForEach function
-        $newAst= array();
-        $i = 0;
-        // max 3 nodes with ifvariable, IFTRUE, optional IFFALSE
-        foreach ($ast as $key => $value) {
-            $i++;
-            // echo "\n key = $key,  i = $i";
-            if ($i == 1) continue;
-            if ($i == 2) continue;
-            if ($i == 3 && $key=="IFFALSE") continue;
-            $newAst[$key] =$value;
-            $i++;
-        }
-        // echo "\n\n newAst=";
-        // print_r($newAst);
+        // $newAst= array();
+        // $i = 0;
+        // // max 3 nodes with ifvariable, IFTRUE, optional IFFALSE
+        // foreach ($ast as $key => $value) {
+        //     $i++;
+        //     // echo "\n key = $key,  i = $i";
+        //     if ($i == 1) continue;
+        //     if ($i == 2) continue;
+        //     if ($i == 3 && $key=="IFFALSE") continue;
+        //     $newAst[$key] =$value;
+        //     $i++;
+        // }
+        // // echo "\n\n newAst=";
+        // // print_r($newAst);
         
-        self::traverseAST($newAst, $level, $data, $html);
+        // self::traverseAST($newAst, $level, $data, $html);
     }
 
     private static function traverseAST($ast, $level, $data, &$html) {

@@ -8,10 +8,7 @@ function showError(classname, msg) {
     }, 3000);
 }
 
-
 $( document ).ready(function() {
-
-
     console.log( "ready!" );
 
     // ------------------------------------------------------
@@ -43,6 +40,13 @@ $( document ).ready(function() {
     // ------------------------------------------------------
     // register page
     // ------------------------------------------------------
+
+    // TODO: remove!!  but its easer this way than filling out the form on every reload
+    $("#registerUsername").val(Math.floor((Math.random() * 10000) + 1));
+        $("#registerPassword").val("a"),
+        $("#registerPasswordConfirm").val("a"),
+        $("#registerFirstname").val("a"),
+        $("#registerLastname").val("a")
 
     
     $( "#formRegister1" ).submit(function(e) {
@@ -85,6 +89,7 @@ $( document ).ready(function() {
                 data: dataRegister
             }).done(function( res ) {
                 console.log( "/registerstep2  DONE response", JSON.stringify(res, null, 4));
+                window.location.assign("/registerstep2");
             }).fail(function( res ) {
                 console.log( "/registerstep2  FAIL response", JSON.stringify(res, null, 4));
                 showError(".register-error", "error registering you ...!");
@@ -92,12 +97,12 @@ $( document ).ready(function() {
 
             // window.location.assign("/");
         }).fail(function( res ) {
-            console.log( "/api/checkusername   FAIL reponse", JSON.stringify(res, null, 4));
+            console.log( "/api/checkusername   FAIL response", JSON.stringify(res, null, 4));
             res = JSON.parse(res["responseText"]);
             console.log( "/api/checkusername   FAIL responseText", JSON.stringify(res, null, 4));
 
-            if (res["errorcode"] == 2) {
-                showError(".register-error", "username is already in use - please choose wisely!");
+            if (res["errorcode"] >= 2) {
+                showError(".register-error", res["status"]);
             } else {
                 console.log("well - don't know now ");
             }

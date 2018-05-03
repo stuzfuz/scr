@@ -31,7 +31,7 @@ class CheckusernameController extends SimpleController {
             header_remove();
             http_response_code(401);
             $ret["errorcode"] = 2;
-            $ret["status"] = "ERROR: username already taken";
+            $ret["status"] = "ERROR: username already taken. please choose wisely";
         }
         return json_encode( $ret );
     }

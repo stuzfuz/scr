@@ -110,7 +110,7 @@ INSERT INTO user VALUES (1, 'admin', 'admin', 'admin',UNIX_TIMESTAMP(NOW())-3434
 -- combined key (user_id, message_id
 CREATE TABLE route (
 	id INT(11) NOT NULL AUTO_INCREMENT,
-	route VARCHAR(1000) NOT NULL, 
+	route VARCHAR(500) NOT NULL, 
 	type VARCHAR(20) NOT NULL, 
 	headertemplate VARCHAR(300)  NULL, 
 	contenttemplate VARCHAR(300) NULL, 
@@ -120,7 +120,7 @@ CREATE TABLE route (
 	controllername VARCHAR(300) NOT NULL, 
 	verb VARCHAR(30) NOT NULL, 
 	PRIMARY KEY (id),
-	UNIQUE KEY (route)
+	UNIQUE KEY (route, verb)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 
 
@@ -135,7 +135,11 @@ INSERT INTO route (route, type, headertemplate, contenttemplate,	footertemplate,
 VALUES ('/register' ,'PAGE', NULL, 'server/components/register/register.html', NULL, 'server/components/register/', 'RegisterController', 'GET');
 
 INSERT INTO route (route, type, headertemplate, contenttemplate,	footertemplate, controller, controllername, verb)
-VALUES ('/registerstep2' ,'PAGE', NULL, 'server/components/register/register.html', NULL, 'server/components/register/', 'RegisterStep2Controller', 'POST');
+VALUES ('/registerstep2' ,'API', NULL, 'server/components/register/register.html', NULL, 'server/components/register/', 'RegisterStep2PostController', 'POST');
+
+INSERT INTO route (route, type, headertemplate, contenttemplate,	footertemplate, controller, controllername, verb)
+VALUES ('/registerstep2' ,'PAGE', NULL, 'server/components/register/register.html', NULL, 'server/components/register/', 'RegisterStep2GetController', 'GET');
+
 
 INSERT INTO route (route, type, headertemplate, contenttemplate,	footertemplate, controller, controllername, verb)
 VALUES ('/api/checkusername' ,'API', NULL, NULL, NULL, 'server/components/register/', 'CheckusernameController', 'POST');
