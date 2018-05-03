@@ -29,10 +29,8 @@ class TemplateEngine {
         }
 
         if (isset($ast["AFTERFOREACH"])) {
-            traverseAST($ast["AFTERFOREACH"], $level, $data, $html, true );
+            self::traverseAST($ast["AFTERFOREACH"], $level, $data, $html, true );
         }
-
-
         // ohhh boy - that's an ugly hack. somehow there has to be a better way
         // to traverse the code after the IF [ELSE] END block
         // but it works
@@ -84,8 +82,8 @@ class TemplateEngine {
             \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]    IFFALSE  NOT set in ast   ", $ast); 
             \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    IFFALSE  NOT set in ast  ", $ast);
         }
-        if (isset($ast["AFTERFOREACH"])) {
-            traverseAST($ast["AFTERFOREACH"], $level, $data, $html, true );
+        if (isset($ast["AFTERIF"])) {
+            self::traverseAST($ast["AFTERIF"], $level, $data, $html, true );
         }
 
 

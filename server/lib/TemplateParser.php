@@ -80,7 +80,7 @@ class TemplateParser extends Parser {
         // $ast[] = $this->lookahead->asObject();
         $this->match(TemplateLexer::END);
         $this->allTokens[] = "END";
-        $this->expr($ast["AFTEREACH"]);
+        $this->expr($ast["AFTERFOREACH"]);
     }
 }
 
