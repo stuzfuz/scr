@@ -105,6 +105,10 @@ function traverseAstForEach($ast, $level, $data, &$html) {
         traverseAST($ast["fortemplate"], $level+1, $entry, $html);
         $html  .= "\n";
     }
+
+    if (isset($ast["AFTERFOREACH"])) {
+        traverseAST($ast["AFTERFOREACH"], $level, $data, $html, true );
+    }
 }
 
 function traverseAstIf($ast, $level, $data, &$html) {      
@@ -141,22 +145,24 @@ function traverseAstIf($ast, $level, $data, &$html) {
     }    
 
     // remove the 2 
-    $newAst= array();
-    $i = 0;
-    // max 3 nodes with ifvariable, IFTRUE, optional IFFALSE
-    foreach ($ast as $key => $value) {
-        $i++;
-        echo "\n key = $key,  i = $i";
-        if ($i == 1) continue;
-        if ($i == 2) continue;
-        if ($i == 3 && $key=="IFFALSE") continue;
-        $newAst[$key] =$value;
-        $i++;
+    // $newAst= array();
+    // $i = 0;
+    // // max 3 nodes with ifvariable, IFTRUE, optional IFFALSE
+    // foreach ($ast as $key => $value) {
+    //     $i++;
+    //     echo "\n key = $key,  i = $i";
+    //     if ($i == 1) continue;
+    //     if ($i == 2) continue;
+    //     if ($i == 3 && $key=="IFFALSE") continue;
+    //     $newAst[$key] =$value;
+    //     $i++;
+    // }
+    // echo "\n\n newAst=";
+    // print_r($newAst);
+    if (isset($ast["AFTERIF"])) {
+        traverseAST($ast["AFTERIF"], $level, $data, $html, true );
     }
-    echo "\n\n newAst=";
-    print_r($newAst);
     
-    traverseAST($newAst, $level, $data, $html, true );
 }
 
 function traverseAST($ast, $level, $data, &$html, $newAst = false) {
