@@ -144,6 +144,9 @@ VALUES ('/registerstep2' ,'PAGE', NULL, 'server/components/register/register.htm
 INSERT INTO route (route, type, headertemplate, contenttemplate,	footertemplate, controller, controllername, verb)
 VALUES ('/api/checkusername' ,'API', NULL, NULL, NULL, 'server/components/register/', 'CheckusernameController', 'POST');
 
+INSERT INTO route (route, type, headertemplate, contenttemplate,	footertemplate, controller, controllername, verb)
+VALUES ('/api/savechannels' ,'API', NULL, NULL, NULL, 'server/components/register/', 'SavechannelsController', 'POST');
+
 
 
 INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)

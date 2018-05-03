@@ -113,60 +113,40 @@ $( document ).ready(function() {
         e.preventDefault();
         console.log("#formRegister2 submit");
 
+        channelIds = [];
+        $('#registerAvailableChannels option:selected').each(function() {
+            console.log("option selected :", $(this).val());
+            channelIds.push($(this).val());
+        });
+
         // read input data from form
-        // dataRegister =  {
-        //     username: $("#registerUsername").val(),
-        //     password: $("#registerPassword").val(),
-        //     passwordConfirm: $("#registerPasswordConfirm").val(),
-        //     firstname: $("#registerFirstname").val(),
-        //     lastname: $("#registerLastname").val()
-        // };
-        // console.log("registerForm  dataRegister = " + JSON.stringify(dataRegister, null, 4));
-
-        // console.log("checking passwords");
-        // // validate input check passwords
-        // if (dataRegister.password !== dataRegister.passwordConfirm) {
-            
-        //     console.log("password not qual");
-        //     showError(".register-error", "password and confirmation password are not equal - please try again");
-        //     return; 
-        // }
+        data =  {
+            channels: channelIds
+        };
+        console.log("formRegister2  data = " + JSON.stringify(data, null, 4));
         
-        // console.log("checking username");
-        // // check if username is available? 
-        // $.ajax({
-        //     url: "/api/checkusername",
-        //     type: "POST",
-        //     data: { username: $("#registerUsername").val() }
-        // }).done(function( res ) {
-        //     console.log( "/api/checkusername DONE reponse", JSON.stringify(res, null, 4));
+        $.ajax({
+            url: "/api/savechannels",
+            type: "POST",
+            data: data,
+            dataType: "JSON"
+        }).done(function( res ) {
+            console.log( "/api/savechannels DONE reponse", JSON.stringify(res, null, 4));
+            
+            // if everything works -> redirect the user to the home page
+            window.location.assign("/");
+        
+        }).fail(function( res ) {
+            console.log( "/api/savechannels   FAIL response", JSON.stringify(res, null, 4));
+            res = JSON.parse(res["responseText"]);
+            console.log( "/api/savechannels   FAIL responseText", JSON.stringify(res, null, 4));
 
-        //     // registering user ...
-        //     // send data to server
-        //     $.ajax({
-        //         url: "/registerstep2",
-        //         type: "POST",
-        //         data: dataRegister
-        //     }).done(function( res ) {
-        //         console.log( "/registerstep2  DONE response", JSON.stringify(res, null, 4));
-        //         window.location.assign("/registerstep2");
-        //     }).fail(function( res ) {
-        //         console.log( "/registerstep2  FAIL response", JSON.stringify(res, null, 4));
-        //         showError(".register-error", "error registering you ...!");
-        //     });
-
-        //     // window.location.assign("/");
-        // }).fail(function( res ) {
-        //     console.log( "/api/checkusername   FAIL response", JSON.stringify(res, null, 4));
-        //     res = JSON.parse(res["responseText"]);
-        //     console.log( "/api/checkusername   FAIL responseText", JSON.stringify(res, null, 4));
-
-        //     if (res["errorcode"] >= 2) {
-        //         showError(".register-error", res["status"]);
-        //     } else {
-        //         console.log("well - don't know now ");
-        //     }
-        // });
+            if (res["errorcode"] >= 2) {
+                showError(".register-error", res["status"]);
+            } else {
+                console.log("well - don't know now ");
+            }
+        });
     });
 
 

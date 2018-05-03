@@ -8,7 +8,14 @@ class RouteHandler {
     private static function sanitizeRequestParams() {
         \Logger::logDebugPrintR("'RouteHandler::sanitizeRequestParams()' [" . __LINE__ ."]  _REQUEST =   ", $_REQUEST); 
         foreach ($_REQUEST as $key => $param) {
-            self::$requestParams[$key] = \Util::escape($param);
+            if (is_array($param)) {
+                foreach ($param as $key2 => $param2)  {
+                    self::$requestParams[$key][$key2] = \Util::escape($param2);
+                }
+            } else {
+                self::$requestParams[$key] = \Util::escape($param);
+            }
+            
         }
         \Logger::logDebugPrintR("'RouteHandler::sanitizeRequestParams()' [" . __LINE__ ."]  xxx requestParams =   ", self::$requestParams); 
     }
@@ -29,7 +36,6 @@ class RouteHandler {
         }
 
         \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."] verb =  $verb ,  self::requestPath  ", self::$requestPath);
-
 
         $sql = "SELECT * FROM route WHERE verb = ? AND route = ?";
         $params = array($verb);

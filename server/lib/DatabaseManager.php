@@ -127,7 +127,7 @@ class DatabaseManager {
 
     public static function getAllChannels() {
         // TODO: only those for the user who is logged in
-        $sql = "SELECT id, name FROM channel WHERE deleted = 0 ORDER BY name";
+        $sql = "SELECT id as channelid, name FROM channel WHERE deleted = 0 ORDER BY name";
         $res = \DatabaseManager::query(self::getConnection(), $sql, array());
 
         $channels = array();
@@ -168,5 +168,11 @@ class DatabaseManager {
         }
         self::closeConnection();
         return $userid;
+    }
+
+    public static function assignUserChannels(int $userid, array $channels) {
+        \Logger::logDebugPrintR("'assignUserChannels()'  [" . __LINE__ . "   userid = $userid,  channels", $channels);
+        
+        return true; 
     }
 }
