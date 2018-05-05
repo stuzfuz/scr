@@ -22,18 +22,14 @@ class MessagesController extends SimpleController {
         // if a channelname is provided in the URL - load the data 
         // check if the channelname really exists!
         if (isset($this->route["channelname"])) {
-            $sql = "SELECT user.id AS userid, user.username, message.txt, message.created_at FROM message ";
-            $sql .= "LEFT JOIN channel ON (channel.id = message.channel_id) ";
-            $sql .= "LEFT JOIN user ON (message.user_id = user.id) ";
-            $sql .=  "WHERE  channel.name = ?  AND message.deleted = 0  AND channel.deleted = 0";
+            $topicsAndMessages = \DatabaseManager::getTopicsAndMessagesForUser($user->getId(), $this->route["channelname"]);
         } else {
             \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  no routeparam provided  ", ""); 
             \Util::quit500("Fatal Error - 'traverseAST' [" . __LINE__ ."] no routeparam provided   ", "");
         }
-        $res = \DatabaseManager::query($this->db_conn, $sql, array($this->route["channelname"]));
-        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  res =   ", $res);
+        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  topicsAndMessages =   ", $topicsAndMessages);
  
-        if ($res->rowCount() == 0) {
+        if ($topicsAndMessages->rowCount() == 0) {
             // TODO: show info -> channelname not found
         }
         
@@ -41,9 +37,10 @@ class MessagesController extends SimpleController {
         $data["channelname"] = $this->route["channelname"];
 
 
+        // 
         // read all message from this channel
         $messages = array();
-        if ($res->rowCount() == 0) {
+        if ($topicsAndMessages->rowCount() == 0) {
             $data["messagesfound"] = 0;     // false does not  work ...
             $data["messages"] = array(); 
         }  else {

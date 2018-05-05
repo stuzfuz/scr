@@ -3,24 +3,25 @@ CREATE DATABASE fh_2018_scm4_S1610307036  CHARACTER SET utf8 COLLATE utf8_genera
 
 USE fh_2018_scm4_S1610307036;
 
+
 CREATE TABLE user (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	username VARCHAR(255) NOT NULL,
 	firstname VARCHAR(255) NOT NULL,
 	lastname VARCHAR(255) NOT NULL,
-	created_at INT(14) NOT NULL, 
+	created_at INT(14) DEFAULT UNIX_TIMESTAMP(NOW()), 
 	password VARCHAR(255) NOT NULL, 
-	deleted TINYINT(1) NOT NULL, 
-	
+	deleted TINYINT(1) NOT NULL DEFAULT FALSE,
+	isadmin TINYINT(1) NOT NULL DEFAULT FALSE,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 
 CREATE TABLE channel (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	name VARCHAR(255) NOT NULL,
-	created_at INT(14) NOT NULL, 
+	created_at INT(14) DEFAULT UNIX_TIMESTAMP(NOW()), 
 	created_by_user_id INT(11) NOT NULL,
-	deleted TINYINT(1) NOT NULL, 
+	deleted TINYINT(1) NOT NULL DEFAULT FALSE, 
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 
@@ -29,37 +30,42 @@ ALTER TABLE channel
 ADD CONSTRAINT channel_created_by FOREIGN KEY (created_by_user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
--- TODO: which user has access to which channel ..?  WHY DID I DO THIS?
--- CREATE TABLE user_channel (
--- 	id INT(11) NOT NULL AUTO_INCREMENT,
--- 	user_id INT(11) NOT NULL,
--- 	channel_id INT(11) NOT NULL
--- 	created_at INT(14) NOT NULL, 
--- 	deleted TINYINT(1) NOT NULL, 
--- 	PRIMARY KEY (id),
--- ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
--- TODO: contraint user_id -> user.id
--- TODO: contraint channel_id -> channel.id
+CREATE TABLE ref_user_channel (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	user_id INT(11) NOT NULL,
+	channel_id INT(11) NOT NULL,
+	created_at INT(14) DEFAULT UNIX_TIMESTAMP(NOW()), 
+	deleted TINYINT(1) NOT NULL DEFAULT FALSE,
+	PRIMARY KEY (id),
+	UNIQUE KEY (user_id, channel_id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8; 
+ALTER TABLE ref_user_channel
+ADD CONSTRAINT ref_user_channel_user_id FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE ref_user_channel
+ADD CONSTRAINT ref_user_channel_channel_id FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
 
 --  contraint created_by_user_id -> user.id
 
 
-CREATE TABLE message (
+CREATE TABLE topic (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	user_id INT(11) NOT NULL,
 	channel_id INT(11) NOT NULL,
-	txt VARCHAR(1000) NOT NULL, 
-	created_at INT(14) NOT NULL, 
-	deleted TINYINT(1) NOT NULL, 
+	title VARCHAR(100) NOT NULL, 
+	description VARCHAR(100) NOT NULL, 
+	created_at INT(14) DEFAULT UNIX_TIMESTAMP(NOW()), 
+	deleted TINYINT(1) NOT NULL DEFAULT FALSE,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 
 -- TODO: contraint user_id -> user.id
 -- TODO: contraint channel_id -> channel.id
-ALTER TABLE message
-ADD CONSTRAINT message_created_by_user_id FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE message
-ADD CONSTRAINT message_belongs_to_channel FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE topic
+ADD CONSTRAINT topic_created_by_user_id FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE topic
+ADD CONSTRAINT topic_belongs_to_channel FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 
@@ -67,41 +73,52 @@ ADD CONSTRAINT message_belongs_to_channel FOREIGN KEY (channel_id) REFERENCES ch
 
 
 -- combined key (user_id, message_id
-CREATE TABLE message_flags (
+CREATE TABLE topic_flag (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	topic_id INT(11) NOT NULL,
+	user_id INT(11) NOT NULL,
+	important TINYINT(1) NOT NULL DEFAULT FALSE,
+	unread TINYINT(1) NOT NULL DEFAULT TRUE,
+	created_at INT(14) DEFAULT UNIX_TIMESTAMP(NOW()), 
+	PRIMARY KEY (id),
+	UNIQUE KEY (user_id, topic_id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
+ALTER TABLE topic_flag
+ADD CONSTRAINT topic_flag_user_id FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE topic_flag
+ADD CONSTRAINT topic_flag_topic_id FOREIGN KEY (topic_id) REFERENCES topic (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+CREATE TABLE message (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	user_id INT(11) NOT NULL,
+	topic_id INT(11) NOT NULL,
+	txt VARCHAR(1000) NOT NULL, 
+	created_at INT(14) DEFAULT UNIX_TIMESTAMP(NOW()), 
+	deleted TINYINT(1) NOT NULL DEFAULT FALSE,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
+
+
+-- combined key (user_id, message_id
+CREATE TABLE message_flag (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	user_id INT(11) NOT NULL,
 	message_id INT(11) NOT NULL,
-	created_at INT(14) NOT NULL, 
+	created_at INT(14) DEFAULT UNIX_TIMESTAMP(NOW()), 
 	important TINYINT(1) NOT NULL,
-	PRIMARY KEY (id, user_id)
+	unread TINYINT(1) NOT NULL,
+	PRIMARY KEY (id),
+	UNIQUE KEY (user_id, message_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 -- TODO: contraint user_id -> user.id
 -- TODO: contraint message_id -> message.id
-ALTER TABLE message_flags
-ADD CONSTRAINT message_flag_created_by_user FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE message_flags
-ADD CONSTRAINT message_id_flagged FOREIGN KEY (message_id) REFERENCES message (id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE message_flag
+ADD CONSTRAINT message_flag_user_id FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE message_flag
+ADD CONSTRAINT message_flag_message_id FOREIGN KEY (message_id) REFERENCES message (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
-
-
-
--- INSERT INTO categories VALUES (1, 'Mobile & Wireless Computing');
--- INSERT INTO categories VALUES (2, 'Functional Programming');
--- INSERT INTO categories VALUES (3, 'C / C++');
--- INSERT INTO categories VALUES (4, '<< New Publications >>');
-
--- INSERT INTO books VALUES (1, 1, 'Hello, Android: Introducing Google''s Mobile Development Platform', 'Ed Burnette', '9781934356562', 19.97);
--- INSERT INTO books VALUES (2, 1, 'Android Wireless Application Development', 'Shane Conder, Lauren Darcey', '0321743016', 31.22);
--- INSERT INTO books VALUES (5, 1, 'Professional Flash Mobile Development', 'Richard Wagner', '0470620072', 19.90);
--- INSERT INTO books VALUES (7, 1, 'Mobile Web Design For Dummies', 'Janine Warner, David LaFontaine', '9780470560969', 16.32);
--- INSERT INTO books VALUES (11, 2, 'Introduction to Functional Programming using Haskell', 'Richard Bird', '9780134843469', 74.75);
--- INSERT INTO books VALUES (12, 2, 'Scripting (Attacks) for Beginners - <script type="text/javascript">alert(''All your base are belong to us!'');</script>', 'John Doe', '1234567890', 9.99);
--- INSERT INTO books VALUES (14, 2, 'Expert F# (Expert''s Voice in .NET)', 'Antonio Cisternino, Adam Granicz, Don Syme', '9781590598504', 47.64);
--- INSERT INTO books VALUES (16, 3, 'C Programming Language (2nd Edition)', 'Brian W. Kernighan, Dennis M. Ritchie', '0131103628', 48.36);
--- INSERT INTO books VALUES (27, 3, 'C++ Primer Plus (5th Edition)', 'Stephan Prata', ' 9780672326974', 36.94);
--- INSERT INTO books VALUES (29, 3, 'The C++ Programming Language', 'Bjarne Stroustrup', '0201700735', 67.49);
-	
-INSERT INTO user VALUES (1, 'admin', 'admin', 'admin',UNIX_TIMESTAMP(NOW())-343434, SHA1('admin'), 0);
 
 
 
@@ -168,54 +185,80 @@ VALUES ('/api/signout' ,'API', NULL, NULL, NULL, NULL, 'server/components/signou
 
 
 
+	
+INSERT INTO user(username, firstname, lastname, password, isadmin) 
+VALUES ('admin', 'admin', 'admin', SHA1('admin'), TRUE);
 
-
-INSERT INTO user (username,  firstname, lastname, created_at, password, deleted) 
-VALUES ( 'donaldduck',  'donald', 'duck', 	UNIX_TIMESTAMP(NOW())-444444, SHA1('donald'), 0);
-
-
-INSERT INTO user (username,  firstname, lastname, created_at, password, deleted) 
-VALUES ( 'dagobertduck',  'dagobert', 'duck', 	UNIX_TIMESTAMP(NOW())-5555555, SHA1('dagobert'), 0);
-
-
-INSERT INTO user (username,  firstname, lastname, created_at, password, deleted) 
-VALUES ( 'daisyduck',  'daisy', 'duck', 	UNIX_TIMESTAMP(NOW())-6666666, SHA1('dais'), 0);
-
-
-INSERT INTO user (username,  firstname, lastname, created_at, password, deleted) 
-VALUES ( 'goofy', 'goofy', 'duck', 	UNIX_TIMESTAMP(NOW())-777777, SHA1('goofy'), 0);
+	
+INSERT INTO user(username, firstname, lastname, password) 
+VALUES ('admin', 'admin', 'admin', SHA1('admin'));
 
 
 
 
-INSERT INTO channel (name, created_at, created_by_user_id, deleted) 
-VALUES ( 'money',UNIX_TIMESTAMP(NOW())-787777, 3, 0);
+
+-- nur damit ein channel beim registrieren angezeigt wird
+INSERT INTO channel (name, created_by_user_id) 
+VALUES ( 'money', 1);
+
+INSERT INTO channel (name, created_by_user_id) 
+VALUES ( 'channel created by admin', 1);
 
 
-INSERT INTO channel (name, created_at, created_by_user_id, deleted) 
-VALUES ( 'bad luck', UNIX_TIMESTAMP(NOW())-717777, 2, 0);
+-- topic from userid 1
+INSERT INTO topic (user_id, channel_id, title, description) 
+VALUES (2, 1, "first Topic #money#", "lets talk f ...");
+
+INSERT INTO topic (user_id, channel_id, title, description) 
+VALUES (1, 2, "topic admin", "well iam text ...");
+
+-- topic from userid 2
+INSERT INTO topic (user_id, channel_id, title, description) 
+VALUES (1, 1, "Topic  admin  'money'", "lorem ips");
 
 
-INSERT INTO channel (name, created_at, created_by_user_id, deleted) 
-VALUES ( 'dogs', UNIX_TIMESTAMP(NOW())-177777, 4, 0 );
- 
-INSERT INTO channel (name, created_at, created_by_user_id, deleted) 
-VALUES ( 'emptychannel', UNIX_TIMESTAMP(NOW())-277777, 5, 0 );
+-- topic flags
+INSERT INTO topic_flag (user_id, topic_id, important, unread) 
+VALUES (2, 1, TRUE, FALSE);
+
+INSERT INTO topic_flag (user_id, topic_id, important, unread) 
+VALUES (1, 1, FALSE, TRUE);
+
+INSERT INTO topic_flag (user_id, topic_id, important, unread) 
+VALUES (1, 2, TRUE, FALSE);
+
+INSERT INTO topic_flag (user_id, topic_id, important, unread) 
+VALUES (2, 2, FALSE, TRUE);
+
+INSERT INTO topic_flag (user_id, topic_id, important, unread) 
+VALUES (1, 3, TRUE, TRUE);
+
+INSERT INTO topic_flag (user_id, topic_id, important, unread) 
+VALUES (2, 3, TRUE, TRUE);
 
 
-INSERT INTO message (user_id, channel_id, txt, created_at, deleted) 
-VALUES (3, 1,  'channel owner: dagobert, message by @dagobertduck, channel name is "money"', UNIX_TIMESTAMP(NOW())-888888,  0 );
 
-INSERT INTO message (user_id, channel_id, txt, created_at, deleted) 
-VALUES (2, 1,  'channel owner: dagobert, message by @donaldduck, channel name is "money"', UNIX_TIMESTAMP(NOW())-9834,  0 );
+-- message from userid 2  - topic 1
+INSERT INTO message (user_id, topic_id, txt) 
+VALUES (2, 1, "first posting ch. 'money''");
 
-INSERT INTO message (user_id, channel_id, txt, created_at, deleted) 
-VALUES (4, 1,  'channel owner: dagobert, message by @daisyduck, channel name is "money"', UNIX_TIMESTAMP(NOW())-12345,  0 );
-
-
-INSERT INTO message (user_id, channel_id, txt, created_at, deleted) 
-VALUES (4, 2,  'channel owner: donald, message by @daisyduck, channel name is "bad luck"', UNIX_TIMESTAMP(NOW())-393434,  0 );
+-- message from userid 1 -topic 1
+INSERT INTO message (user_id, topic_id, txt) 
+VALUES (1, 1, "second  posting ch 'money'");
 
 
-INSERT INTO message (user_id, channel_id, txt, created_at, deleted) 
-VALUES (5, 2,  'channel owner: donald, message by @goofy, channel name is "bad luck"', UNIX_TIMESTAMP(NOW())-243434,  0 );
+
+-- message flags
+INSERT INTO message_flag (user_id, message_id, important, unread) 
+VALUES (2, 1, TRUE, FALSE);
+
+INSERT INTO message_flag (user_id, message_id, important, unread) 
+VALUES (1, 1, FALSE, TRUE);
+
+INSERT INTO message_flag (user_id, message_id, important, unread) 
+VALUES (1, 2, TRUE, FALSE);
+
+INSERT INTO message_flag (user_id, message_id, important, unread) 
+VALUES (2, 2, FALSE, TRUE);
+
+

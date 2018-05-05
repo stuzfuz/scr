@@ -102,19 +102,20 @@ class DatabaseManager {
         return $user;
     }    
 
-    public static function getChannelsForUser($id) {
-        // TODO: only those for the user who is logged in
-        $sql = "SELECT id, name FROM channel WHERE deleted = 0 AND created_by_user_id = ? ORDER BY name";
-        $res = \DatabaseManager::query(self::getConnection(), $sql, array($id));
+    public static function getChannelsForUser($userid) {
+        $sql = "SELECT channel.id, name    ";
+        $sql .= "FROM channel ";
+        $sql .= "LEFT JOIN ref_user_channel ON (ref_user_channel.channel_id = channel.id)   "; 
+        $sql .= "WHERE ref_user_channel.user_id = ? AND channel.deleted = FALSE   ";
+
+        $res = \DatabaseManager::query(self::getConnection(), $sql, array($userid));
 
         $channels = array();
         $data = array(); 
         if ($res->rowCount() == 0) {
             $data["channelsfound"] = false; 
         } else {
-            // echo "<br><br> adding channels to array ... <br>";
             while ($channel = \DatabaseManager::fetchAssoz($res)) {
-                // \Util::my_var_dump($channel, "MessagesController channel  = ");
                 $channel["nameasurl"] = urlencode($channel["name"]);
                 $channels[] = $channel; 
             }
@@ -154,8 +155,8 @@ class DatabaseManager {
             // TODO: change back to hash('sha1', "$username|$password")
             $password = hash('sha1', $password);
 
-            $sql = "INSERT INTO user (username, password, firstname, lastname, created_at, deleted)";
-            $sql .= " VALUES (?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), 0)";
+            $sql = "INSERT INTO user (username, password, firstname, lastname)";
+            $sql .= " VALUES (?, ?, ?, ?)";
             
             self::query($con, $sql, array($username, $password, $firstname, $lastname));
 
@@ -170,9 +171,140 @@ class DatabaseManager {
         return $userid;
     }
 
-    public static function assignUserChannels(int $userid, array $channels) {
-        \Logger::logDebugPrintR("'assignUserChannels()'  [" . __LINE__ . "   userid = $userid,  channels", $channels);
+    public static function assignUserChannelsTopicsMessages(int $userid, array $channels) {
+        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "   userid = $userid,  channels", $channels);
         
-        return true; 
+        // if there are no channels -> do nothing 
+        if (!is_array($channels)) { return true; }
+        $sqlAssignChannels = "INSERT INTO ref_user_channel (user_id, channel_id) VALUES";
+        $paramsAssignChannels = [];
+        $sqlArr = [];
+        $s = "(?, ?)";
+         foreach($channels as $c) {
+            $sqlArr[] = $s;
+            $paramsAssignChannels[] = $userid;
+            $paramsAssignChannels[] = $c;
+        } 
+        $sqlAssignChannels .= " " . implode(",", $sqlArr);
+        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] assign channels to userid sql = ", $sqlAssignChannels);
+        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] paramsAssignChannels ", $paramsAssignChannels);
+
+        $con = self::getConnection();
+        $con->beginTransaction();
+        try {
+            // assign userid to all the channel ids, so the user has access to the channel
+            self::query($con, $sqlAssignChannels, $paramsAssignChannels);
+            $lastId = $con->lastInsertid();
+
+            // TODO: Insert user_id, topic_id for all channels and topics to the "topic_flags" table: unread, not important 
+
+            // TODO: Insert user_id, message_id for all channels and messages to the  "message_flags" table: unread, not important 
+            $con->commit();
+        } catch (Exception $e) {
+            \Logger::logError("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] could not insert into table 'ref_user_channel' ", $e->getMessage());
+            \Logger::logDebug("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] could not insert into table 'ref_user_channel' ", $e->getMessage());
+
+            $con->rollBack();
+            return false; 
+        }
+        self::closeConnection();
+        return true;
     }
+
+    
+
+    public static function getTopicsAndMessagesForUser(int $userid, string $channelname) {
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "   userid = $userid,  channelname: $channelname", "");
+
+        // $sql = "SELECT channel.id AS channelid, channel.name AS channelname, ";
+        // $sql .= "topic.id AS topicid, topic.title AS topictitle, topic.description AS topicdescription, topic.created_at AS topiccreatedat, ";
+        // $sql .= "message.id AS messageid, message.txt AS messagetxt, message.created_at AS messagecreatedat,  ";
+        // $sql .= "topic_flag.unread AS topicunread, topic_flag.important AS topicimportant,    ";
+        // $sql .= "message_flag.unread AS messageunread, message_flag.important AS messageimportant   "; 
+        // $sql .= "FROM channel ";
+        // $sql .= "LEFT JOIN topic ON (topic.channel_id = channel.id)  ";
+        // $sql .= "LEFT JOIN message ON (message.topic_id = topic.id)  ";
+        // $sql .= "LEFT JOIN message_flag ON (message_flag.message_id = message.id AND message_flag.user_id = ?)  ";
+        // $sql .= "LEFT JOIN topic_flag ON (topic_flag.topic_id = topic.id AND topic_flag.user_id = ?)    " ;
+        // $sql .= "WHERE channel.name = ? AND channel.deleted = 0    ";
+        // $sql .= "ORDER BY topic.created_at,   message.created_at   ";
+
+        $sqlTopics = "SELECT channel.id AS channelid, channel.name AS channelname, ";
+        $sqlTopics .= "topic.id AS topicid, topic.title AS topictitle, topic.description AS topicdescription, topic.created_at AS topiccreatedat, ";
+        $sqlTopics .= "topic_flag.unread AS topicunread, topic_flag.important AS topicimportant   ";
+        $sqlTopics .= "FROM channel ";
+        $sqlTopics .= "LEFT JOIN topic ON (topic.channel_id = channel.id)  ";
+        $sqlTopics .= "LEFT JOIN topic_flag ON (topic_flag.topic_id = topic.id AND topic_flag.user_id = ?)    " ;
+        $sqlTopics .= "WHERE channel.name = ? AND channel.deleted = 0    ";
+        $sqlTopics .= "ORDER BY topic.created_at  ";
+
+        $sqlParams[] = $userid;
+        $sqlParams[] = $channelname;
+
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] get topics and message = ", $sqlTopics);
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] sqlParams ", $sqlParams);
+
+        $con = self::getConnection();
+        $res = self::query($con, $sqlTopics, $sqlParams);
+
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] res = ", $res);
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  rowCount  = ", $res->rowCount() );
+
+        $topics = [];
+        if ($res->rowCount() == 0) {
+            $data["topicsfound"] = false; 
+        } else {
+            while ($tmp = \DatabaseManager::fetchAssoz($res)) {
+                $topicid = $tmp["topicid"];
+                $topics[$topicid]["topic"] = $tmp;
+            }
+            $data["topicsfound"] = true; 
+            $data["topics"] = $topics; 
+        }
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  topics  = ", $topics);
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  data  = ", $data);
+
+        $sqlMessages = "SELECT topic.id AS topicid, ";
+        $sqlMessages .= "message.id AS messageid, message.txt AS messagetxt, message.created_at AS messagecreatedat,  ";
+        $sqlMessages .= "message_flag.unread AS messageunread, message_flag.important AS messageimportant   "; 
+        $sqlMessages .= "FROM channel ";
+        $sqlMessages .= "LEFT JOIN topic ON (topic.channel_id = channel.id)  ";
+        $sqlMessages .= "LEFT JOIN message ON (message.topic_id = topic.id)  ";
+        $sqlMessages .= "LEFT JOIN message_flag ON (message_flag.message_id = message.id AND message_flag.user_id = ?)  ";
+        $sqlMessages .= "WHERE channel.name = ? AND channel.deleted = 0    ";
+        $sqlMessages .= "ORDER BY message.created_at   ";
+
+        $res = self::query($con, $sqlMessages, $sqlParams);
+
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] res = ", $res);
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  rowCount  = ", $res->rowCount() );
+
+        // $topics = [];
+        // $messages = [];
+        if ($res->rowCount() == 0) {
+            $data["topicsfound"] = false; 
+            die("cowCount = " . __LINE__ . ") is 0");
+        } else {
+            while ($tmp = \DatabaseManager::fetchAssoz($res)) {
+                $topicid = $tmp["topicid"];
+                $topics[$topicid]["messages"][] = $tmp;
+            }
+            // $data["channelsfound"] = true; 
+            // $data["channels"] = $channels; 
+        }
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] topics with message  grouped by topic  = ", $topics);
+
+        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] messages grouped by topic  = ", $messages);
+
+
+
+
+
+
+        die("in getTopicsAndMessagesForUser()");
+        self::closeConnection();
+        return true;
+    }
+
+
 }
