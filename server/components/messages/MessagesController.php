@@ -14,11 +14,9 @@ class MessagesController extends SimpleController {
         } else {
             \Util::redirect("/");
         }
-        $data = [];
 
-        $tmp = \DatabaseManager::getChannelsForUser($user->getId());
+        $data = \DatabaseManager::getChannelsForUser($user->getId());
         
-        $data = array_merge($data, $tmp);
 
         // if a channelname is provided in the URL - load the data 
         // check if the channelname really exists!
@@ -28,27 +26,23 @@ class MessagesController extends SimpleController {
             \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  no routeparam provided  ", ""); 
             \Util::quit500("Fatal Error - 'traverseAST' [" . __LINE__ ."] no routeparam provided   ", "");
         }
-
-        $data = array_merge($data, $topicsAndMessages);
-        $data["channelname"] = $this->route["channelname"];
-
-        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  data with topics and messages =   ", $data);
- 
-
-
+        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  topicsAndMessages =   ", $topicsAndMessages);
         
+        $data = array_merge($data, $topicsAndMessages);
+
+        $data["channelname"] = $this->route["channelname"];
+        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  data =   ", $data);
+
+        // $data["hasimportanttopics"] = 0;
+        // $data["hastopics"] = 0;
         $this->data = $data; 
-        \Logger::logDebugPrintR("MessagesController this->data  = ", $this->data);
+        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  data   = ", $this->data);
+        // die();
     }
 
     // // TODO Delete this if not necessary
     public function justDoIt() : string {
-        // echo "<br> MessagesController - in 'justDoIt'";
         self::gatherData();
-        // echo "<br>  MarinController $this->route['headertemplate']  " . $this->route['headertemplate'] . "<br/>";
-        // echo "<br>  MarinController $this->route['contenttemplate']  " . $this->route['contenttemplate'] . "<br/>";
-        // echo "<br>  MarinController $this->route['footertemplate']  " . $this->route['footertemplate'] . "<br/>";
-
         $page = \TemplateEngine::render(\ApplicationConfig::$indexTmpl, $this->data, $this->route['headertemplate'], $this->route['contenttemplate'], $this->route['footertemplate']);
         return $page;
     }

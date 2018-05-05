@@ -113,7 +113,7 @@ class DatabaseManager {
         $channels = array();
         $data = array(); 
         if ($res->rowCount() == 0) {
-            $data["channelsfound"] = false; 
+            $data["channelsfound"] = 0; 
         } else {
             while ($channel = \DatabaseManager::fetchAssoz($res)) {
                 $channel["nameasurl"] = urlencode($channel["name"]);
@@ -134,7 +134,7 @@ class DatabaseManager {
         $channels = array();
         $data = array(); 
         if ($res->rowCount() == 0) {
-            $data["channelsfound"] = false; 
+            $data["channelsfound"] = 0; 
         } else {
             // echo "<br><br> adding channels to array ... <br>";
             while ($channel = \DatabaseManager::fetchAssoz($res)) {
@@ -229,10 +229,12 @@ class DatabaseManager {
 
         $sqlTopics = "SELECT channel.id AS channelid, channel.name AS channelname, ";
         $sqlTopics .= "topic.id AS topicid, topic.title AS topictitle, topic.description AS topicdescription, topic.created_at AS topiccreatedat, ";
-        $sqlTopics .= "topic_flag.unread AS topicunread, topic_flag.important AS topicimportant   ";
+        $sqlTopics .= "topic_flag.unread AS topicunread, topic_flag.important AS topicimportant,   ";
+        $sqlTopics .= "user.username     ";
         $sqlTopics .= "FROM channel ";
         $sqlTopics .= "LEFT JOIN topic ON (topic.channel_id = channel.id)  ";
         $sqlTopics .= "LEFT JOIN topic_flag ON (topic_flag.topic_id = topic.id AND topic_flag.user_id = ?)    " ;
+        $sqlTopics .= "LEFT JOIN user ON (user.id = topic.user_id)    " ;
         $sqlTopics .= "WHERE channel.name = ? AND channel.deleted = 0    ";
         $sqlTopics .= "ORDER BY topic.created_at  ";
 
@@ -250,43 +252,107 @@ class DatabaseManager {
 
         $topics = [];
         if ($res->rowCount() == 0) {
-            $data["topicsfound"] = false; 
+            $topics["hastopics"] = 0; 
+            $topics["hasimportanttopics"] = 0; 
         } else {
             while ($tmp = \DatabaseManager::fetchAssoz($res)) {
+                $tmp["hasmessages"] = 0;
+                $tmp["hasimportantmessages"] = 0;
+
+                $date = new DateTime();
+                $date->setTimestamp($tmp["topiccreatedat"]);
+                $tmp["date"] = $date->format('Y-m-d');
+                $tmp["time"] = $date->format('H:i');
+
                 $topicid = $tmp["topicid"];
-                $topics[$topicid]["topic"] = $tmp;
+                if ($tmp["topicimportant"]) {
+                    $topics["importanttopic"][] = $tmp;
+                } else {
+                    $topics["topic"][] = $tmp;
+                }
             }
-            $data["topicsfound"] = true; 
-            $data["topics"] = $topics;
+            $topics["hastopics"] = isset($topics["topic"]) ? 1 : 0; 
+            $topics["hasimportanttopics"] = isset($topics["importanttopic"]) ? 1 : 0; 
         }
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  topics  = ", $topics);
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  data  = ", $data);
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  topics  = ", $topics);    
 
         $sqlMessages = "SELECT topic.id AS topicid, ";
         $sqlMessages .= "message.id AS messageid, message.txt AS messagetxt, message.created_at AS messagecreatedat,  ";
-        $sqlMessages .= "message_flag.unread AS messageunread, message_flag.important AS messageimportant   "; 
+        $sqlMessages .= "message_flag.unread AS messageunread, message_flag.important AS messageimportant,   "; 
+        $sqlMessages .= "user.username     ";
         $sqlMessages .= "FROM channel ";
         $sqlMessages .= "LEFT JOIN topic ON (topic.channel_id = channel.id)  ";
         $sqlMessages .= "LEFT JOIN message ON (message.topic_id = topic.id)  ";
         $sqlMessages .= "LEFT JOIN message_flag ON (message_flag.message_id = message.id AND message_flag.user_id = ?)  ";
+        $sqlMessages .= "LEFT JOIN user ON (user.id = message.user_id)    " ;
         $sqlMessages .= "WHERE channel.name = ? AND channel.deleted = 0  ";
         $sqlMessages .= "ORDER BY message.created_at   ";
 
         $res = self::query($con, $sqlMessages, $sqlParams);
 
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] res = ", $res);
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  rowCount  = ", $res->rowCount() );
+        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] res = ", $res);
+        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  rowCount  = ", $res->rowCount() );
 
+        $messages = [];
+        // convert to messages array
         if ($res->rowCount() == 0) {
-            $data["topicsfound"] = false; 
-            die("cowCount = " . __LINE__ . ") is 0");
+            \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  well no message - thats ok   ", "");
         } else {
-            while ($tmp = \DatabaseManager::fetchAssoz($res)) {
-                $topicid = $tmp["topicid"];
-                $data["topics"][$topicid]["messages"][] = $tmp;
+            while ($msg = \DatabaseManager::fetchAssoz($res)) {
+                $date = new DateTime();
+                $date->setTimestamp($msg["messagecreatedat"]);
+                $msg["date"] = $date->format('Y-m-d');
+                $msg["time"] = $date->format('H:i');
+                $messages[] = $msg; 
             }
         }
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] data = ", $data);
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  messages   = ", $messages );
+
+        foreach($messages as $msg) {
+            $topicid = $msg["topicid"];
+
+            if ($msg["messageid"] == null) { continue; }
+
+            \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  after if ($msg[messageid] == null     ", "" );
+
+            $found = false; 
+            if (isset($topics["importanttopic"])) {
+                foreach($topics["importanttopic"] as $key => $t) {
+                    // $topics["importanttopic"][$key]["hasimportantmessages"] = 0;
+                    // $topics["importanttopic"][$key]["hasmessages"] = 0;
+
+                    if ($t["topicid"] == $topicid) {
+                        if ($msg["messageimportant"]) {
+                            $topics["importanttopic"][$key]["importantmessages"][] = $msg;
+                            $topics["importanttopic"][$key]["hasimportantmessages"] = true;
+                        } else {
+                            $topics["importanttopic"][$key]["messages"][] = $msg;
+                            $topics["importanttopic"][$key]["hasmessages"] = true;
+                        }
+                        $found = true;
+                        break;
+                    }
+                }
+            }
+            if (isset($topics["topics"])) {
+                foreach($topics["topics"] as $key => $t) {
+                    // $topics["topics"][$key]["hasimportantmessages"] = 0;
+                    // $topics["topics"][$key]["hasmessages"] = 0;
+
+                    if ($t["topicid"] == $topicid) {
+                        if ($msg["messageimportant"]) {
+                            $topics["topics"][$key]["importantmessages"][] = $msg;
+                            $topics["topics"][$key]["hasimportantmessages"] = true;
+                        } else {
+                            $topics["topics"][$key]["messages"][] = $msg;
+                            $topics["topics"][$key]["hasmessages"] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  topics with messages   = ", $topics );
 
         self::closeConnection();
         return $topics;

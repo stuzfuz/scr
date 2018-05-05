@@ -6,18 +6,18 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <title>PoorMansSlack</title>
+    <title>PoorMansSlack</title>
 
-  <!-- Bootstrap core CSS -->
-  <link href="../../../client/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="../../../client/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Custom styles for this template -->
-  <link href="../../../client/css/poormansslack.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="../../../client/css/poormansslack.css" rel="stylesheet">
 </head>
 
 <body>
@@ -26,24 +26,24 @@
     <!-- ###BEGIN_TEMPLATE### -->
 
     <div class="container-fluid">
-            <div class="row">
-                <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                    <div class="sidebar-sticky">
-    
-    
-                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                            <span>Channels</span>
-                            <a class="d-flex align-items-center text-muted" href="#">
-                                <span data-feather="plus-circle"></span>
-                            </a>
-                        </h6>
-                        <ul class="nav flex-column mb-2">
-    
-                            <!-- ###BEGIN_PARTIAL### -->
-                            <!-- ###BEGIN### -->
-                            <!-- ###IF(CHANNELSFOUND)### -->
-                            <!-- ###FOREACH(CHANNELS)###  -->
-                            <!--    
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>Channels</span>
+                        <a class="d-flex align-items-center text-muted" href="#">
+                            <span data-feather="plus-circle"></span>
+                        </a>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+
+                        <!-- ###BEGIN_PARTIAL### -->
+                        <!-- ###BEGIN### -->
+                        <!-- ###IF(CHANNELSFOUND)### -->
+                        <!-- ###FOREACH(CHANNELS)###  -->
+                        <!--    
                                                 <li class="nav-item">
                                                 <a class="nav-link" href="/messages/@@nameasurl@@">
                                                     <span data-feather="file-text"></span>
@@ -51,70 +51,69 @@
                                                 </a>
                                                 </li>
                                             -->
-                            <!-- ###END### -->
-                            <!-- ###ELSE### -->
-                            <!-- <h4>no channels available</h4> -->
-                            <!-- ###END### -->
-    
-    
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
-                                    Current month
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
-                                    Last quarter
-                                </a>
-                            </li>
-                            <!-- ###END### -->
-    
-                            <!-- ###END_PARTIAL### -->
-    
-                        </ul>
-                    </div>
-                </nav>
-    
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-    
-                        <!-- ###BEGIN_PARTIAL### -->
-                        <!-- ###BEGIN### 
-                                    <h1 class="h2">@@channelname@@</h1>       
-                                ###END### -->
-    
-                        <h1 class="h2">Channelname</h1>
+                        <!-- ###END### -->
+                        <!-- ###ELSE### -->
+                        <!-- <h4>no channels available</h4> -->
+                        <!-- ###END### -->
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Current month
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Last quarter
+                            </a>
+                        </li>
+                        <!-- ###END### -->
+
                         <!-- ###END_PARTIAL### -->
-    
-                        <div class="btn-toolbar mb-2 mb-md-0">
-                            <div class="btn-group mr-2">
-                                <button class="btn btn-sm btn-outline-secondary">Share</button>
-                                <button class="btn btn-sm btn-outline-secondary">Export</button>
-                            </div>
-                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                                <span data-feather="calendar"></span>
-                                This week
-                            </button>
+
+                    </ul>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+
+                    <!-- ###BEGIN_PARTIAL### -->
+                    <!-- ###BEGIN### 
+                            <h1 class="h2">@@channelname@@</h1>       
+                         ###END### -->
+
+                    <h1 class="h2">Channelname</h1>
+                    <!-- ###END_PARTIAL### -->
+
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group mr-2">
+                            <button class="btn btn-sm btn-outline-secondary">Share</button>
+                            <button class="btn btn-sm btn-outline-secondary">Export</button>
                         </div>
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                            <span data-feather="calendar"></span>
+                            This week
+                        </button>
                     </div>
-    
-                    <!-- our messages-->
-                    <div class="container scrollable-messages">
-    
-                        <!-- ###BEGIN_PARTIAL### -->
-                        <!-- ###BEGIN### -->
-                        <!-- ###IF(MESSAGESFOUND)### -->
-                        <!-- ###FOREACH(MESSAGES)### -->
-                        <!-- 
+                </div>
+
+                <!-- our messages-->
+                <div class="container">
+
+                    <!-- ###BEGIN_PARTIAL### -->
+                        <!-- ###BEGIN###
+                            ###IF(HASIMPORTANTTOPICS)###
+                                ###FOREACH(IMPORTANTTOPIC)### 
                                         <div class="card  mb-5">
                                             <div class="card-header bg-transparent ">
-                                                <h5 class="card-title">@@username@@</h5>
-                                                <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
+                                                <h5 class="card-title">@@username@@  <span class="badge badge-primary">Important</span> </h5>
+                                                <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
                                             </div>
                                             <div class="card-body ">
-                                                <p class="card-text">@@txt@@</p>
+                                                <p class="card-text">@@topictitle@@</p>
                                             </div>
                                             <div class="card-footer bg-transparent text-right">
                                                 <span data-feather="thumbs-up"></span>
@@ -122,109 +121,254 @@
                                                 <span data-feather="trash-2"></span>
                                             </div>
                                         </div>
-                                         
-                                      ###END### 
-                                  ###ELSE###  
-                                     <h4>no messages in this channel ...</h4> 
-                                 ###END### -->
-                        <div class="card  mb-5">
-                            <div class="card-header bg-transparent ">
-                                <h5 class="card-title">TOPIC @donaldduck</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
-                            </div>
-                            <div class="card-body ">
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                            <div class="card-footer bg-transparent text-right">
-                                <span data-feather="thumbs-up"></span>
-                                <span data-feather="edit"></span>
-                                <span data-feather="trash-2"></span>
-                            </div>
-                        </div>
-    
-                        <div class="row">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-11">
-                                <div class="card mb-5">
-                                    <div class="card-header bg-transparent ">
-                                        <h5 class="card-title">MSG @donaldduck</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
-                                    </div>
-                                    <div class="card-body ">
-                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    </div>
-                                    <div class="card-footer bg-transparent text-right">
-                                        <span data-feather="thumbs-up"></span>
-                                        <span data-feather="edit"></span>
-                                        <span data-feather="trash-2"></span>
-                                    </div>
-                                </div>
-                                <div class="container new-message">
-                                    <form id="newmessageTOPICID">
-                                        <div class="form-group">
-                                            <!-- <label for="validationCustomUsername">Username</label> -->
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="inputGroupPrepend">+</span>
+                                        ###IF(HASIMPORTANTMESSAGES)###
+                                            ###FOREACH(IMPORTANTMESSAGES)###
+                                                <div class="row">
+                                                    <div class="col-sm-1"></div>
+                                                    <div class="col-sm-11">
+                                                        <div class="card mb-5">
+                                                            <div class="card-header bg-transparent ">
+                                                                <h5 class="card-title">@@username@@ <span class="badge badge-primary">Important</span> </h5>
+                                                                <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
+                                                            </div>
+                                                            <div class="card-body ">
+                                                                <p class="card-text">@@messagetxt@@</p>
+                                                            </div>
+                                                            <div class="card-footer bg-transparent text-right">
+                                                                <span data-feather="thumbs-up"></span>
+                                                                <span data-feather="edit"></span>
+                                                                <span data-feather="trash-2"></span>
+                                                            </div>                                                            
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <input type="text" class="form-control" id="new_message" placeholder="Write new reply!" required>
-    
+                                            ###END###
+                                        ##END###
+                                        ###IF(HASMESSAGES)###
+                                            ###FOREACH(MESSAGES)###
+                                                <div class="row">
+                                                    <div class="col-sm-1">
+                                                    </div>
+                                                    <div class="col-sm-11">
+                                                        <div class="card mb-5">
+                                                            <div class="card-header bg-transparent ">
+                                                                <h5 class="card-title">@@username@@ </h5>
+                                                                <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
+                                                            </div>
+                                                            <div class="card-body ">
+                                                                <p class="card-text">@@messagetxt@@</p>
+                                                            </div>
+                                                            <div class="card-footer bg-transparent text-right">
+                                                                <span data-feather="thumbs-up"></span>
+                                                                <span data-feather="edit"></span>
+                                                                <span data-feather="trash-2"></span>
+                                                            </div>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ###END###
+                                        ##END###
+                                ###END### 
+                                
+                            ###ELSE###  
+                                <h4>no IMPORTANT topics in this channel ...</h4> 
+                            ###END###
+                            
+                            
+
+
+
+                            ###IF(HASTOPICS)###
+                                ###FOREACH(TOPIC)### 
+                                        <div class="card  mb-5">
+                                            <div class="card-header bg-transparent ">
+                                                <h5 class="card-title">@@username@@  <span class="badge badge-primary">Important</span> </h5>
+                                                <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
+                                            </div>
+                                            <div class="card-body ">
+                                                <p class="card-text">@@topictitle@@</p>
+                                            </div>
+                                            <div class="card-footer bg-transparent text-right">
+                                                <span data-feather="thumbs-up"></span>
+                                                <span data-feather="edit"></span>
+                                                <span data-feather="trash-2"></span>
                                             </div>
                                         </div>
-                                    </form>
+                                        ###IF(HASIMPORTANTMESSAGES)###
+                                            ###FOREACH(IMPORTANTMESSAGES)###
+                                                <div class="row">
+                                                    <div class="col-sm-1"></div>
+                                                    <div class="col-sm-11">
+                                                        <div class="card mb-5">
+                                                            <div class="card-header bg-transparent ">
+                                                                <h5 class="card-title">@@username@@ <span class="badge badge-primary">Important</span> </h5>
+                                                                <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
+                                                            </div>
+                                                            <div class="card-body ">
+                                                                <p class="card-text">@@messagetxt@@</p>
+                                                            </div>
+                                                            <div class="card-footer bg-transparent text-right">
+                                                                <span data-feather="thumbs-up"></span>
+                                                                <span data-feather="edit"></span>
+                                                                <span data-feather="trash-2"></span>
+                                                            </div>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ###END###
+                                        ##END###
+                                        ###IF(HASMESSAGES)###
+                                            ###FOREACH(MESSAGES)###
+                                                <div class="row">
+                                                    <div class="col-sm-1">
+                                                    </div>
+                                                    <div class="col-sm-11">
+                                                        <div class="card mb-5">
+                                                            <div class="card-header bg-transparent ">
+                                                                <h5 class="card-title">@@username@@ </h5>
+                                                                <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
+                                                            </div>
+                                                            <div class="card-body ">
+                                                                <p class="card-text">@@messagetxt@@</p>
+                                                            </div>
+                                                            <div class="card-footer bg-transparent text-right">
+                                                                <span data-feather="thumbs-up"></span>
+                                                                <span data-feather="edit"></span>
+                                                                <span data-feather="trash-2"></span>
+                                                            </div>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ###END###
+                                        ##END###
+                                ###END### 
+                                
+                            ###ELSE###  
+                                <h4>no  topics in this channel ...</h4> 
+                            ###END###
+                            -->
+                    
+                    <div class="card mb-5">
+                        <div class="card-header bg-transparent ">
+                            <h5 class="card-title">TOPIC @donaldduck</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
+                        </div>
+                        <div class="card-body ">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <div class="card-footer bg-transparent text-right">
+                            <span data-feather="thumbs-up"></span>
+                            <span data-feather="edit"></span>
+                            <span data-feather="trash-2"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-11">
+                            <div class="card mb-5">
+                                <div class="card-header bg-transparent ">
+                                    <h5 class="card-title">MSG @donaldduck</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
+                                </div>
+                                <div class="card-body ">
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                </div>
+                                <div class="card-footer bg-transparent text-right">
+                                    <span data-feather="thumbs-up"></span>
+                                    <span data-feather="edit"></span>
+                                    <span data-feather="trash-2"></span>
                                 </div>
                             </div>
                         </div>
-    
-                        <!-- ###END### -->
-                        <!-- ###END_PARTIAL### -->
                     </div>
-                    <div class="row new-topic">
-                        <div class="col-sm-10">
-                            <h4>New Topic:</h4>
-                            <form id="newtopic">
-                                <!-- <label for="newtopic">Title:</label> -->
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="newtopic">Title</span>
-                                    </div>
-                                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-11">
+                            <div class="card mb-5">
+
+                                <div class="card-header bg-transparent ">
+                                    <h5 class="card-title">SECOND MSG in this topic @donaldduck
+                                        <span class="badge badge-secondary">New</span>
+                                        <span class="badge badge-primary">Important</span>
+                                    </h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
+
                                 </div>
-                                <!-- <label for="newdescription">Description:</label> -->
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="newtopic">Description</span>
-                                    </div>
-                                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                                <div class="card-body ">
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                 </div>
-                               
-                                <button type="submit" class="btn btn-primary text-right">Submit</button>
-                            </form>
+                                <div class="card-footer bg-transparent text-right">
+                                    <span data-feather="thumbs-up"></span>
+                                    <span data-feather="edit"></span>
+                                    <span data-feather="trash-2"></span>
+                                </div>
+                            </div>
+                            <div class="container new-message">
+                                <form id="newmessageTOPICID">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroupPrepend">+</span>
+                                            </div>
+                                            <input type="text" class="form-control" id="new_message" placeholder="Write new reply!" required>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </main>
-            </div>
+
+                    <!-- ###END### -->
+                    <!-- ###END_PARTIAL### -->
+                </div>
+                <div class="row new-topic">
+                    <div class="col-sm-10">
+                        <h4>New Topic:</h4>
+                        <form id="newtopic">
+                            <!-- <label for="newtopic">Title:</label> -->
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="newtopic">Title</span>
+                                </div>
+                                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                            </div>
+                            <!-- <label for="newdescription">Description:</label> -->
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="newtopic">Description</span>
+                                </div>
+                                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary text-right">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </main>
         </div>
-    
-        <!-- ###END_TEMPLATE### -->
+    </div>
+
+    <!-- ###END_TEMPLATE### -->
 
 
 
 
 
-  <!-- Bootstrap core JavaScript
+    <!-- Bootstrap core JavaScript
     ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-  <script src="dist/js/vendor/popper.min.js"></script>
-  <script src="dist/js/bootstrap.min.js"></script>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="dist/js/vendor/popper.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
 
-  <!-- Icons -->
-  <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-  <script>
-    feather.replace()
-  </script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+        feather.replace()
+    </script>
 
 
 

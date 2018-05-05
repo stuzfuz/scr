@@ -4,7 +4,7 @@ class TemplateEngine {
 
     private static function traverseAstForEach($ast, $level, $data, &$html) {
         // \Logger::logDebug(var_dump($ast));
-        // \Logger::logDebug( "\n" . str_pad("", $level * 3) . "  FOREACHNODE  FOREACH\n");
+        // \Logger::logDebug( "\n" . str_pad("", $level * 3) . "  FOREACH \n");
         // \Logger::logDebug( "FOREACH forvariable = " . $ast["forvariable"]);
 
         if (!isset($ast['forvariable'])) {
@@ -15,8 +15,8 @@ class TemplateEngine {
         // \Logger::logDebug( "\n'traverseAstForEach'  found variable = $forvariable\n");
 
         if (!isset($data[$forvariable])) {
-            \Logger::logDebugPrintR("'traverseAstForEach' [" . __LINE__ ."]    forvariable  forvariable NOT found in 'data' ", $data); 
-            \Util::quit500("Fatal Error - 'traverseAstForEach' [" . __LINE__ ."]    forvariable  forvariable NOT found in 'data' ", $data);
+            \Logger::logDebugPrintR("'traverseAstForEach' [" . __LINE__ ."]    forvariable  '$forvariable' NOT found in 'data' ", $data); 
+            \Util::quit500("Fatal Error - 'traverseAstForEach' [" . __LINE__ ."]    forvariable  '$forvariable' NOT found in 'data' ", $data);
         }
 
         $arr = $data[$forvariable];
@@ -31,38 +31,25 @@ class TemplateEngine {
         if (isset($ast["AFTERFOREACH"])) {
             self::traverseAST($ast["AFTERFOREACH"], $level, $data, $html, true );
         }
-        // ohhh boy - that's an ugly hack. somehow there has to be a better way
-        // to traverse the code after the IF [ELSE] END block
-        // but it works
-        // create a tempoary AST with only the nodes after the current IF block nodes
-        // $newAst= array();
-        // $i = 0;
-        // // ignore  2 nodes with forvariable and fortemplate
-        // foreach ($ast as $key => $value) {
-        //     $i++;
-        //     if ($i == 1) continue;
-        //     if ($i == 2) continue;
-            
-        //     $newAst[$key] =$value;
-        //     $i++;
-        // }
-        // echo "\n\n newAst=";
-        // print_r($newAst);
-        
-        // self::traverseAST($newAst, $level, $data, $html);
     }
 
-    private static function traverseAstIf($ast, $level, $data, &$html) {      
+    private static function traverseAstIf($ast, $level, $data, &$html) {  
+        // \Logger::logDebug( "\n" . str_pad("", $level * 3) . "  IF \n");
+        // \Logger::logDebug( "IF ifvariable = " . $ast["ifvariable"]);   
+
+        // \Logger::logDebugPrintR( "\n\n\n\n ast for if= " ,  $ast);  
+        // \Logger::logDebugPrintR( "\n\n\n\n data for if = ", $data);   
+
         if (!isset($ast['ifvariable'])) {
             \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]    no ifvariable set :-((   ", $data); 
             \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    no ifvariable set :-((  ", $data);
         }
         $variable = strtolower($ast['ifvariable']);
-        // \Logger::logDebug( "\nIF found variable = $variable\n");
+        \Logger::logDebug( "\nIF found variable = $variable\n");
 
         if (!isset($data[$variable])) {
             // \Logger::logDebug("\nIF  variable  $variable NOT found in 'data'");
-            \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]    variale $variable  NOT set in data   ", $data); 
+            \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]    variale '$variable'  NOT set in data   ", $data); 
             \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    variale $variable  NOT set in data  ", $data);
         }
 
@@ -78,33 +65,15 @@ class TemplateEngine {
             // \Logger::logDebugPrintR("'traverseAstIf' [" . __LINE__ ."] calling IFFALSE part of ast  =  ", $ast); 
             self::traverseAST($ast["IFFALSE"], $level+1, $data, $html);
             $html  .= "\n";
-        }  else {
-            \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]    IFFALSE  NOT set in ast   ", $ast); 
-            \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    IFFALSE  NOT set in ast  ", $ast);
-        }
+        }  
+        // else {
+        //     \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]    IFFALSE  NOT set in ast   ", $ast); 
+        //     \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    IFFALSE  NOT set in ast  ", $ast);
+        // }
         if (isset($ast["AFTERIF"])) {
+            \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]  calling IFFALSE  - i am if with fivariable =  ". $ast["ifvariable"] ,"  "); 
             self::traverseAST($ast["AFTERIF"], $level, $data, $html, true );
         }
-
-
-        // ohhh boy - that's an ugly hack. somehow there has to be a better way
-        // same hack as in the traversesForEach function
-        // $newAst= array();
-        // $i = 0;
-        // // max 3 nodes with ifvariable, IFTRUE, optional IFFALSE
-        // foreach ($ast as $key => $value) {
-        //     $i++;
-        //     // echo "\n key = $key,  i = $i";
-        //     if ($i == 1) continue;
-        //     if ($i == 2) continue;
-        //     if ($i == 3 && $key=="IFFALSE") continue;
-        //     $newAst[$key] =$value;
-        //     $i++;
-        // }
-        // // echo "\n\n newAst=";
-        // // print_r($newAst);
-        
-        // self::traverseAST($newAst, $level, $data, $html);
     }
 
     private static function traverseAST($ast, $level, $data, &$html) {
@@ -147,7 +116,7 @@ class TemplateEngine {
                     $html .= $node["text"];
                 } else if ($node["name"] === "VARIABLE") {
                     $variablename = strtolower(  $node["text"]);
-                    \Logger::logDebug( "\n" . str_pad("", $level * 3) ." VARIABLE   name = $variablename \n");
+                    // \Logger::logDebug( "\n" . str_pad("", $level * 3) ." VARIABLE   name = $variablename \n");
 
                     if (!isset($data[$variablename])) {
                         \Logger::logDebugPrintR("'traverseAST' [" . __LINE__ ."]  variable '$variablename' not found in data   =  ", $data); 
