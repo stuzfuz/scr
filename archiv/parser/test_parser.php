@@ -62,6 +62,8 @@ $data = array();
  // var_dump($data);
 
  $data["stepone"] = true;
+ $data["color"] = true;
+
  print_r($data);
 
 $s = file_get_contents('test.txt');

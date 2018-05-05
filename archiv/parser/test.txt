@@ -1,32 +1,13 @@
 ###BEGIN###
   ###IF(STEPONE)###
-            <form id="formRegister1" class="form-register" method="post">
-                    <h1 class="h3 mb-3 font-weight-normal">Register @ PoorMansSlack </h1>
-                    <label for="inputUsername" class="sr-only">Email address</label>
-                    <input type="text" id="signInUsername" class="form-control" placeholder="Username" required autofocus>
-                    <label for="registerPassword" class="sr-only">Password</label>
-                    <input type="password" id="registerPassword" class="form-control" placeholder="Password" required>
-                    <label for="registerPasswordConfirm" class="sr-only">Confirm password</label>
-                    <input type="password" id="registerPasswordConfirm" class="form-control" placeholder="Confirm password" required>
+      stepone
+  ###ELSE###
+      steptwo
+  ###END###
 
-                    <button id="btnsign" class="btn btn-lg btn-primary btn-block">Register</button>
-                  </form>
-
-###ELSE###
-       <form id="formRegister2" class="form-register" method="post">
-            <h1 class="h3 mb-3 font-weight-normal">Welcome - choose your channels </h1>
-
-            <div class="form-group">
-                <label for="registerAvailableChannels">Available channels</label>
-                <select multiple class="form-control" id="registerAvailableChannels" size="3">
-                  <option>SWE</option>
-                  <option>SCR</option>
-                  <option>UEN</option>
-                  <option>GPM</option>
-                </select>
-            </div>
-            <button id="btnselect" class="btn btn-lg btn-primary btn-block">Save</button>
-          </form>
-
-###END###
+  ###IF(COLOR)###
+    COLOR
+  ###ELSE###
+    B/W
+  ###END###
 ###END###
