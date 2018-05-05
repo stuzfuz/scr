@@ -14,6 +14,7 @@ class MessagesController extends SimpleController {
         } else {
             \Util::redirect("/");
         }
+        $data = [];
 
         $tmp = \DatabaseManager::getChannelsForUser($user->getId());
         
@@ -27,32 +28,14 @@ class MessagesController extends SimpleController {
             \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  no routeparam provided  ", ""); 
             \Util::quit500("Fatal Error - 'traverseAST' [" . __LINE__ ."] no routeparam provided   ", "");
         }
-        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  topicsAndMessages =   ", $topicsAndMessages);
- 
-        if ($topicsAndMessages->rowCount() == 0) {
-            // TODO: show info -> channelname not found
-        }
-        
-        // TODO read meta dat of channel and add those here 
+
+        $data = array_merge($data, $topicsAndMessages);
         $data["channelname"] = $this->route["channelname"];
 
+        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  data with topics and messages =   ", $data);
+ 
 
-        // 
-        // read all message from this channel
-        $messages = array();
-        if ($topicsAndMessages->rowCount() == 0) {
-            $data["messagesfound"] = 0;     // false does not  work ...
-            $data["messages"] = array(); 
-        }  else {
-            $messages = array();
-            // echo "<br><br> adding channels to array ... <br>";
-            while ($msg = \DatabaseManager::fetchAssoz($res)) {
-                \Logger::logDebugPrintR("MessagesController msg = ", $msg);
-                $messages[] = $msg; 
-            }
-            $data["messagesfound"] = true; 
-            $data["messages"] = $messages; 
-        }
+
         
         $this->data = $data; 
         \Logger::logDebugPrintR("MessagesController this->data  = ", $this->data);

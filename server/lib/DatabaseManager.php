@@ -211,8 +211,6 @@ class DatabaseManager {
         return true;
     }
 
-    
-
     public static function getTopicsAndMessagesForUser(int $userid, string $channelname) {
         \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "   userid = $userid,  channelname: $channelname", "");
 
@@ -271,7 +269,7 @@ class DatabaseManager {
         $sqlMessages .= "LEFT JOIN topic ON (topic.channel_id = channel.id)  ";
         $sqlMessages .= "LEFT JOIN message ON (message.topic_id = topic.id)  ";
         $sqlMessages .= "LEFT JOIN message_flag ON (message_flag.message_id = message.id AND message_flag.user_id = ?)  ";
-        $sqlMessages .= "WHERE channel.name = ? AND channel.deleted = 0    ";
+        $sqlMessages .= "WHERE channel.name = ? AND channel.deleted = 0  ";
         $sqlMessages .= "ORDER BY message.created_at   ";
 
         $res = self::query($con, $sqlMessages, $sqlParams);

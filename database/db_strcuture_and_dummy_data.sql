@@ -191,7 +191,7 @@ VALUES ('admin', 'admin', 'admin', SHA1('admin'), TRUE);
 
 	
 INSERT INTO user(username, firstname, lastname, password) 
-VALUES ('admin', 'admin', 'admin', SHA1('admin'));
+VALUES ('goofy', 'goofy', 'goofy', SHA1('goofy'));
 
 
 
@@ -262,3 +262,14 @@ INSERT INTO message_flag (user_id, message_id, important, unread)
 VALUES (2, 2, FALSE, TRUE);
 
 
+
+
+
+INSERT INTO ref_user_channel (user_id, channel_id) 
+VALUES (1, 1);
+
+INSERT INTO ref_user_channel (user_id, channel_id) 
+VALUES (1, 2);
+
+INSERT INTO ref_user_channel (user_id, channel_id) 
+VALUES (2, 1);
