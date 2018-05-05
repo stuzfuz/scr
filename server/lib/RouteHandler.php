@@ -6,7 +6,7 @@ class RouteHandler {
     private static $requestPath = null; 
 
     private static function sanitizeRequestParams() {
-        \Logger::logDebugPrintR("'RouteHandler::sanitizeRequestParams()' [" . __LINE__ ."]  _REQUEST =   ", $_REQUEST); 
+        // \Logger::logDebugPrintR("'RouteHandler::sanitizeRequestParams()' [" . __LINE__ ."]  _REQUEST =   ", $_REQUEST); 
         foreach ($_REQUEST as $key => $param) {
             if (is_array($param)) {
                 foreach ($param as $key2 => $param2)  {
@@ -17,7 +17,7 @@ class RouteHandler {
             }
             
         }
-        \Logger::logDebugPrintR("'RouteHandler::sanitizeRequestParams()' [" . __LINE__ ."]  xxx requestParams =   ", self::$requestParams); 
+        // \Logger::logDebugPrintR("'RouteHandler::sanitizeRequestParams()' [" . __LINE__ ."]  xxx requestParams =   ", self::$requestParams); 
     }
 
     private static function sanitizeURL() {
@@ -35,7 +35,7 @@ class RouteHandler {
             self::sanitizeRequestParams();
         }
 
-        \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."] verb =  $verb ,  self::requestPath  ", self::$requestPath);
+        // \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."] verb =  $verb ,  self::requestPath  ", self::$requestPath);
 
         $sql = "SELECT * FROM route WHERE verb = ? AND route = ?";
         $params = array($verb);
@@ -54,10 +54,10 @@ class RouteHandler {
        //  \Util::my_var_dump($res, "res = ");
         // exit();
 
-        \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  res from db query =   ", $res);
+        // \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  res from db query =   ", $res);
         $route = null; 
         if ($res->rowCount() == 0) {
-            \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  rowcoint is zero    ", "");
+            // \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  rowcoint is zero    ", "");
 
             if ($_GET) {
                 \Logger::logWarning("404 - could not find page: " , $self::$requestPath);
@@ -73,8 +73,8 @@ class RouteHandler {
         } else {
             $route = \DatabaseManager::fetchAssoz($res);
             // \Util::my_var_dump($route, "route = ");
-            \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  route =   ", $route); 
-            \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  param =   ", $param); 
+            // \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  route =   ", $route); 
+            // \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  param =   ", $param); 
             if ($param != null) {
                 $route[$route["routeparam"]] = urldecode($param);
             }
