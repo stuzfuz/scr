@@ -215,7 +215,7 @@ VALUES (1, 2, "topic admin", "well iam text ...", UNIX_TIMESTAMP(NOW())-2000000)
 
 -- topic from userid 2
 INSERT INTO topic (user_id, channel_id, title, description, created_at) 
-VALUES (1, 1, "Topic  admin  'money'", "lorem ips",, UNIX_TIMESTAMP(NOW())-3000000);
+VALUES (1, 1, "Topic  admin  'money'", "lorem ips", UNIX_TIMESTAMP(NOW())-3000000);
 
 
 -- topic flags
@@ -241,11 +241,11 @@ VALUES (2, 3, FALSE, TRUE);
 
 -- message from userid 2  - topic 1
 INSERT INTO message (user_id, topic_id, txt, created_at) 
-VALUES (2, 1, "first posting ch. 'money''", UNIX_TIMESTAMP(NOW())-700000););
+VALUES (2, 1, "first posting ch. 'money''", UNIX_TIMESTAMP(NOW())-700000);
 
 -- message from userid 1 -topic 1
 INSERT INTO message (user_id, topic_id, txt, created_at) 
-VALUES (1, 1, "second  posting ch 'money'", UNIX_TIMESTAMP(NOW())-60000););
+VALUES (1, 1, "second  posting ch 'money'", UNIX_TIMESTAMP(NOW())-60000);
 
 
 
