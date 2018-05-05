@@ -259,7 +259,7 @@ class DatabaseManager {
                 $topics[$topicid]["topic"] = $tmp;
             }
             $data["topicsfound"] = true; 
-            $data["topics"] = $topics; 
+            $data["topics"] = $topics;
         }
         \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  topics  = ", $topics);
         \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  data  = ", $data);
@@ -279,32 +279,18 @@ class DatabaseManager {
         \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] res = ", $res);
         \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  rowCount  = ", $res->rowCount() );
 
-        // $topics = [];
-        // $messages = [];
         if ($res->rowCount() == 0) {
             $data["topicsfound"] = false; 
             die("cowCount = " . __LINE__ . ") is 0");
         } else {
             while ($tmp = \DatabaseManager::fetchAssoz($res)) {
                 $topicid = $tmp["topicid"];
-                $topics[$topicid]["messages"][] = $tmp;
+                $data["topics"][$topicid]["messages"][] = $tmp;
             }
-            // $data["channelsfound"] = true; 
-            // $data["channels"] = $channels; 
         }
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] topics with message  grouped by topic  = ", $topics);
+        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] data = ", $data);
 
-        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] messages grouped by topic  = ", $messages);
-
-
-
-
-
-
-        die("in getTopicsAndMessagesForUser()");
         self::closeConnection();
-        return true;
+        return $topics;
     }
-
-
 }
