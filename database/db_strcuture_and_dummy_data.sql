@@ -13,7 +13,8 @@ CREATE TABLE user (
 	password VARCHAR(255) NOT NULL, 
 	deleted TINYINT(1) NOT NULL DEFAULT FALSE,
 	isadmin TINYINT(1) NOT NULL DEFAULT FALSE,
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+	UNIQUE KEY (username) 
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 
 CREATE TABLE channel (
@@ -198,23 +199,23 @@ VALUES ('goofy', 'goofy', 'goofy', SHA1('goofy'));
 
 
 -- nur damit ein channel beim registrieren angezeigt wird
-INSERT INTO channel (name, created_by_user_id) 
-VALUES ( 'money', 1);
+INSERT INTO channel (name, created_by_user_id, created_at) 
+VALUES ( 'money', 1, UNIX_TIMESTAMP(NOW())-500000);
 
-INSERT INTO channel (name, created_by_user_id) 
-VALUES ( 'channel created by admin', 1);
+INSERT INTO channel (name, created_by_user_id, created_at) 
+VALUES ( 'channel created by admin', 1, UNIX_TIMESTAMP(NOW())-600000);
 
 
 -- topic from userid 1
-INSERT INTO topic (user_id, channel_id, title, description) 
-VALUES (2, 1, "first Topic #money#", "lets talk f ...");
+INSERT INTO topic (user_id, channel_id, title, description, created_at) 
+VALUES (2, 1, "first Topic #money#", "lets talk f ...", UNIX_TIMESTAMP(NOW())-1000000);
 
-INSERT INTO topic (user_id, channel_id, title, description) 
-VALUES (1, 2, "topic admin", "well iam text ...");
+INSERT INTO topic (user_id, channel_id, title, description, created_at) 
+VALUES (1, 2, "topic admin", "well iam text ...", UNIX_TIMESTAMP(NOW())-2000000);
 
 -- topic from userid 2
-INSERT INTO topic (user_id, channel_id, title, description) 
-VALUES (1, 1, "Topic  admin  'money'", "lorem ips");
+INSERT INTO topic (user_id, channel_id, title, description, created_at) 
+VALUES (1, 1, "Topic  admin  'money'", "lorem ips",, UNIX_TIMESTAMP(NOW())-3000000);
 
 
 -- topic flags
@@ -234,17 +235,17 @@ INSERT INTO topic_flag (user_id, topic_id, important, unread)
 VALUES (1, 3, TRUE, TRUE);
 
 INSERT INTO topic_flag (user_id, topic_id, important, unread) 
-VALUES (2, 3, TRUE, TRUE);
+VALUES (2, 3, FALSE, TRUE);
 
 
 
 -- message from userid 2  - topic 1
-INSERT INTO message (user_id, topic_id, txt) 
-VALUES (2, 1, "first posting ch. 'money''");
+INSERT INTO message (user_id, topic_id, txt, created_at) 
+VALUES (2, 1, "first posting ch. 'money''", UNIX_TIMESTAMP(NOW())-700000););
 
 -- message from userid 1 -topic 1
-INSERT INTO message (user_id, topic_id, txt) 
-VALUES (1, 1, "second  posting ch 'money'");
+INSERT INTO message (user_id, topic_id, txt, created_at) 
+VALUES (1, 1, "second  posting ch 'money'", UNIX_TIMESTAMP(NOW())-60000););
 
 
 
