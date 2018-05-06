@@ -68,21 +68,31 @@
 
         <!-- ###ELSE### -->
 
-        <!--  <form id="formRegister2" class="form-register" method="post"  url="/api/addchannels">
-            <h1 class="h3 mb-3 font-weight-normal">Welcome - choose your channels </h1>
+        <!--  
+                <form id="formRegister2" class="form-register" method="post"  url="/api/addchannels">
+                  <h1 class="h3 mb-3 font-weight-normal">Welcome - choose your channels </h1>
 
-            <div class="form-group">
-                <label for="registerAvailableChannels">Available channels</label>
-                <select multiple class="form-control" id="registerAvailableChannels" size="3"> 
+                  ###IF(CHANNELSFOUND)###
+                      
+                        <div class="form-group">
+                          <label for="registerAvailableChannels">Available channels</label>
+                          <select multiple class="form-control" id="registerAvailableChannels" size="3"> 
 
-                  ###FOREACH(CHANNELS)###
-                    <option value="@@channelid@@">@@name@@</option>
-                  ###END###
                   
-                </select>
-            </div>    
-            <button id="btnselect" class="btn btn-lg btn-primary btn-block">Save</button>
-          </form> -->
+                              ###FOREACH(CHANNELS)###
+                                <option value="@@channelid@@">@@name@@</option>
+                              ###END###
+                  
+                          </select>
+                        </div>   
+                        <button id="btnselect" class="btn btn-lg btn-primary btn-block">Save</button>
+                  ###ELSE###
+                        <h5>No Channels available</h5>
+                  ###END### 
+                      <button id="btnselect" class="btn btn-lg btn-primary btn-block">Finish registration</button>
+                </form>       -->
+        
+        
 
         <form id="formRegister2" class="form-register" method="post" url="/api/addchannels/1">
           <h1 class="h3 mb-3 font-weight-normal">Welcome - choose your channels </h1>

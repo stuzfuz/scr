@@ -193,11 +193,11 @@ VALUES ('/api/newchannel' ,'API', NULL, NULL, NULL, NULL, 'server/components/new
 
 	
 INSERT INTO user(username, firstname, lastname, password, isadmin) 
-VALUES ('admin', 'admin', 'admin', SHA1('admin'), TRUE);
+VALUES ('admin', 'admin', 'admin', '68be59da0cf353ae74ee8db8b005454b515e1a22', TRUE);
 
 	
 INSERT INTO user(username, firstname, lastname, password) 
-VALUES ('goofy', 'goofy', 'goofy', SHA1('goofy'));
+VALUES ('goofy', 'goofy', 'goofy', 890e854c233a481206176f00f52c1b33b8fa0ff7');
 
 
 -- nur damit ein channel beim registrieren angezeigt wird

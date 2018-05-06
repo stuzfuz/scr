@@ -152,7 +152,7 @@ class DatabaseManager {
         $con->beginTransaction();
         try {
             // TODO: change back to hash('sha1', "$username|$password")
-            $password = hash('sha1', $password);
+            $password = hash('sha1', "$username|$password");
 
             $sql = "INSERT INTO user (username, password, firstname, lastname)";
             $sql .= " VALUES (?, ?, ?, ?)";

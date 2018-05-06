@@ -31,7 +31,7 @@ class RegisterStep2GetController extends SimpleController {
         $data["userid"] = $user->getId();
         $data["loggedin"] = true;
 
-        $data["stepone"] = false;
+        $data["stepone"] = 0;   // false
         $this->data = $data; 
         
         \Logger::logDebugPrintR("'RegisterStep2Controller::gatherData()' [" . __LINE__ ."]  GET  this->data   ", $this->data); 

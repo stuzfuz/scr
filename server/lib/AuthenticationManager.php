@@ -6,12 +6,12 @@ class AuthenticationManager {
 
     public static function authenticate(string $username, string $password) : bool {
 
-        \Logger::logDebugPrintR("AuthenticationManager::authenticate  username = $username, password = $password  ", "");
+        // \Logger::logDebugPrintR("AuthenticationManager::authenticate  username = $username, password = $password  ", "");
 
         $user = \DatabaseManager::getUserByUserName($username);
         // TODO: change back to hash('sha1', "$username|$password")
-        \Logger::logDebugPrintR("AuthenticationManager::authenticate  user =   ", $user);
-        if ($user != null && $user->getPassword() == hash('sha1', $password)) {
+        // \Logger::logDebugPrintR("AuthenticationManager::authenticate  user =   ", $user);
+        if ($user != null && $user->getPassword() == hash('sha1', "$username|$password")) {
             $_SESSION['user'] = $user->getId();
             return true;
         }
