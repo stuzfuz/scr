@@ -164,7 +164,7 @@ class DatabaseManager {
             $con->commit();
         } catch (Exception $e) {
             $con->rollBack();
-            $userid = null;
+            $userid = false;
         }
         self::closeConnection();
         return $userid;
@@ -470,9 +470,110 @@ class DatabaseManager {
             $con->commit();
         } catch (Exception $e) {
             $con->rollBack();
-            $userid = null;
+            $userid = false;
         }
         self::closeConnection();
         return $channelId;
+    }
+
+    public static function insertMessage(int $userid, int $topicid, string $txt) {
+        // $con = self::getConnection();
+        // $con->beginTransaction();
+        // $msgId = false;
+        // try {
+        //     // insert new channel name
+        //     $sql = "INSERT INTO message (user_id, topic_id, txt)";
+        //     $sql .= " VALUES (?, ?, ?)";
+            
+        //     self::query($con, $sql, array($userid, $topicid, $txt));
+
+        //     $msgId = $con->lastInsertid();
+
+        //     $con->commit();
+        // } catch (Exception $e) {
+        //     $con->rollBack();
+        //     $msgId = false;
+        // }
+        // self::closeConnection();
+        return $msgId;
+    }
+
+    public static function insertTopic(int $userid, int $channelid, string $title, string $description) {
+        $con = self::getConnection();
+
+        // get all user ids for the channel  
+        $sql = "\n";
+        $sql .= "SELECT user_id AS userid                      \n";
+        $sql .= "FROM topic                                        \n  ";
+        $sql .= "WHERE channel_id = ?   ";          // AND (user_id <>  ?)
+         
+        $con = self::getConnection();
+        $tmp = self::query($con, $sql, array($channelid));    // ,  $userid
+
+        $users = array();
+        while ($u = \DatabaseManager::fetchAssoz($tmp)) {
+            $users[]= $u; 
+        }
+
+        // begin transaction and insert values 
+        $con->beginTransaction();
+        try {
+            // insert new topic
+            $topicId = -1;
+            $sql = "INSERT INTO topic (user_id, channel_id, title, description)";
+            $sql .= " VALUES (?, ?, ?, ?)";
+            self::query($con, $sql, array($userid, $channelid, $title, $description));
+            $topicId = $con->lastInsertid();
+
+            \Logger::logDebug("DatabaseManager::insertTopic() new topicId = $topicId ", "");
+
+             // assign the new message to all members of the channel as unread and not important
+            $sqlAssignTopic = "INSERT INTO topic_flag (topic_id, user_id, important, unread) VALUES";
+            $paramsAssignTopic = [];
+            $sqlArr = [];
+            $s = "(?, ?, FALSE, TRUE)";
+
+            \Logger::logDebugPrintR("DatabaseManager::insertTopic() insert User <-> topic relation  paramsAssignTopic = ", $paramsAssignTopic);
+
+
+            foreach($users as $u) {
+                $sqlArr[] = $s;
+                $paramsAssignTopic[] = $topicId;
+                $paramsAssignTopic[] = $u["userid"];
+            } 
+            $sqlAssignTopic .= " " . implode(",", $sqlArr);
+
+            \Logger::logDebug("DatabaseManager::insertTopic() insert User <-> topic relation  sqlAssignTopic = $sqlAssignTopic ", "");
+            \Logger::logDebugPrintR("DatabaseManager::insertTopic() insert User <-> topic relation  paramsAssignTopic = ", $paramsAssignTopic);
+            
+            // die("check how often the pairs appear!");
+            // insert topic <-> users relation
+            self::query($con, $sqlAssignTopic, $paramsAssignTopic);
+            $res = $con->lastInsertid();
+
+            $con->commit();
+
+            $res = true;
+        } catch (Exception $e) {
+            $con->rollBack();
+            $res = false;
+        }
+
+        // die("insert messages");
+        self::closeConnection();
+
+        return $res;
+    }
+
+    public static function getChannelIdForName(string $channelname) {
+        $con = self::getConnection();
+        $sql = "SELECT id FROM channel WHERE name = ?";
+            
+        $res = self::query($con, $sql, array($channelname));
+        $res = \DatabaseManager::fetchAssoz($res);
+        $id = $res["id"];
+
+        self::closeConnection();
+        return $id;
     }
 }

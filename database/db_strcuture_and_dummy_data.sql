@@ -191,7 +191,17 @@ VALUES ('/newchannel' ,'PAGE', 'client/header.html', 'server/components/newchann
 INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
 VALUES ('/api/newchannel' ,'API', NULL, NULL, NULL, NULL, 'server/components/newchannel/', 'NewChannelApiController', 'POST');
 
+
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/api/newmessage' ,'API', NULL, NULL, NULL, NULL, 'server/components/newmessage/', 'NewMessageApiController', 'POST');
+
+INSERT INTO route (route, type, headertemplate,contenttemplate, footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/api/newtopic' ,'API', NULL, NULL, NULL, NULL, 'server/components/newtopic/', 'NewTopicApiController', 'POST');
+
 	
+	
+
+
 INSERT INTO user(username, firstname, lastname, password, isadmin) 
 VALUES ('admin', 'admin', 'admin', '68be59da0cf353ae74ee8db8b005454b515e1a22', TRUE);
 

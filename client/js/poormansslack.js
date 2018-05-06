@@ -182,4 +182,145 @@ $( document ).ready(function() {
             }
         });
     });
+
+    $(".formnewmessage").submit(function(e) {
+        e.preventDefault();
+        console.log(".formnewmessage submit");
+        var myClass = $(this).attr("class");
+        var s = "formnewmessage topicid-"
+        var topicid = myClass.substr(s.length, myClass.length);
+        console.log("topicid " + topicid);
+
+        var txt = $(this).find("input[type=text]").val();
+        if (txt.lengtth < 1) {
+            showError(".register-error", res["status"]);
+        }
+        console.log("message text " + txt);
+
+        var data = {
+            topicid: topicid,
+            txt: txt
+        };
+
+        $.ajax({
+            url: "/api/newmessage",
+            type: "POST",
+            data: data,
+            dataType: "JSON"
+        }).done(function( res ) {
+            console.log( "/api/newmessage DONE reponse", JSON.stringify(res, null, 4));
+            
+            // if everything works -> reload page and data
+            // location.reload();        
+        }).fail(function( res ) {
+            console.log( "/api/newmessage   FAIL response", JSON.stringify(res, null, 4));
+            res = JSON.parse(res["responseText"]);
+            console.log( "/api/newmessage   FAIL responseText", JSON.stringify(res, null, 4));
+
+            if (res["errorcode"] >= 2) {
+                showError(".feedback-newmessage .topicid-" + topicid, res["status"]);
+            } else {
+                console.log("well - don't know now ");
+            }
+        });
+    });
+
+    $(".formnewtopic").submit(function(e) {
+        e.preventDefault();
+        console.log(".formnewtopic submit");
+        var myClass = $(this).attr("class");
+        var s = "formnewtopic channelid-";
+        var channelid = myClass.substr(s.length, myClass.length);
+        console.log("formnewtopic     channelid " + channelid);
+
+        var title = $(this).find("input[name=topictitle]").val();
+        var description = $(this).find("input[name=topicdescription]").val();
+
+        if (title.lengtth < 1) {
+            showError(".register-error", "title too short");
+        } else if (description.lengtth < 1) {
+            showError(".register-error", "description too short");
+        } else {
+            console.log("formnewtopic    title:  " + title);
+            console.log("formnewtopic    description: " + description);
+    
+            var data = {
+                channelid: channelid,
+                description: description,
+                title: title
+            };
+            console.log("formnewtopic    data " + JSON.stringify(data, null, 4));
+    
+    
+            $.ajax({
+                url: "/api/newtopic",
+                type: "POST",
+                data: data,
+                dataType: "JSON"
+            }).done(function( res ) {
+                console.log( "/api/newtopic DONE reponse", JSON.stringify(res, null, 4));
+                
+                // if everything works -> reload page and data
+                // location.reload();        
+            }).fail(function( res ) {
+                console.log( "/api/newtopic   FAIL response", JSON.stringify(res, null, 4));
+                res = JSON.parse(res["responseText"]);
+                console.log( "/api/newtopic   FAIL responseText", JSON.stringify(res, null, 4));
+    
+                if (res["errorcode"] >= 2) {
+                    showError(".feedback-newtopic .topicid-" + topicid, res["status"]);
+                } else {
+                    console.log("well - don't know now ");
+                }
+            });
+        }
+    });
+
+    
+    $(".importanttopic").click(function(e) {
+        e.preventDefault();
+        console.log("importanttopic click");
+        var myClass = $(this).attr("class");
+        console.log("class " + myClass);
+    });
+
+    $(".deletetopic").click(function(e) {
+        e.preventDefault();
+        console.log("deletetopic click");
+        var myClass = $(this).attr("class");
+        console.log("class " + myClass);
+    });
+
+    $(".edittopic").click(function(e) {
+        e.preventDefault();
+        console.log("edittopic click");
+        var myClass = $(this).attr("class");
+        console.log("class " + myClass);
+    });
+
+    $(".importantmessage").click(function(e) {
+        e.preventDefault();
+        console.log("importanttopic click");
+        var myClass = $(this).attr("class");
+        console.log("class " + myClass);
+    });
+
+    $(".deletemessage").click(function(e) {
+        e.preventDefault();
+        console.log("deletetopic click");
+        var myClass = $(this).attr("class");
+        console.log("class " + myClass);
+    });
+
+    $(".editmessage").click(function(e) {
+        e.preventDefault();
+        console.log("edittopic click");
+        var myClass = $(this).attr("class");
+        console.log("class " + myClass);
+    });
+
+
+    // display hidden in CSS does not work :-( (not even with !important)
+    $(".feedback-newmessage").hide();
+    $(".feedback-newtopic").hide();
 });
