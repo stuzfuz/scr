@@ -109,7 +109,11 @@
                                 ###FOREACH(IMPORTANTTOPIC)### 
                                         <div class="card  mb-5">
                                             <div class="card-header bg-transparent ">
-                                                <h5 class="card-title">@@username@@  <span class="badge badge-primary">Important</span> </h5>
+                                                <h5 class="card-title">@@username@@  <span class="badge badge-primary">Important</span> 
+                                                ###IF(unread)### 
+                                                    <span class="badge badge-secondary">New</span> 
+                                                ###END###
+                                                </h5>
                                                 <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
                                             </div>
                                             <div class="card-body ">
@@ -128,7 +132,11 @@
                                                     <div class="col-sm-11">
                                                         <div class="card mb-5">
                                                             <div class="card-header bg-transparent ">
-                                                                <h5 class="card-title">@@username@@ <span class="badge badge-primary">Important</span> </h5>
+                                                                <h5 class="card-title">@@username@@ <span class="badge badge-primary">Important</span> 
+                                                                    ###IF(unread)### 
+                                                                        <span class="badge badge-secondary">New</span> 
+                                                                    ###END###
+                                                                </h5>
                                                                 <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
                                                             </div>
                                                             <div class="card-body ">
@@ -152,7 +160,11 @@
                                                     <div class="col-sm-11">
                                                         <div class="card mb-5">
                                                             <div class="card-header bg-transparent ">
-                                                                <h5 class="card-title">@@username@@ </h5>
+                                                                <h5 class="card-title">@@username@@ 
+                                                                    ###IF(unread)### 
+                                                                        <span class="badge badge-secondary">New</span> 
+                                                                    ###END###
+                                                                </h5>
                                                                 <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
                                                             </div>
                                                             <div class="card-body ">
@@ -182,7 +194,11 @@
                                 ###FOREACH(TOPIC)### 
                                         <div class="card  mb-5">
                                             <div class="card-header bg-transparent ">
-                                                <h5 class="card-title">@@username@@  </h5>
+                                                <h5 class="card-title">@@username@@  
+                                                    ###IF(unread)### 
+                                                       <span class="badge badge-secondary">New</span> 
+                                                    ###END###
+                                                </h5>
                                                 <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
                                             </div>
                                             <div class="card-body ">
@@ -201,7 +217,12 @@
                                                     <div class="col-sm-11">
                                                         <div class="card mb-5">
                                                             <div class="card-header bg-transparent ">
-                                                                <h5 class="card-title">@@username@@ <span class="badge badge-primary">Important</span> </h5>
+                                                                <h5 class="card-title">@@username@@  
+                                                                    ###IF(unread)### 
+                                                                        <span class="badge badge-secondary">New</span> 
+                                                                    ###END###
+                                                                    <span class="badge badge-primary">Important</span> 
+                                                                </h5>
                                                                 <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
                                                             </div>
                                                             <div class="card-body ">
@@ -225,7 +246,12 @@
                                                     <div class="col-sm-11">
                                                         <div class="card mb-5">
                                                             <div class="card-header bg-transparent ">
-                                                                <h5 class="card-title">@@username@@ </h5>
+                                                                <h5 class="card-title">@@username@@ 
+                                                                     
+                                                                    ###IF(unread)### 
+                                                                    <span class="badge badge-secondary">New</span> 
+                                                                    ###END###
+                                                                </h5>
                                                                 <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
                                                             </div>
                                                             <div class="card-body ">
@@ -244,7 +270,7 @@
                                 ###END### 
                                 
                             ###ELSE###  
-                                <h4>no  topics in this channel ...</h4> 
+                                <h4>no unimportant topics in this channel ...</h4> 
                             ###END###
                             -->
                     

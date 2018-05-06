@@ -7,11 +7,9 @@ class DatabaseManager {
     public static function getConnection() {
         
         if (!isset(self::$__connection)) {
-            // echo "connecting to database";
             try {
                 $s = "mysql:host=localhost;dbname=" . ApplicationConfig::$databaseName . ";charset=utf8";
                 self::$__connection = new \PDO($s, ApplicationConfig::$databaseUsername, ApplicationConfig::$databasePassword);
-                // echo 'Connected to database';
             }
             catch(PDOException $e)
             {
@@ -20,7 +18,6 @@ class DatabaseManager {
                 exit();
             }
         }
-        // var_dump(self::$__connection);
         if (self::$__connection  == null) {
             \Logger::logError("Fatal Error - could not connect to Database" , $e->getMessage());
         }
@@ -58,7 +55,7 @@ class DatabaseManager {
             exit();
         }
 
-        // \Util::my_var_dump($statement->debugDumpParams(), "statement - debugDUmpParams");
+        // \Logger::logDebugPrintR($statement->debugDumpParams(), "statement - debugDUmpParams");
         return $statement; 
     }
 
@@ -174,14 +171,69 @@ class DatabaseManager {
 
     public static function assignUserChannelsTopicsMessages(int $userid, array $channels) {
         \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "   userid = $userid,  channels", $channels);
-        
+
         // if there are no channels -> do nothing 
         if (!is_array($channels)) { return true; }
+        
+
+        // get all topic ids for all the  channels  
+        $sql = "\n";
+        $sql .= "SELECT topic.id AS topicid                      \n";
+        $sql .= "FROM topic                                        \n  ";
+        $sql .= "WHERE channel_id IN (";
+        
+        $sql2 = "\n";
+        $sql2 .= ") AND topic.deleted = FALSE;                                    \n      ";
+        
+        $params = [];
+        $s = "?";
+        foreach($channels as $c) {
+            $sqlArr[] = $s;
+            $params[] = $c;
+        } 
+        $sqlTopics = $sql . " " . implode(",", $sqlArr) . $sql2;
+
+        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlTopics = ", $sqlTopics);
+        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] params = ", $params);
+        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlArr = ", $sqlArr);
+
+
+
+        $con = self::getConnection();
+
+        $topics = self::query($con, $sqlTopics, $params);
+
+        
+
+
+
+        // get all message ids for all the  topics  
+        $sql = "\n";
+        $sql .= "SELECT topic.id AS topicid, channel_id,                \n";
+        $sql .= "message.id AS messageid                \n";
+        $sql .= "FROM topic                                        \n  ";
+        $sql .= "LEFT JOIN message ON (message.topic_id = topic.id)                                        \n  ";
+        $sql .= "WHERE channel_id IN (";
+        
+        $sql2 = "\n";
+        $sql2 .= ") AND  topic.deleted = FALSE AND message.deleted = FALSE;                                    \n      ";
+        $sqlMessages = $sql . " " . implode(",", $sqlArr) . $sql2;
+
+        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlMessages = ", $sqlMessages);
+        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] params = ", $params);
+        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlArr = ", $sqlArr);
+
+        $messages = self::query($con, $sqlMessages, $params);
+
+        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] topics = ", $topics);
+        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] messages = ", $messages);
+        
+        // prepare sql Queries - assign channels to user (or is it vice versa?)
         $sqlAssignChannels = "INSERT INTO ref_user_channel (user_id, channel_id) VALUES";
         $paramsAssignChannels = [];
         $sqlArr = [];
         $s = "(?, ?)";
-         foreach($channels as $c) {
+        foreach($channels as $c) {
             $sqlArr[] = $s;
             $paramsAssignChannels[] = $userid;
             $paramsAssignChannels[] = $c;
@@ -190,16 +242,51 @@ class DatabaseManager {
         \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] assign channels to userid sql = ", $sqlAssignChannels);
         \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] paramsAssignChannels ", $paramsAssignChannels);
 
-        $con = self::getConnection();
+
+        // mark all topics/messages as unread and not important
+        $sqlMarkTopics = "\n";
+        $sqlMarkTopics = "INSERT INTO topic_flag (topic_id, user_id, important, unread) VALUES                   ";
+        $s = "(?, ?, FALSE, TRUE)";
+        $sqlArr = [];
+        $paramsMarkTopics = [];
+        foreach($topics as $t) {
+            $sqlArr[] = $s;
+            $paramsMarkTopics[] = $t["topicid"];
+            $paramsMarkTopics[] = $userid;
+        } 
+        $sqlMarkTopics = $sqlMarkTopics . " " . implode(",", $sqlArr) ."\n";
+
+        $sqlMarkMessages = "\n";
+        $sqlMarkMessages = "INSERT INTO message_flag (message_id, user_id, important, unread) VALUES                   ";
+        $s = "(?, ?, FALSE, TRUE)";
+        $sqlArr = [];
+        $paramsMarkMessages= [];
+        foreach($messages as $m) {
+            $sqlArr[] = $s;
+            $paramsMarkMessages[] = $m["messageid"];
+            $paramsMarkMessages[] = $userid;
+        } 
+        $sqlMarkMessages = $sqlMarkMessages . " " . implode(",", $sqlArr) ."\n";
+
+
+        \Logger::logDebug("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlMarkTopics    ", $sqlMarkTopics);
+        \Logger::logDebug("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlMarkMessages     ", $sqlMarkMessages);
+
+        
         $con->beginTransaction();
         try {
             // assign userid to all the channel ids, so the user has access to the channel
             self::query($con, $sqlAssignChannels, $paramsAssignChannels);
             $lastId = $con->lastInsertid();
 
-            // TODO: Insert user_id, topic_id for all channels and topics to the "topic_flags" table: unread, not important 
+            // add user <-> topic.id to table "topic_flag"
+            self::query($con, $sqlMarkTopics, $paramsMarkTopics);
+            $lastId = $con->lastInsertid();
 
-            // TODO: Insert user_id, message_id for all channels and messages to the  "message_flags" table: unread, not important 
+            // add user <-> message.id to table "message_flag"
+            self::query($con, $sqlMarkMessages, $paramsMarkMessages);
+            $lastId = $con->lastInsertid();
+
             $con->commit();
         } catch (Exception $e) {
             \Logger::logError("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] could not insert into table 'ref_user_channel' ", $e->getMessage());
@@ -218,7 +305,7 @@ class DatabaseManager {
         $sqlTopics ="\n";
         $sqlTopics .= "SELECT channel.id AS channelid, channel.name AS channelname,                               \n";
         $sqlTopics .= "topic.id AS topicid, topic.title AS topictitle, topic.description AS topicdescription, topic.created_at AS topiccreatedat,                              \n ";
-        $sqlTopics .= "topic_flag.unread AS topicunread, topic_flag.important AS topicimportant,                                \n ";
+        $sqlTopics .= "topic_flag.unread AS unread, topic_flag.important AS topicimportant,                                \n ";
         $sqlTopics .= "user.username                                  \n ";
         $sqlTopics .= "FROM channel                               \n";
         $sqlTopics .= "LEFT JOIN topic ON (topic.channel_id = channel.id)                               \n ";
@@ -268,7 +355,7 @@ class DatabaseManager {
         $sqlMessages = "\n";
         $sqlMessages .= "SELECT topic.id AS topicid,                    \n";
         $sqlMessages .= "message.id AS messageid, message.txt AS messagetxt, message.created_at AS messagecreatedat,                    \n ";
-        $sqlMessages .= "message_flag.unread AS messageunread, message_flag.important AS messageimportant,                     \n "; 
+        $sqlMessages .= "message_flag.unread AS unread, message_flag.important AS messageimportant,                     \n "; 
         $sqlMessages .= "user.username                       \n ";
         $sqlMessages .= "FROM channel                    \n";
         $sqlMessages .= "LEFT JOIN topic ON (topic.channel_id = channel.id)                    \n ";
