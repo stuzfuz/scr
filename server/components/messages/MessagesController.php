@@ -4,7 +4,7 @@ class MessagesController extends SimpleController {
 
     protected function gatherData() {
 
-        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  route =   ", $this->route); 
+        // \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  route =   ", $this->route); 
         
         // user logged in? NO -> then redirect to /
         if (\AuthenticationManager::isAuthenticated()) {
@@ -27,17 +27,17 @@ class MessagesController extends SimpleController {
             \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  no routeparam provided  ", ""); 
             \Util::quit500("Fatal Error - 'traverseAST' [" . __LINE__ ."] no routeparam provided   ", "");
         }
-        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  topicsAndMessages =   ", $topicsAndMessages);
+        // \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  topicsAndMessages =   ", $topicsAndMessages);
         
         $data = array_merge($data, $topicsAndMessages);
 
         $data["channelname"] = $this->route["channelname"];
-        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  data =   ", $data);
+        // \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  data =   ", $data);
 
         // $data["hasimportanttopics"] = 0;
         // $data["hastopics"] = 0;
         $this->data = $data; 
-        \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  data   = ", $this->data);
+        // \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  data   = ", $this->data);
     }
 
     // // TODO Delete this if not necessary
