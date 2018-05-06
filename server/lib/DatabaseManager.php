@@ -103,10 +103,11 @@ class DatabaseManager {
     }    
 
     public static function getChannelsForUser($userid) {
-        $sql = "SELECT channel.id, name    ";
-        $sql .= "FROM channel ";
-        $sql .= "LEFT JOIN ref_user_channel ON (ref_user_channel.channel_id = channel.id)   "; 
-        $sql .= "WHERE ref_user_channel.user_id = ? AND channel.deleted = FALSE   ";
+        $sql ="\n";
+        $sql .= "SELECT channel.id, name                                 \n ";
+        $sql .= "FROM channel                                 \n ";
+        $sql .= "LEFT JOIN ref_user_channel ON (ref_user_channel.channel_id = channel.id)                                 \n   "; 
+        $sql .= "WHERE ref_user_channel.user_id = ? AND channel.deleted = FALSE                                 \n   ";
 
         $res = \DatabaseManager::query(self::getConnection(), $sql, array($userid));
 
@@ -227,16 +228,17 @@ class DatabaseManager {
         // $sql .= "WHERE channel.name = ? AND channel.deleted = 0    ";
         // $sql .= "ORDER BY topic.created_at,   message.created_at   ";
 
-        $sqlTopics = "SELECT channel.id AS channelid, channel.name AS channelname, ";
-        $sqlTopics .= "topic.id AS topicid, topic.title AS topictitle, topic.description AS topicdescription, topic.created_at AS topiccreatedat, ";
-        $sqlTopics .= "topic_flag.unread AS topicunread, topic_flag.important AS topicimportant,   ";
-        $sqlTopics .= "user.username     ";
-        $sqlTopics .= "FROM channel ";
-        $sqlTopics .= "LEFT JOIN topic ON (topic.channel_id = channel.id)  ";
-        $sqlTopics .= "LEFT JOIN topic_flag ON (topic_flag.topic_id = topic.id AND topic_flag.user_id = ?)    " ;
-        $sqlTopics .= "LEFT JOIN user ON (user.id = topic.user_id)    " ;
-        $sqlTopics .= "WHERE channel.name = ? AND channel.deleted = 0    ";
-        $sqlTopics .= "ORDER BY topic.created_at  ";
+        $sqlTopics ="\n";
+        $sqlTopics .= "SELECT channel.id AS channelid, channel.name AS channelname,                               \n";
+        $sqlTopics .= "topic.id AS topicid, topic.title AS topictitle, topic.description AS topicdescription, topic.created_at AS topiccreatedat,                              \n ";
+        $sqlTopics .= "topic_flag.unread AS topicunread, topic_flag.important AS topicimportant,                                \n ";
+        $sqlTopics .= "user.username                                  \n ";
+        $sqlTopics .= "FROM channel                               \n";
+        $sqlTopics .= "LEFT JOIN topic ON (topic.channel_id = channel.id)                               \n ";
+        $sqlTopics .= "LEFT JOIN topic_flag ON (topic_flag.topic_id = topic.id AND topic_flag.user_id = ?)                                  \n" ;
+        $sqlTopics .= "LEFT JOIN user ON (user.id = topic.user_id)                                 \n " ;
+        $sqlTopics .= "WHERE channel.name = ? AND channel.deleted = 0                                  \n";
+        $sqlTopics .= "ORDER BY topic.created_at DESC                              \n ";
 
         $sqlParams[] = $userid;
         $sqlParams[] = $channelname;
@@ -276,17 +278,18 @@ class DatabaseManager {
         }
         \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  topics  = ", $topics);    
 
-        $sqlMessages = "SELECT topic.id AS topicid, ";
-        $sqlMessages .= "message.id AS messageid, message.txt AS messagetxt, message.created_at AS messagecreatedat,  ";
-        $sqlMessages .= "message_flag.unread AS messageunread, message_flag.important AS messageimportant,   "; 
-        $sqlMessages .= "user.username     ";
-        $sqlMessages .= "FROM channel ";
-        $sqlMessages .= "LEFT JOIN topic ON (topic.channel_id = channel.id)  ";
-        $sqlMessages .= "LEFT JOIN message ON (message.topic_id = topic.id)  ";
-        $sqlMessages .= "LEFT JOIN message_flag ON (message_flag.message_id = message.id AND message_flag.user_id = ?)  ";
-        $sqlMessages .= "LEFT JOIN user ON (user.id = message.user_id)    " ;
-        $sqlMessages .= "WHERE channel.name = ? AND channel.deleted = 0  ";
-        $sqlMessages .= "ORDER BY message.created_at   ";
+        $sqlMessages = "\n";
+        $sqlMessages .= "SELECT topic.id AS topicid,                    \n";
+        $sqlMessages .= "message.id AS messageid, message.txt AS messagetxt, message.created_at AS messagecreatedat,                    \n ";
+        $sqlMessages .= "message_flag.unread AS messageunread, message_flag.important AS messageimportant,                     \n "; 
+        $sqlMessages .= "user.username                       \n ";
+        $sqlMessages .= "FROM channel                    \n";
+        $sqlMessages .= "LEFT JOIN topic ON (topic.channel_id = channel.id)                    \n ";
+        $sqlMessages .= "LEFT JOIN message ON (message.topic_id = topic.id)                    \n ";
+        $sqlMessages .= "LEFT JOIN message_flag ON (message_flag.message_id = message.id AND message_flag.user_id = ?)                     \n";
+        $sqlMessages .= "LEFT JOIN user ON (user.id = message.user_id)                      \n " ;
+        $sqlMessages .= "WHERE channel.name = ? AND channel.deleted = 0                    \n ";
+        $sqlMessages .= "ORDER BY message.created_at DESC                     \n";
 
         $res = self::query($con, $sqlMessages, $sqlParams);
 

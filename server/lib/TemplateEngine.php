@@ -45,7 +45,7 @@ class TemplateEngine {
             \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    no ifvariable set :-((  ", $data);
         }
         $variable = strtolower($ast['ifvariable']);
-        \Logger::logDebug( "\nIF found variable = $variable\n");
+        // \Logger::logDebug( "\nIF [" . __LINE__ ."]  found variable = $variable\n");
 
         if (!isset($data[$variable])) {
             // \Logger::logDebug("\nIF  variable  $variable NOT found in 'data'");
@@ -71,7 +71,7 @@ class TemplateEngine {
         //     \Util::quit500("Fatal Error - 'traversAstIf' [" . __LINE__ ."]    IFFALSE  NOT set in ast  ", $ast);
         // }
         if (isset($ast["AFTERIF"])) {
-            \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]  calling IFFALSE  - i am if with fivariable =  ". $ast["ifvariable"] ,"  "); 
+            // \Logger::logDebugPrintR("'traversAstIf' [" . __LINE__ ."]  calling IFFALSE  - i am if with fivariable =  ". $ast["ifvariable"] ,"  "); 
             self::traverseAST($ast["AFTERIF"], $level, $data, $html, true );
         }
     }
@@ -266,7 +266,7 @@ class TemplateEngine {
             \Util::quit500("Fatal Error - TemplateEngine::render()   could not open file : " , $tmplFilename);
         }
 
-        \Logger::logDebug("render() [".  __LINE__  . "] template    = ", $template);
+        // \Logger::logDebug("render() [".  __LINE__  . "] template    = ", $template);
         // \Logger::logDebug("render() [".  __LINE__  . "] headertemplate    = ", $headertemplate);
 
 
@@ -276,12 +276,12 @@ class TemplateEngine {
             // \Logger::logDebug("render() [".  __LINE__  . "] headerBegin = $headerBegin   = ", "");
 
             if  ($headerBegin !== FALSE) {
-                // echo "<br> found a '###TEMPLATE_HEADER###'";
-                // echo "<br><br> template BEFORE replacing = " . htmlspecialchars($template) . "<br><br>";
+                // \Logger::logDebug("found a '###TEMPLATE_HEADER###'", "");
+                // \Logger::logDebug (" template BEFORE replacing = " . htmlspecialchars($template) . "<br><br>", "");
                 $tmp = self::renderTemplate($headertemplate, $data);
                 // \Logger::logDebug("render() [".  __LINE__  . "] headertemplate  after renderTemplate()   = ", $tmp);
                 $template = str_replace(\ApplicationConfig::$TEMPLATEHEADER, self::renderTemplate($headertemplate, $data), $template);
-                // echo "<br><br> template AFTER replacing = " . htmlspecialchars($template) . "<br><br>";
+                // \Logger::logDebug("template AFTER replacing = " . htmlspecialchars($template) . "<br><br>", "");
             }
         }
         // \Logger::logDebug("render() [".  __LINE__  . "] template after header is inserted    = ", $template);

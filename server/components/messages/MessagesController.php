@@ -15,8 +15,9 @@ class MessagesController extends SimpleController {
             \Util::redirect("/");
         }
 
-        $data = \DatabaseManager::getChannelsForUser($user->getId());
-        
+        $tmp = \DatabaseManager::getChannelsForUser($user->getId());
+        $data = array_merge($data, $tmp);
+
 
         // if a channelname is provided in the URL - load the data 
         // check if the channelname really exists!
@@ -37,7 +38,6 @@ class MessagesController extends SimpleController {
         // $data["hastopics"] = 0;
         $this->data = $data; 
         \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  data   = ", $this->data);
-        // die();
     }
 
     // // TODO Delete this if not necessary
