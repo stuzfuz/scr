@@ -215,19 +215,6 @@ class DatabaseManager {
     public static function getTopicsAndMessagesForUser(int $userid, string $channelname) {
         \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "   userid = $userid,  channelname: $channelname", "");
 
-        // $sql = "SELECT channel.id AS channelid, channel.name AS channelname, ";
-        // $sql .= "topic.id AS topicid, topic.title AS topictitle, topic.description AS topicdescription, topic.created_at AS topiccreatedat, ";
-        // $sql .= "message.id AS messageid, message.txt AS messagetxt, message.created_at AS messagecreatedat,  ";
-        // $sql .= "topic_flag.unread AS topicunread, topic_flag.important AS topicimportant,    ";
-        // $sql .= "message_flag.unread AS messageunread, message_flag.important AS messageimportant   "; 
-        // $sql .= "FROM channel ";
-        // $sql .= "LEFT JOIN topic ON (topic.channel_id = channel.id)  ";
-        // $sql .= "LEFT JOIN message ON (message.topic_id = topic.id)  ";
-        // $sql .= "LEFT JOIN message_flag ON (message_flag.message_id = message.id AND message_flag.user_id = ?)  ";
-        // $sql .= "LEFT JOIN topic_flag ON (topic_flag.topic_id = topic.id AND topic_flag.user_id = ?)    " ;
-        // $sql .= "WHERE channel.name = ? AND channel.deleted = 0    ";
-        // $sql .= "ORDER BY topic.created_at,   message.created_at   ";
-
         $sqlTopics ="\n";
         $sqlTopics .= "SELECT channel.id AS channelid, channel.name AS channelname,                               \n";
         $sqlTopics .= "topic.id AS topicid, topic.title AS topictitle, topic.description AS topicdescription, topic.created_at AS topiccreatedat,                              \n ";
@@ -243,14 +230,14 @@ class DatabaseManager {
         $sqlParams[] = $userid;
         $sqlParams[] = $channelname;
 
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] get topics and message = ", $sqlTopics);
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] sqlParams ", $sqlParams);
+        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] get topics and message = ", $sqlTopics);
+        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] sqlParams ", $sqlParams);
 
         $con = self::getConnection();
         $res = self::query($con, $sqlTopics, $sqlParams);
 
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] res = ", $res);
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  rowCount  = ", $res->rowCount() );
+        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "] res = ", $res);
+        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  rowCount  = ", $res->rowCount() );
 
         $topics = [];
         if ($res->rowCount() == 0) {
@@ -311,12 +298,13 @@ class DatabaseManager {
         }
         \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  messages   = ", $messages );
 
+        // die("messages");
         foreach($messages as $msg) {
             $topicid = $msg["topicid"];
 
             if ($msg["messageid"] == null) { continue; }
 
-            \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  after if ($msg[messageid] == null     ", "" );
+            // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  after if ($msg[messageid] == null)     ", "" );
 
             $found = false; 
             if (isset($topics["importanttopic"])) {
@@ -337,25 +325,25 @@ class DatabaseManager {
                     }
                 }
             }
-            if (isset($topics["topics"])) {
-                foreach($topics["topics"] as $key => $t) {
+            if (isset($topics["topic"])) {
+                foreach($topics["topic"] as $key => $t) {
                     // $topics["topics"][$key]["hasimportantmessages"] = 0;
                     // $topics["topics"][$key]["hasmessages"] = 0;
 
                     if ($t["topicid"] == $topicid) {
                         if ($msg["messageimportant"]) {
-                            $topics["topics"][$key]["importantmessages"][] = $msg;
-                            $topics["topics"][$key]["hasimportantmessages"] = true;
+                            $topics["topic"][$key]["importantmessages"][] = $msg;
+                            $topics["topic"][$key]["hasimportantmessages"] = true;
                         } else {
-                            $topics["topics"][$key]["messages"][] = $msg;
-                            $topics["topics"][$key]["hasmessages"] = true;
+                            $topics["topic"][$key]["messages"][] = $msg;
+                            $topics["topic"][$key]["hasmessages"] = true;
                         }
                     }
                 }
             }
         }
 
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  topics with messages   = ", $topics );
+        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  topics with messages   = ", $topics );
 
         self::closeConnection();
         return $topics;
