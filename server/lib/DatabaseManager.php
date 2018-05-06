@@ -105,6 +105,7 @@ class DatabaseManager {
         $sql .= "FROM channel                                 \n ";
         $sql .= "LEFT JOIN ref_user_channel ON (ref_user_channel.channel_id = channel.id)                                 \n   "; 
         $sql .= "WHERE ref_user_channel.user_id = ? AND channel.deleted = FALSE                                 \n   ";
+        $sql .= "ORDER BY name                                \n   ";
 
         $res = \DatabaseManager::query(self::getConnection(), $sql, array($userid));
 
@@ -175,7 +176,6 @@ class DatabaseManager {
         // if there are no channels -> do nothing 
         if (!is_array($channels)) { return true; }
         
-
         // get all topic ids for all the  channels  
         $sql = "\n";
         $sql .= "SELECT topic.id AS topicid                      \n";
@@ -328,6 +328,7 @@ class DatabaseManager {
             $topics["hasimportanttopics"] = 0; 
         } else {
             while ($tmp = \DatabaseManager::fetchAssoz($res)) {
+                if ($tmp["topicid"] == null) { continue; }
                 $tmp["hasmessages"] = 0;
                 $tmp["hasimportantmessages"] = 0;
 
@@ -381,7 +382,6 @@ class DatabaseManager {
         }
         // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  messages   = ", $messages );
 
-        // die("messages");
         foreach($messages as $msg) {
             $topicid = $msg["topicid"];
 
@@ -430,5 +430,49 @@ class DatabaseManager {
 
         self::closeConnection();
         return $topics;
+    }
+
+    public static function existsChannel(string $channelname): bool {
+        $con = self::getConnection();
+        $channelId = false;            
+        $sql = "SELECT id FROM  channel WHERE  name = ?";
+        $res = self::query($con, $sql, array($channelname));
+        
+        $found = true; 
+        if ($res->rowCount() == 0) {
+            $found = false; 
+             
+        }
+        self::closeConnection();
+        return $found;
+    }
+
+    public static function insertChannel(int $userid, string $channelname) {
+        $con = self::getConnection();
+        $con->beginTransaction();
+        $channelId = false;
+        try {
+            // insert new channel name
+            $sql = "INSERT INTO channel (name, created_by_user_id)";
+            $sql .= " VALUES (?, ?)";
+            
+            self::query($con, $sql, array($channelname, $userid));
+
+            $channelId = $con->lastInsertid();
+
+            // assign channel to user_id
+            $sql = "INSERT INTO ref_user_channel (user_id, channel_id)";
+            $sql .= " VALUES (?, ?)";
+            
+            self::query($con, $sql, array($userid, $channelId));
+            $con->lastInsertid();
+
+            $con->commit();
+        } catch (Exception $e) {
+            $con->rollBack();
+            $userid = null;
+        }
+        self::closeConnection();
+        return $channelId;
     }
 }

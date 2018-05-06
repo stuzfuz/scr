@@ -18,7 +18,6 @@ class ChannelController extends SimpleController {
         $tmp = \DatabaseManager::getChannelsForUser($user->getId());
         $data = array_merge($data, $tmp);
 
-
         // if a channelname is provided in the URL - load the data 
         // check if the channelname really exists!
         if (isset($this->route["channelname"])) {
@@ -37,7 +36,8 @@ class ChannelController extends SimpleController {
         // $data["hasimportanttopics"] = 0;
         // $data["hastopics"] = 0;
         $this->data = $data; 
-        // \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  data   = ", $this->data);
+        \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  data   = ", $this->data);
+        // die("kdsjf");
     }
 
     // // TODO Delete this if not necessary

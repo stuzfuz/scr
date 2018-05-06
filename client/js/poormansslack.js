@@ -149,5 +149,37 @@ $( document ).ready(function() {
         });
     });
 
+    $( "#formNewChannel" ).submit(function(e) {
+        e.preventDefault();
+        console.log("#formNewChannel submit");
 
+        // read input data from form
+        data =  {
+            channelname: $("#channelName").val(),
+        };
+        console.log("formNewChannel  data = " + JSON.stringify(data, null, 4));
+        
+        $.ajax({
+            url: "/api/newchannel",
+            type: "POST",
+            data: data,
+            dataType: "JSON"
+        }).done(function( res ) {
+            console.log( "/api/newchannel DONE reponse", JSON.stringify(res, null, 4));
+            
+            // if everything works -> redirect the user to the home page
+            window.location.assign("/");
+        
+        }).fail(function( res ) {
+            console.log( "/api/newchannel   FAIL response", JSON.stringify(res, null, 4));
+            res = JSON.parse(res["responseText"]);
+            console.log( "/api/newchannel   FAIL responseText", JSON.stringify(res, null, 4));
+
+            if (res["errorcode"] >= 2) {
+                showError(".register-error", res["status"]);
+            } else {
+                console.log("well - don't know now ");
+            }
+        });
+    });
 });

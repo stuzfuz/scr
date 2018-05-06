@@ -3,7 +3,14 @@
 class LoginController extends SimpleController {
 
     protected function gatherData() {
-        // $this->$data['username'] = 'test';
+        if (\AuthenticationManager::isAuthenticated()) {
+            $user = \AuthenticationManager::getAuthenticatedUser();
+            \Util::redirect("/");
+        } 
     }
+    // public function justDoIt() : string {
+    //     // self::gatherData();
+    //     return '';
+    // }   
 }
  

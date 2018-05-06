@@ -1,6 +1,6 @@
 <?php
 
-class SimpleController {
+abstract class SimpleController {
 
     protected $db_conn = null; 
     protected $route = null; 
@@ -19,7 +19,7 @@ class SimpleController {
 
     public function justDoIt() : string {
         // echo "<br> simple controiller - call gather data";
-        self::gatherData();
+        $this->gatherData();
         $page = \TemplateEngine::render(\ApplicationConfig::$indexTmpl, $this->data, $this->route['headertemplate'], $this->route['contenttemplate'], $this->route['footertemplate']);
         return $page;
     }

@@ -1,14 +1,7 @@
 <?php
 
 class LoginApiController extends SimpleController {
-
-    protected function gatherData() {
-        \Logger::logDebugPrintR("MessagesController this->data  = ", $this->data);
-    }
-
     public function justDoIt() : string {
-        // self::gatherData();
-
         \Logger::logDebugPrintR("LoginApiController::justDoIt() trying to authenicate user  route = ", $this->route);
         
         $username = $this->route["requestparameter"]["username"];

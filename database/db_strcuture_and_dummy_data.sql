@@ -184,7 +184,12 @@ INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate,
 VALUES ('/api/signout' ,'API', NULL, NULL, NULL, NULL, 'server/components/signout/',  'SignoutController', 'GET');
 
 
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/newchannel' ,'PAGE', 'client/header.html', 'server/components/newchannel/newchannel.html', 'client/footer.html', NULL, 'server/components/newchannel/', 'NewChannelController', 'GET');
 
+
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/api/newchannel' ,'API', NULL, NULL, NULL, NULL, 'server/components/newchannel/', 'NewChannelApiController', 'POST');
 
 	
 INSERT INTO user(username, firstname, lastname, password, isadmin) 
@@ -193,9 +198,6 @@ VALUES ('admin', 'admin', 'admin', SHA1('admin'), TRUE);
 	
 INSERT INTO user(username, firstname, lastname, password) 
 VALUES ('goofy', 'goofy', 'goofy', SHA1('goofy'));
-
-
-
 
 
 -- nur damit ein channel beim registrieren angezeigt wird
