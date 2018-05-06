@@ -30,6 +30,7 @@ body {
   padding-top: .5rem;
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  padding-top: 30px; 
 }
 
 .sidebar .nav-link {
@@ -149,3 +150,4 @@ body {
   padding-top: 20px;
   border-top: 1px solid #888;
 }
+
