@@ -40,7 +40,15 @@ class Util {
 
   public static function quit500($msg1, $msg2) {
     \Logger::logError($msg1,  $msg2);
+    http_response_code(500);
     readfile('client/static/500.html');
+    exit();
+  }
+
+  public static function quit404($msg1, $msg2) {
+    \Logger::logError($msg1,  $msg2);
+    http_response_code(404);
+    readfile('client/static/404.html');
     exit();
   }
 }

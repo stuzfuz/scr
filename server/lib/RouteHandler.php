@@ -59,16 +59,13 @@ class RouteHandler {
         if ($res->rowCount() == 0) {
             // \Logger::logDebugPrintR("'RouteHandler::handleRoute()' [" . __LINE__ ."]  rowcoint is zero    ", "");
 
-            if ($_GET) {
-                \Logger::logWarning("404 - could not find page: " , $self::$requestPath);
-                readfile('static/404.html');
-                exit();
+            if ($verb === "GET") {
+                \Logger::logDebug("404 - could not find page: " , self::$requestPath);
+                \Util::quit404("404 - could not find requested URL " , self::$requestPath);
             }
-            if ($_POST) {
-                \Logger::logDebug("'RouteHandler::handleRoute()' [" . __LINE__ ."]  could not find request URL - POST combiantion   ", $self::$requestPath); 
-                \Util::quit500("500 - could not find requested URL " , $self::$requestPath);
-                
-                
+            if ($verb ==="POST") {
+                \Logger::logDebug("'RouteHandler::handleRoute()' [" . __LINE__ ."]  could not find request URL - POST combiantion   ", self::$requestPath); 
+                \Util::quit500("500 - could not find requested URL " , self::$requestPath);                
             }
         } else {
             $route = \DatabaseManager::fetchAssoz($res);
