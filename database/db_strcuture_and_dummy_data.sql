@@ -197,7 +197,7 @@ VALUES ('admin', 'admin', 'admin', '68be59da0cf353ae74ee8db8b005454b515e1a22', T
 
 	
 INSERT INTO user(username, firstname, lastname, password) 
-VALUES ('goofy', 'goofy', 'goofy', 890e854c233a481206176f00f52c1b33b8fa0ff7');
+VALUES ('goofy', 'goofy', 'goofy', '890e854c233a481206176f00f52c1b33b8fa0ff7');
 
 
 -- nur damit ein channel beim registrieren angezeigt wird
