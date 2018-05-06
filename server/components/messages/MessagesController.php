@@ -5,12 +5,12 @@ class MessagesController extends SimpleController {
     protected function gatherData() {
 
         \Logger::logDebugPrintR("'MessagesController::gatherData()' [" . __LINE__ ."]  route =   ", $this->route); 
-
+        
         // user logged in? NO -> then redirect to /
         if (\AuthenticationManager::isAuthenticated()) {
             $user = \AuthenticationManager::getAuthenticatedUser();
             $data["username"] = '@' . $user->getUserName();
-            $data["loggedin"] = true;
+            $data["isloggedin"] = true;
         } else {
             \Util::redirect("/");
         }

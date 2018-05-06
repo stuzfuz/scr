@@ -7,9 +7,9 @@ class MainController extends SimpleController {
         if (\AuthenticationManager::isAuthenticated()) {
             $user = \AuthenticationManager::getAuthenticatedUser();
             $ret["username"] = '@' . $user->getUserName();
-            $ret["loggedin"] = true;
+            $ret["isloggedin"] = true;
         } else {
-            $ret["loggedin"] = false;
+            $ret["isloggedin"] = false;
             $this->data = $ret; 
             return; 
         }
