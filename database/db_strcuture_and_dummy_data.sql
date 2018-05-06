@@ -168,7 +168,7 @@ VALUES ('/api/savechannels' ,'API', NULL, NULL, NULL, 'server/components/registe
 
 
 INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
-VALUES ('/messages' ,'PAGE', 'client/header.html', 'server/components/messages/content.html', 'client/footer.html', 'channelname', 'server/components/messages/', 'MessagesController', 'GET');
+VALUES ('/channel' ,'PAGE', 'client/header.html', 'server/components/channel/content.html', 'client/footer.html', 'channelname', 'server/components/channel/', 'ChannelController', 'GET');
 
 
 INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
