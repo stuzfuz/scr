@@ -170,7 +170,7 @@ class DatabaseManager {
     }
 
     public static function assignUserChannelsTopicsMessages(int $userid, array $channels) {
-        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "   userid = $userid,  channels", $channels);
+        // \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "   userid = $userid,  channels", $channels);
 
         // if there are no channels -> do nothing 
         if (!is_array($channels)) { return true; }
@@ -197,14 +197,9 @@ class DatabaseManager {
         \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] params = ", $params);
         \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlArr = ", $sqlArr);
 
-
-
         $con = self::getConnection();
 
         $topics = self::query($con, $sqlTopics, $params);
-
-        
-
 
 
         // get all message ids for all the  topics  
@@ -219,14 +214,14 @@ class DatabaseManager {
         $sql2 .= ") AND  topic.deleted = FALSE AND message.deleted = FALSE;                                    \n      ";
         $sqlMessages = $sql . " " . implode(",", $sqlArr) . $sql2;
 
-        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlMessages = ", $sqlMessages);
-        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] params = ", $params);
-        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlArr = ", $sqlArr);
+        // \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlMessages = ", $sqlMessages);
+        // \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] params = ", $params);
+        // \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlArr = ", $sqlArr);
 
         $messages = self::query($con, $sqlMessages, $params);
 
-        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] topics = ", $topics);
-        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] messages = ", $messages);
+        // \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] topics = ", $topics);
+        // \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] messages = ", $messages);
         
         // prepare sql Queries - assign channels to user (or is it vice versa?)
         $sqlAssignChannels = "INSERT INTO ref_user_channel (user_id, channel_id) VALUES";
@@ -239,8 +234,9 @@ class DatabaseManager {
             $paramsAssignChannels[] = $c;
         } 
         $sqlAssignChannels .= " " . implode(",", $sqlArr);
-        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] assign channels to userid sql = ", $sqlAssignChannels);
-        \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] paramsAssignChannels ", $paramsAssignChannels);
+
+        // \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] assign channels to userid sql = ", $sqlAssignChannels);
+        // \Logger::logDebugPrintR("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] paramsAssignChannels ", $paramsAssignChannels);
 
 
         // mark all topics/messages as unread and not important
@@ -269,8 +265,8 @@ class DatabaseManager {
         $sqlMarkMessages = $sqlMarkMessages . " " . implode(",", $sqlArr) ."\n";
 
 
-        \Logger::logDebug("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlMarkTopics    ", $sqlMarkTopics);
-        \Logger::logDebug("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlMarkMessages     ", $sqlMarkMessages);
+        // \Logger::logDebug("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlMarkTopics    ", $sqlMarkTopics);
+        // \Logger::logDebug("'assignUserChannelsTopicsMessages()'  [" . __LINE__ . "] sqlMarkMessages     ", $sqlMarkMessages);
 
         
         $con->beginTransaction();
@@ -300,7 +296,7 @@ class DatabaseManager {
     }
 
     public static function getTopicsAndMessagesForUser(int $userid, string $channelname) {
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "   userid = $userid,  channelname: $channelname", "");
+        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "   userid = $userid,  channelname: $channelname", "");
 
         $sqlTopics ="\n";
         $sqlTopics .= "SELECT channel.id AS channelid, channel.name AS channelname,                               \n";
@@ -350,7 +346,7 @@ class DatabaseManager {
             $topics["hastopics"] = isset($topics["topic"]) ? 1 : 0; 
             $topics["hasimportanttopics"] = isset($topics["importanttopic"]) ? 1 : 0; 
         }
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  topics  = ", $topics);    
+        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  topics  = ", $topics);    
 
         $sqlMessages = "\n";
         $sqlMessages .= "SELECT topic.id AS topicid,                    \n";
@@ -383,7 +379,7 @@ class DatabaseManager {
                 $messages[] = $msg; 
             }
         }
-        \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  messages   = ", $messages );
+        // \Logger::logDebugPrintR("'getTopicsAndMessagesForUser()'  [" . __LINE__ . "]  messages   = ", $messages );
 
         // die("messages");
         foreach($messages as $msg) {
