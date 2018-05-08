@@ -476,44 +476,114 @@ class DatabaseManager {
         return $channelId;
     }
 
+    public static function getUsersForTopic($topicId) {
+        $con = self::getConnection();
+
+         // get all user ids who have access to the channel  
+         $sql = "\n";
+         $sql .= "SELECT topic.channel_id, ref_user_channel.user_id AS userid                   \n";
+         $sql .= "FROM topic                                              \n";
+         $sql .= "LEFT JOIN ref_user_channel ON (ref_user_channel.channel_id = topic.channel_id)                              \n";
+         $sql .= "WHERE topic.id = ? AND topic.deleted = FALSE;                \n";
+        
+         $con = self::getConnection();
+         $tmp = self::query($con, $sql, array($topicId));    
+ 
+         $users = array();
+         while ($u = \DatabaseManager::fetchAssoz($tmp)) {
+             $users[]= $u; 
+         }
+         return $users; 
+    }
+
     public static function insertMessage(int $userid, int $topicid, string $txt) {
-        // $con = self::getConnection();
-        // $con->beginTransaction();
-        // $msgId = false;
-        // try {
-        //     // insert new channel name
-        //     $sql = "INSERT INTO message (user_id, topic_id, txt)";
-        //     $sql .= " VALUES (?, ?, ?)";
+        $users = self::getUsersForTopic($topicid);
+
+        $con = self::getConnection();
+        $con->beginTransaction();
+        $msgId = false;
+        try {
+            // insert new message name
+            $sql = "INSERT INTO message (user_id, topic_id, txt)";
+            $sql .= " VALUES (?, ?, ?)";
+            self::query($con, $sql, array($userid, $topicid, $txt));
+
+            $msgId = $con->lastInsertid();
+
             
-        //     self::query($con, $sql, array($userid, $topicid, $txt));
+            // assign the new message to all members of the channel as unread and not important
+            $sqlAssignMessage = "INSERT INTO message_flag (message_id, user_id, important, unread) VALUES";
+            $paramsAssignMessage = [];
+            $sqlArr = [];
+            $s = "(?, ?, FALSE, TRUE)";
 
-        //     $msgId = $con->lastInsertid();
+            \Logger::logDebugPrintR("DatabaseManager::insertMessage() insert User <-> topic relation  sqlAssignMessage = ", $sqlAssignMessage);
 
-        //     $con->commit();
-        // } catch (Exception $e) {
-        //     $con->rollBack();
-        //     $msgId = false;
-        // }
-        // self::closeConnection();
+            foreach($users as $u) {
+                $sqlArr[] = $s;
+                $paramsAssignMessage[] = $msgId;
+                $paramsAssignMessage[] = $u["userid"];
+            } 
+            $sqlAssignMessage .= " " . implode(",", $sqlArr);
+
+            \Logger::logDebug("DatabaseManager::insertMessage() insert User <-> topic relation  sqlAssignMessage = $sqlAssignMessage ", "");
+            \Logger::logDebugPrintR("DatabaseManager::insertMessage() insert User <-> topic relation  paramsAssignMessage = ", $paramsAssignMessage);
+
+            // insert topic <-> users relation
+            self::query($con, $sqlAssignMessage, $paramsAssignMessage);
+            // $res = $con->lastInsertid();
+
+            $con->commit();
+
+            $res = true;
+
+        } catch (Exception $e) {
+            $con->rollBack();
+            $msgId = false;
+        }
+        self::closeConnection();
         return $msgId;
+    }
+
+    public static function getUsersForChannel($channelid) {
+        $con = self::getConnection();
+
+         // get all user ids who have access to the channel  
+         $sql = "\n";
+         $sql .= "SELECT user_id AS userid                      \n";
+         $sql .= "FROM ref_user_channel                                        \n  ";
+         $sql .= "WHERE channel_id = ?   ";          // AND (user_id <>  ?)
+          
+         $con = self::getConnection();
+         $tmp = self::query($con, $sql, array($channelid));    // ,  $userid
+ 
+         $users = array();
+         while ($u = \DatabaseManager::fetchAssoz($tmp)) {
+             $users[]= $u; 
+         }
+         return $users; 
     }
 
     public static function insertTopic(int $userid, int $channelid, string $title, string $description) {
         $con = self::getConnection();
 
-        // get all user ids for the channel  
-        $sql = "\n";
-        $sql .= "SELECT user_id AS userid                      \n";
-        $sql .= "FROM topic                                        \n  ";
-        $sql .= "WHERE channel_id = ?   ";          // AND (user_id <>  ?)
+        // // get all user ids who have access to the channel  
+        // $sql = "\n";
+        // $sql .= "SELECT user_id AS userid                      \n";
+        // $sql .= "FROM ref_user_channel                                        \n  ";
+        // $sql .= "WHERE channel_id = ?   ";          // AND (user_id <>  ?)
          
-        $con = self::getConnection();
-        $tmp = self::query($con, $sql, array($channelid));    // ,  $userid
+        // $con = self::getConnection();
+        // $tmp = self::query($con, $sql, array($channelid));    // ,  $userid
 
-        $users = array();
-        while ($u = \DatabaseManager::fetchAssoz($tmp)) {
-            $users[]= $u; 
-        }
+        // $users = array();
+        // while ($u = \DatabaseManager::fetchAssoz($tmp)) {
+        //     $users[]= $u; 
+        // }
+
+        $users = self::getUsersForChannel($channelid);
+
+        \Logger::logDebugPrintR("DatabaseManager::insertTopic() user with access to channel $channelid: ", $users);
 
         // begin transaction and insert values 
         $con->beginTransaction();
@@ -527,7 +597,7 @@ class DatabaseManager {
 
             \Logger::logDebug("DatabaseManager::insertTopic() new topicId = $topicId ", "");
 
-             // assign the new message to all members of the channel as unread and not important
+            // assign the new topic to all members of the channel as unread and not important
             $sqlAssignTopic = "INSERT INTO topic_flag (topic_id, user_id, important, unread) VALUES";
             $paramsAssignTopic = [];
             $sqlArr = [];

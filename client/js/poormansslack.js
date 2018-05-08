@@ -202,6 +202,8 @@ $( document ).ready(function() {
             txt: txt
         };
 
+        console.log("new message data " + JSON.stringify(data, null, 4));
+
         $.ajax({
             url: "/api/newmessage",
             type: "POST",
@@ -211,7 +213,7 @@ $( document ).ready(function() {
             console.log( "/api/newmessage DONE reponse", JSON.stringify(res, null, 4));
             
             // if everything works -> reload page and data
-            // location.reload();        
+            location.reload();        
         }).fail(function( res ) {
             console.log( "/api/newmessage   FAIL response", JSON.stringify(res, null, 4));
             res = JSON.parse(res["responseText"]);
@@ -236,9 +238,9 @@ $( document ).ready(function() {
         var title = $(this).find("input[name=topictitle]").val();
         var description = $(this).find("input[name=topicdescription]").val();
 
-        if (title.lengtth < 1) {
+        if (title.length < 1) {
             showError(".register-error", "title too short");
-        } else if (description.lengtth < 1) {
+        } else if (description.length < 1) {
             showError(".register-error", "description too short");
         } else {
             console.log("formnewtopic    title:  " + title);
@@ -261,7 +263,7 @@ $( document ).ready(function() {
                 console.log( "/api/newtopic DONE reponse", JSON.stringify(res, null, 4));
                 
                 // if everything works -> reload page and data
-                // location.reload();        
+                location.reload();        
             }).fail(function( res ) {
                 console.log( "/api/newtopic   FAIL response", JSON.stringify(res, null, 4));
                 res = JSON.parse(res["responseText"]);

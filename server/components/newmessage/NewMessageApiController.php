@@ -3,6 +3,8 @@
 class NewMessageApiController extends SimpleController {
 
     protected function gatherData() {
+        \Logger::logDebug("NewMessageApiController::gatherData() BEGIN", "");
+
         $ret = null; 
         if (\AuthenticationManager::isAuthenticated()) {
             $user = \AuthenticationManager::getAuthenticatedUser();
@@ -16,10 +18,14 @@ class NewMessageApiController extends SimpleController {
             $ret["status"] = "ERROR: your are not logged in - please login and try again!";
             $ret["isloggedin"] = false;
         }
+        \Logger::logDebug("NewMessageApiController::gatherData() END", "");
+
         $this->data = $ret; 
     }
 
     public function justDoIt() : string {
+        \Logger::logDebug("NewMessageApiController::justDoIt() BEGIN", "");
+
         $this->gatherData();
 
         // if no logged in -> early exit
