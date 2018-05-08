@@ -546,7 +546,6 @@ class DatabaseManager {
             \Logger::logDebug("DatabaseManager::insertTopic() insert User <-> topic relation  sqlAssignTopic = $sqlAssignTopic ", "");
             \Logger::logDebugPrintR("DatabaseManager::insertTopic() insert User <-> topic relation  paramsAssignTopic = ", $paramsAssignTopic);
             
-            // die("check how often the pairs appear!");
             // insert topic <-> users relation
             self::query($con, $sqlAssignTopic, $paramsAssignTopic);
             $res = $con->lastInsertid();
