@@ -25,7 +25,7 @@
 
     <!-- ###BEGIN_TEMPLATE### -->
 
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky">
@@ -111,7 +111,7 @@
                                         <div class="container-importanttopic  topicid-@@topicid@@">
                                             <div class="card  mb-5">
                                                 <div class="card-header bg-transparent ">
-                                                    <h5 class="card-title">@@username@@  <span class="badge badge-primary">Important</span> 
+                                                    <h5 class="card-title importanttopic-title">@@username@@  <span class="badge badge-primary">Important</span> 
                                                     ###IF(unread)### 
                                                         <span class="badge badge-secondary">New</span> 
                                                     ###END###
@@ -225,7 +225,7 @@
                                         <div class="container-topic  topicid-@@topicid@@">
                                             <div class="card  mb-5">
                                                 <div class="card-header bg-transparent ">
-                                                    <h5 class="card-title">@@username@@  
+                                                    <h5 class="card-title ">@@username@@  
                                                         ###IF(unread)### 
                                                         <span class="badge badge-secondary">New</span> 
                                                         ###END###
@@ -458,19 +458,6 @@
 
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="dist/js/vendor/popper.min.js"></script>
-    <script src="dist/js/bootstrap.min.js"></script>
-
-    <!-- Icons -->
-    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-    <script>
-        feather.replace()
-    </script>
 
 
 

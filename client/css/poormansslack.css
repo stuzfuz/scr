@@ -160,3 +160,27 @@ body {
 .infoh4 {
   margin-bottom: 60px; 
 }
+
+
+
+.msg, .formnewmessage {
+  margin-left: 50px;
+}
+
+.importanttopic, .edittopic, .importantmessage, .editmessage {
+  padding-right: 8px;
+}
+
+.edittopic {
+  padding-right: 8px;
+}
+
+ {
+  padding-right: 8px;
+}
+
+.edittopic {
+  padding-right: 8px;
+}
+
+

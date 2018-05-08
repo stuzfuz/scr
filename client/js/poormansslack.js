@@ -325,4 +325,5 @@ $( document ).ready(function() {
     // display hidden in CSS does not work :-( (not even with !important)
     $(".feedback-newmessage").hide();
     $(".feedback-newtopic").hide();
+
 });
