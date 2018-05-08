@@ -122,9 +122,9 @@
                                                     <p class="card-text">@@topictitle@@</p>
                                                 </div>
                                                 <div class="card-footer bg-transparent text-right">
-                                                    <span data-feather="thumbs-up"></span>
-                                                    <span data-feather="edit"></span>
-                                                    <span data-feather="trash-2"></span>
+                                                    <a href="#" class="importanttopic topicid-@@topicid@@">  <span data-feather="thumbs-up"></span> </a>
+                                                   <a href="#" class="edittopic topicid-@@topicid@@">  <span data-feather="edit"></span> </a>
+                                                   <a href="#" class="deletetopic topicid-@@topicid@@">  <span data-feather="trash-2"></span> </a>
                                                 </div>
                                             </div>
                                             ###IF(HASIMPORTANTMESSAGES)###
@@ -146,9 +146,9 @@
                                                                         <p class="card-text">@@messagetxt@@</p>
                                                                     </div>
                                                                     <div class="card-footer bg-transparent text-right">
-                                                                        <span data-feather="thumbs-up"></span>
-                                                                        <span data-feather="edit"></span>
-                                                                        <span data-feather="trash-2"></span>
+                                                                        <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
+                                                                        <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
+                                                                        <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
                                                                     </div>                                                            
                                                                 </div>
                                                             </div>
@@ -176,9 +176,9 @@
                                                                         <p class="card-text">@@messagetxt@@</p>
                                                                     </div>
                                                                     <div class="card-footer bg-transparent text-right">
-                                                                        <span data-feather="thumbs-up"></span>
-                                                                        <span data-feather="edit"></span>
-                                                                        <span data-feather="trash-2"></span>
+                                                                        <a href="#" class="importanttopic topicid-@@topicid@@">  <span data-feather="thumbs-up"></span> </a>
+                                                                       <a href="#" class="edittopic topicid-@@topicid@@">  <span data-feather="edit"></span> </a>
+                                                                       <a href="#" class="deletetopic topicid-@@topicid@@">  <span data-feather="trash-2"></span> </a>
                                                                     </div>                                                            
                                                                 </div>
                                                             </div>
@@ -190,7 +190,7 @@
                                     ###END### 
                                 </div>
                             ###ELSE###  
-                                <h4>no IMPORTANT topics in this channel ...</h4> 
+                                <h4 class="infoh4">no IMPORTANT topics in this channel ...</h4> 
                             ###END###
                             
                            
@@ -212,9 +212,9 @@
                                                     <p class="card-text">@@topictitle@@</p>
                                                 </div>
                                                 <div class="card-footer bg-transparent text-right">
-                                                    <span data-feather="thumbs-up"></span>
-                                                    <span data-feather="edit"></span>
-                                                    <span data-feather="trash-2"></span>
+                                                    <a href="#" class="importanttopic topicid-@@topicid@@">  <span data-feather="thumbs-up"></span> </a>
+                                                    <a href="#" class="edittopic topicid-@@topicid@@">  <span data-feather="edit"></span> </a>
+                                                    <a href="#" class="deletetopic topicid-@@topicid@@">  <span data-feather="trash-2"></span> </a>
                                                 </div>
                                             </div>
                                             ###IF(HASIMPORTANTMESSAGES)###
@@ -237,9 +237,10 @@
                                                                         <p class="card-text">@@messagetxt@@</p>
                                                                     </div>
                                                                     <div class="card-footer bg-transparent text-right">
-                                                                        <span data-feather="thumbs-up"></span>
-                                                                        <span data-feather="edit"></span>                                                                <span data-feather="trash-2"></span>
-                                                                    </div>                                                            
+                                                                        <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
+                                                                        <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
+                                                                        <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -266,9 +267,9 @@
                                                                         <p class="card-text">@@messagetxt@@</p>
                                                                     </div>
                                                                     <div class="card-footer bg-transparent text-right">
-                                                                        <span data-feather="thumbs-up"></span>
-                                                                        <span data-feather="edit"></span>
-                                                                        <span data-feather="trash-2"></span>
+                                                                        <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
+                                                                        <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
+                                                                        <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
                                                                     </div>                                                            
                                                                 </div>
                                                             </div>
@@ -282,21 +283,20 @@
                                                 <div class="col-sm-7">
                                                     <div class="row">
                                                         <div class="col-sm-12">
-                                                            <h4>New Message:</h4>
                                                             <form class="formnewmessage topicid-@@topicid@@">
-                                                                <div class="input-group mb-3">
-                                                                    <div class="input-group-prepend">
-                                                                        <span class="input-group-text">your answer</span>
+                                                                <div class="form-group">
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" id="inputGroupPrepend">+</span>
+                                                                        </div>
+                                                                        <input type="text" class="form-control" id="new_message" placeholder="Write new reply!" required>
                                                                     </div>
-                                                                    <input type="text" class="form-control newmessagetext">
                                                                 </div>
-                                                                <button type="submit" class="btn btn-primary text-right">Submit</button>
                                                             </form>
                                                         </div>
                                                     </div>
                                                     <div class="row" >
                                                         <div class="alert alert-danger feedback-newmessage topicid-@@topicid@@" role="alert">
-                                                                An error occured with your login credentials - please try again.
                                                         </div>
                                                     </div>
                                                 </div>
@@ -305,7 +305,7 @@
                                     ###END### 
                                 </div>
                             ###ELSE###  
-                                <h4>no unimportant topics in this channel ...</h4> 
+                                <h4 class="infoh4">no unimportant topics in this channel ...</h4> 
                             ###END###
                             -->
                     
