@@ -170,17 +170,14 @@ body {
 .importanttopic, .edittopic, .importantmessage, .editmessage {
   padding-right: 8px;
 }
+ 
+ 
 
-.edittopic {
-  padding-right: 8px;
-}
-
- {
-  padding-right: 8px;
-}
-
-.edittopic {
-  padding-right: 8px;
+.btn-login {
+  margin-right:30px;
 }
 
 
+.login-container, .register-container {
+  height:100vh;
+}
