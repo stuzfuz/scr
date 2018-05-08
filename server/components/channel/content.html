@@ -106,9 +106,7 @@
                     <!-- ###BEGIN_PARTIAL### -->
                         <!-- ###BEGIN###
                             ###IF(HASIMPORTANTTOPICS)###
-                                <div class="container-importanttopics  ">
                                 ###FOREACH(IMPORTANTTOPIC)### 
-                                    <div class="container-importanttopic  topicid-@@topicid@@">
                                         <div class="card  mb-5">
                                             <div class="card-header bg-transparent ">
                                                 <h5 class="card-title">@@username@@  <span class="badge badge-primary">Important</span> 
@@ -122,15 +120,14 @@
                                                 <p class="card-text">@@topictitle@@</p>
                                             </div>
                                             <div class="card-footer bg-transparent text-right">
-                                                <a href="#" class="importanttopic topicid-@@topicid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                <a href="#" class="edittopic topicid-@@topicid@@">  <span data-feather="edit"></span> </a>
-                                                <a href="#" class="deletetopic topicid-@@topicid@@">  <span data-feather="trash-2"></span> </a>
+                                                <span data-feather="thumbs-up"></span>
+                                                <span data-feather="edit"></span>
+                                                <span data-feather="trash-2"></span>
                                             </div>
                                         </div>
                                         ###IF(HASIMPORTANTMESSAGES)###
-                                            <div class="container-importantmessages topicid-@@topicid@@">
                                             ###FOREACH(IMPORTANTMESSAGES)###
-                                                <div class="row messageid-@@messageid">
+                                                <div class="row">
                                                     <div class="col-sm-1"></div>
                                                     <div class="col-sm-11">
                                                         <div class="card mb-5">
@@ -145,21 +142,19 @@
                                                             <div class="card-body ">
                                                                 <p class="card-text">@@messagetxt@@</p>
                                                             </div>
-                                                            <div class="card-footer bg-transparent text-right       
-                                                                <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                                <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
-                                                                <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
+                                                            <div class="card-footer bg-transparent text-right">
+                                                                <span data-feather="thumbs-up"></span>
+                                                                <span data-feather="edit"></span>
+                                                                <span data-feather="trash-2"></span>
                                                             </div>                                                            
                                                         </div>
                                                     </div>
                                                 </div>
                                             ###END###
-                                            </div>
                                         ##END###
                                         ###IF(HASMESSAGES)###
-                                            <div class="container-messages topicid-@@topicid@@">
                                             ###FOREACH(MESSAGES)###
-                                                <div class="row messageid-@@messageid@@">
+                                                <div class="row">
                                                     <div class="col-sm-1">
                                                     </div>
                                                     <div class="col-sm-11">
@@ -176,48 +171,16 @@
                                                                 <p class="card-text">@@messagetxt@@</p>
                                                             </div>
                                                             <div class="card-footer bg-transparent text-right">
-                                                                <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                                <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
-                                                                <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
+                                                                <span data-feather="thumbs-up"></span>
+                                                                <span data-feather="edit"></span>
+                                                                <span data-feather="trash-2"></span>
                                                             </div>                                                            
                                                         </div>
                                                     </div>
                                                 </div>
                                             ###END###
-                                            </div>
                                         ##END###
-
-                                        <div class="row new-message">
-                                                    <div class="col-sm-5">
-                                                    </div>
-                                                    <div class="col-sm-7">
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <h4>New Message:</h4>
-                                                                <form class="formnewmessage topicid-@@topicid@@">
-                                                                        <div class="input-group mb-3">
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text">your answer</span>
-                                                                            </div>
-                                                                            <input type="text" class="form-control newmessagetext">
-                                                                        </div>
-                                            
-                                                                        <button type="submit" class="btn btn-primary text-right">Submit</button>
-                                                                </form>
-                                                                
-                                                            </div>
-                                                        </div>
-                                                        <div class="row" >
-                                                            <div class="alert alert-danger feedback-newmessage topicid-@@topicid@@" role="alert">
-                                                                An error occured with your login credentials - please try again.
-                                                            </div>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </div>
-                                        </div>   
                                 ###END### 
-                                    </div>
                                 
                             ###ELSE###  
                                 <h4>no IMPORTANT topics in this channel ...</h4> 
@@ -229,7 +192,6 @@
 
                             ###IF(HASTOPICS)###
                                 ###FOREACH(TOPIC)### 
-                                    <div class="container-topics  topicid-@@topicid@@">
                                         <div class="card  mb-5">
                                             <div class="card-header bg-transparent ">
                                                 <h5 class="card-title">@@username@@  
@@ -243,15 +205,14 @@
                                                 <p class="card-text">@@topictitle@@</p>
                                             </div>
                                             <div class="card-footer bg-transparent text-right">
-                                                <a href="#" class="importanttopic topicid-@@topicid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                <a href="#" class="edittopic topicid-@@topicid@@">  <span data-feather="edit"></span> </a>
-                                                <a href="#" class="deletetopic topicid-@@topicid@@">  <span data-feather="trash-2"></span> </a>
+                                                <span data-feather="thumbs-up"></span>
+                                                <span data-feather="edit"></span>
+                                                <span data-feather="trash-2"></span>
                                             </div>
                                         </div>
                                         ###IF(HASIMPORTANTMESSAGES)###
-                                            <div class="container-messages topicid-@@topicid@@">
                                             ###FOREACH(IMPORTANTMESSAGES)###
-                                                <div class="row messageid-@@topicid@@">
+                                                <div class="row">
                                                     <div class="col-sm-1"></div>
                                                     <div class="col-sm-11">
                                                         <div class="card mb-5">
@@ -268,20 +229,18 @@
                                                                 <p class="card-text">@@messagetxt@@</p>
                                                             </div>
                                                             <div class="card-footer bg-transparent text-right">
-                                                                <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                                <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
-                                                                <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
+                                                                <span data-feather="thumbs-up"></span>
+                                                                <span data-feather="edit"></span>
+                                                                <span data-feather="trash-2"></span>
                                                             </div>                                                            
                                                         </div>
                                                     </div>
                                                 </div>
                                             ###END###
-                                            </div>
                                         ##END###
                                         ###IF(HASMESSAGES)###
-                                            <div class="container-messages topicid-@@topicid@@">
                                             ###FOREACH(MESSAGES)###
-                                                <div class="row messageid-@@topicid@@">
+                                                <div class="row">
                                                     <div class="col-sm-1">
                                                     </div>
                                                     <div class="col-sm-11">
@@ -299,49 +258,45 @@
                                                                 <p class="card-text">@@messagetxt@@</p>
                                                             </div>
                                                             <div class="card-footer bg-transparent text-right">
-                                                                <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                                <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
-                                                                <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
+                                                                <span data-feather="thumbs-up"></span>
+                                                                <span data-feather="edit"></span>
+                                                                <span data-feather="trash-2"></span>
                                                             </div>                                                            
                                                         </div>
                                                     </div>
                                                 </div>
                                             ###END###
-                                            </div>
                                         ##END###
-                                                <div class="row new-message">
-                                                    <div class="col-sm-5">
-                                                    </div>
-                                                    <div class="col-sm-7">
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <h4>New Message:</h4>
-                                                                <form class="formnewmessage topicid-@@topicid@@">
-                                                                        <div class="input-group mb-3">
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text">your answer</span>
-                                                                            </div>
-                                                                            <input type="text" class="form-control newmessagetext" >
-                                                                        </div>
-                                            
-                                                                        <button type="submit" class="btn btn-primary text-right">Submit</button>
-                                                                </form>
+                                        <div class="row new-message">
+                                            <div class="col-sm-5">
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <h4>New Message:</h4>
+                                                        <form class="formnewmessage topicid-@@topicid@@">
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">your answer</span>
+                                                                </div>
+                                                                <input type="text" class="form-control newmessagetext">
                                                             </div>
-                                                        </div>
-                                                        <div class="row ">
-                                                            <div class="alert alert-danger feedback-newmessage topicid-@@topicid@@" role="alert">
-                                                                An error occured with your login credentials - please try again.
-                                                            </div>
-                                                        </div>
+                                                            <button type="submit" class="btn btn-primary text-right">Submit</button>
+                                                        </form>
                                                     </div>
                                                 </div>
-                                ###END### 
+                                                <div class="row" >
+                                                    <div class="alert alert-danger feedback-newmessage topicid-@@topicid@@" role="alert">
+                                                            An error occured with your login credentials - please try again.
+                                                    </div>
+                                                </div>
                                             </div>
+                                        </div>
+                                ###END### 
+                                
                             ###ELSE###  
                                 <h4>no unimportant topics in this channel ...</h4> 
                             ###END###
-                                        </div>
-                           
                             -->
                     
                     <div class="card mb-5">
@@ -416,54 +371,32 @@
                         </div>
                     </div>
 
-                    
-                    
-                    
                     <!-- ###END### -->
-
-
-
-
-
-
                     <!-- ###END_PARTIAL### -->
                 </div>
-
-
-                <!-- ###BEGIN_PARTIAL### -->
-                <!-- ###BEGIN### -->
-                <!-- <div class="row">
-                        <div class="col-sm-10">
-                            <h4>New Topic:</h4>
-                            <form class="formnewtopic channelid-@@channelid@@">
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="newtopic">Title</span>
-                                    </div>
-                                    <input required type="text" name="topictitle" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                <div class="row new-topic">
+                    <div class="col-sm-10">
+                        <h4>New Topic:</h4>
+                        <form >
+                            <!-- <label for="newtopic">Title:</label> -->
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >Title</span>
                                 </div>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="newtopic">Description</span>
-                                    </div>
-                                    <input required type="text" name="topicdescription" class="form-control" id="basic-url" aria-describedby="basic-addon3">
-                                </div>
-    
-                                <button type="submit"  class="btn btn-primary text-right">Submit</button>
-                            </form>
-                        </div>
-                </div> -->
-                <!-- ###END### -->
-                <!-- ###END_PARTIAL### -->
-                
-                    <div class="row">
-                        <div class="col-sm-10">
-                            <div class="alert alert-danger feedback-newtopic" role="alert">
-                                An error occured with your login credentials - please try again.
+                                <input type="text" class="form-control"  >
                             </div>
-                        </div>
-                    </div>
+                            <!-- <label for="newdescription">Description:</label> -->
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >Description</span>
+                                </div>
+                                <input type="text" class="form-control"  >
+                            </div>
 
+                            <button type="submit" class="btn btn-primary text-right">Submit</button>
+                        </form>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
