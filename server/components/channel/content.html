@@ -78,57 +78,50 @@
             </nav>
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
 
+                <div class="my-3 p-3 bg-white rounded box-shadow">
                     <!-- ###BEGIN_PARTIAL### -->
                     <!-- ###BEGIN### 
                             <h1 class="h2">@@channelname@@</h1>       
                          ###END### -->
 
-                    <h1 class="h2">Channelname</h1>
+                    <h1 class=" pb-2 mb-0">Channelname</h1>
+                    <h6 class="border-bottom border-gray pb-2 mb-0 channeldescription">Channeldescription</h6>
                     <!-- ###END_PARTIAL### -->
 
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group mr-2">
-                            <button class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button class="btn btn-sm btn-outline-secondary">Export</button>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                            <span data-feather="calendar"></span>
-                            This week
-                        </button>
-                    </div>
-                </div>
 
-                <!-- our messages-->
-                <div class="container">
 
                     <!-- ###BEGIN_PARTIAL### -->
-                        <!-- ###BEGIN###
+                    <!-- ###BEGIN###
                             ###IF(HASIMPORTANTMESSAGES)###
                                 <div class="container-importantmessages channelid-@@channelid@@">
                                     ###FOREACH(IMPORTANTMESSAGES)###
-                                        <div class="row messageid-@@messageid@@">
-                                            <div class="col-sm-12">
-                                                <div class="card mb-5">
-                                                    <div class="card-header bg-transparent ">
-                                                        <h5 class="card-title">@@username@@ <span class="badge badge-primary">Important</span> 
-                                                            ###IF(unread)### 
-                                                                <span class="badge badge-secondary">New</span> 
-                                                            ###END###
-                                                        </h5>
-                                                        <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
+                                        <div class="card msg messageid-@@messageid@@">
+                                            <div class="card-header">
+                                                <div class="row justify-content-between">
+                                                    <div class="co-6 ">
+                                                        @@username@@  wrote on the @@date@@ at @@time@@
+                                                        <span class="badge badge-primary">Important</span>
+                                                        ###IF(unread)### 
+                                                            <span class="badge badge-secondary">Unread</span>
+                                                        ###END###
                                                     </div>
-                                                    <div class="card-body">
-                                                        <p class="card-text">@@messagetxt@@</p>
+                                                    <div class="col-4  text-right">
+                                                        <a href="#" class="importantmessage messageid-@@messageid@@">
+                                                            <span data-feather="thumbs-up"></span>
+                                                        </a>
+                                                        <a href="#" class="editmessage messageid-@@messageid@@">
+                                                            <span data-feather="edit"></span>
+                                                        </a>
+                                                        <a href="#" class="deletemessage messageid-@@messageid@@">
+                                                            <span data-feather="trash-2"></span>
+                                                        </a>
                                                     </div>
-                                                    <div class="card-footer bg-transparent text-right">
-                                                        <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                        <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
-                                                        <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
-                                                    </div>                                                            
                                                 </div>
-                                            </div>                                                        
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="card-text">@@messagetxt@@</p>
+                                            </div>
                                         </div>
                                     ###END###
                                 </div>
@@ -136,134 +129,185 @@
                             ###IF(HASMESSAGES)###
                                 <div class="container-messages channelid-@@channelid@@">
                                     ###FOREACH(MESSAGES)###
-                                        <div class="row messageid-@@messageid@@">
-                                            
-                                            <div class="col-sm-12">
-                                                <div class="card mb-5">
-                                                    <div class="card-header bg-transparent ">
-                                                        <h5 class="card-title">@@username@@ 
-                                                            ###IF(unread)### 
-                                                                <span class="badge badge-secondary">New</span> 
-                                                            ###END###
-                                                        </h5>
-                                                        <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
+                                        <div class="card msg messageid-@@messageid@@">
+                                            <div class="card-header">
+                                                <div class="row justify-content-between">
+                                                    <div class="col-6 ">
+                                                        @@username@@  wrote on the @@date@@ at @@time@@
+                                                        ###IF(unread)### 
+                                                            <span class="badge badge-secondary">Unread</span>
+                                                        ###END###
                                                     </div>
-                                                    <div class="card-body ">
-                                                        <p class="card-text">@@messagetxt@@</p>
+                                                    <div class="col-4  text-right">
+                                                        <a href="#" class="importantmessage messageid-@@messageid@@">
+                                                            <span data-feather="thumbs-up"></span>
+                                                        </a>
+                                                        <a href="#" class="editmessage messageid-@@messageid@@">
+                                                            <span data-feather="edit"></span>
+                                                        </a>
+                                                        <a href="#" class="deletemessage messageid-@@messageid@@">
+                                                            <span data-feather="trash-2"></span>
+                                                        </a>
                                                     </div>
-                                                    <div class="card-footer bg-transparent text-right">
-                                                        <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                        <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
-                                                        <a href="#" class="deletemessage  messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
-                                                    </div>                                                            
                                                 </div>
-                                            </div>                                                
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="card-text">@@messagetxt@@</p>
+                                            </div>
                                         </div>
                                     ###END###
                                 </div>
-                            ###END###
-                            <div class="row new-message">
-                                <div class="col-sm-5">
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <form class="formnewmessage channelid-@@channelid@@">
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" >+</span>
-                                                        </div>
-                                                        <input type="text" class="form-control" placeholder="Write new reply!" required>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="row" >
-                                        <div class="alert alert-danger feedback-newmessage channelid-@@channelid@@" role="alert">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            -->
-                    
-                    <div class="card mb-5">
-                        <div class="card-header bg-transparent ">
-                            <h5 class="card-title">TOPIC @donaldduck</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
-                        </div>
-                        <div class="card-body ">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                        <div class="card-footer bg-transparent text-right">
-                            <span data-feather="thumbs-up"></span>
-                            <span data-feather="edit"></span>
-                            <span data-feather="trash-2"></span>
-                        </div>
-                    </div>
+                            
+                                
+                            ###ELSE###
+                                <h6 class="border-bottom border-gray pb-2 mb-0 channeldescription">no messages yet - be the first to write!</h6>
 
-                    <div class="row">
-                        <div class="col-sm-1"></div>
-                        <div class="col-sm-11">
-                            <div class="card mb-5">
-                                <div class="card-header bg-transparent ">
-                                    <h5 class="card-title">MSG @donaldduck</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
-                                </div>
-                                <div class="card-body ">
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                                <div class="card-footer bg-transparent text-right">
-                                    <span data-feather="thumbs-up"></span>
-                                    <span data-feather="edit"></span>
-                                    <span data-feather="trash-2"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-1"></div>
-                        <div class="col-sm-11">
-                            <div class="card mb-5">
-
-                                <div class="card-header bg-transparent ">
-                                    <h5 class="card-title">SECOND MSG in this topic @donaldduck
-                                        <span class="badge badge-secondary">New</span>
-                                        <span class="badge badge-primary">Important</span>
-                                    </h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">12:12</h6>
-
-                                </div>
-                                <div class="card-body ">
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                                <div class="card-footer bg-transparent text-right">
-                                    <span data-feather="thumbs-up"></span>
-                                    <span data-feather="edit"></span>
-                                    <span data-feather="trash-2"></span>
-                                </div>
-                            </div>
-                            <div class="container new-message">
-                                <form id="newmessageTOPICID">
+                            ###END### 
+                                <form class="formnewmessage channelid-@@channelid@@">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" >+</span>
+                                                <span class="input-group-text">+</span>
                                             </div>
                                             <input type="text" class="form-control" placeholder="Write new reply!" required>
-
                                         </div>
                                     </div>
                                 </form>
+                            -->
+                            
+
+                    <h6 class="border-bottom border-gray pb-2 mb-0">Important messages </h6>
+
+                    <div class="card msg">
+                        <div class="card-header">
+                            <div class="row justify-content-between">
+                                <div class="col-4 ">
+                                    @admin wrote on
+                                    <span class="badge badge-primary">Important</span>
+
+                                    <span class="badge badge-secondary">Unread</span>
+                                </div>
+                                <div class="col-4  text-right">
+                                    <a href="#" class="importanttopic topicid-@@topicid@@">
+                                        <span data-feather="thumbs-up"></span>
+                                    </a>
+                                    <a href="#" class="edittopic topicid-@@topicid@@">
+                                        <span data-feather="edit"></span>
+                                    </a>
+                                    <a href="#" class="deletetopic topicid-@@topicid@@">
+                                        <span data-feather="trash-2"></span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
                     </div>
+
+                    <h6 class="border-bottom border-gray pb-2 mb-0">Not so important messages </h6>
+
+                    <div class="card msg">
+                        <div class="card-header">
+                            <div class="row justify-content-between">
+                                <div class="col-4">
+                                    @user12 wrote
+                                </div>
+                                <div class="col-4 text-right ">
+                                    <a href="#" class="importanttopic topicid-@@topicid@@">
+                                        <span data-feather="thumbs-up"></span>
+                                    </a>
+                                    <a href="#" class="edittopic topicid-@@topicid@@">
+                                        <span data-feather="edit"></span>
+                                    </a>
+                                    <a href="#" class="deletetopic topicid-@@topicid@@">
+                                        <span data-feather="trash-2"></span>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
+                    <div class="card msg">
+                        <div class="card-header">
+                            <div class="row justify-content-between">
+                                <div class="col-4">
+                                    @user12 wrote
+                                </div>
+                                <div class="col-4 text-right">
+                                    <a href="#" class="importanttopic topicid-@@topicid@@">
+                                        <span data-feather="thumbs-up"></span>
+                                    </a>
+                                    <a href="#" class="edittopic topicid-@@topicid@@">
+                                        <span data-feather="edit"></span>
+                                    </a>
+                                    <a href="#" class="deletetopic topicid-@@topicid@@">
+                                        <span data-feather="trash-2"></span>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
+
+                    <div class="card msg">
+                        <div class="card-header">
+                            <div class="row justify-content-between">
+                                <div class="col-4">
+                                    @user12 wrote
+                                </div>
+                                <div class="col-4 text-right">
+                                    <a href="#" class="importanttopic topicid-@@topicid@@">
+                                        <span data-feather="thumbs-up"></span>
+                                    </a>
+                                    <a href="#" class="edittopic topicid-@@topicid@@">
+                                        <span data-feather="edit"></span>
+                                    </a>
+                                    <a href="#" class="deletetopic topicid-@@topicid@@">
+                                        <span data-feather="trash-2"></span>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <form class="formnewmessage channelid-@@channelid@@">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">+</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Write new reply!" required>
+                            </div>
+                        </div>
+                    </form>
 
                     <!-- ###END### -->
                     <!-- ###END_PARTIAL### -->
                 </div>
-                
+
+
+                <!-- our messages-->
+
+                    
+
+                   
+
+                    
+                </div>
+
             </main>
         </div>
     </div>

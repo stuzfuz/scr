@@ -182,7 +182,7 @@ class DatabaseManager {
         $sqlMessages .= "LEFT JOIN message_flag ON (message_flag.message_id = message.id AND message_flag.user_id = ?)                     \n";
         $sqlMessages .= "LEFT JOIN user ON (user.id = message.user_id)                      \n " ;
         $sqlMessages .= "WHERE channel.name = ? AND channel.deleted = 0   AND message.deleted = 0                 \n ";
-        $sqlMessages .= "ORDER BY message.created_at DESC                     \n";
+        $sqlMessages .= "ORDER BY message.created_at ASC                     \n";
 
         $sqlParams[] = $userid;
         $sqlParams[] = $channelname;

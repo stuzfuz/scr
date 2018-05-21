@@ -162,22 +162,29 @@ body {
 }
 
 
-
-.msg, .formnewmessage {
-  margin-left: 50px;
+.msg {
+  margin-bottom: 15px;
 }
+
 
 .importanttopic, .edittopic, .importantmessage, .editmessage {
   padding-right: 8px;
 }
- 
- 
 
 .btn-login {
   margin-right:30px;
 }
 
-
 .login-container, .register-container {
   height:100vh;
+}
+
+
+.channeldescription {
+  margin-bottom: 30px !important;
+  padding-bottom: 20px !important;
+}
+
+.badge-secondary, .badge-primary {
+  margin-left: 10px;
 }
