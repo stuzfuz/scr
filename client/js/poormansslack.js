@@ -312,8 +312,6 @@ $(document).ready(function () {
 
     $(".deletemessage").click(function (e) {
         e.preventDefault();
-        console.log("deletemessage click");
-        e.preventDefault();
         console.log("deletemessage   click");
         var myClass = $(this).attr("class");
         console.log("class " + myClass);
@@ -356,11 +354,101 @@ $(document).ready(function () {
     $(".editmessage").click(function (e) {
         e.preventDefault();
         console.log("editmessage click");
+
         var myClass = $(this).attr("class");
         console.log("class " + myClass);
+        var s = "editmessage messageid-"
+        var messageid = myClass.substr(s.length, myClass.length);
+        console.log("messageid " + messageid);
+
+        var data = {
+            messageid: messageid
+        };
+
+        $.ajax({
+            url: "/api/editmessageallowed",
+            type: "POST",
+            data: data,
+            dataType: "JSON"
+        }).done(function (res) {
+            console.log("/api/editmessageallowed DONE reponse", JSON.stringify(res, null, 4));
+
+            // if message can be edited -> then show a form with old text
+            console.log("edit  message    " + JSON.stringify(data, null, 4));
+
+            var selector = ".card.msg.messageid-" + messageid;
+            var selectorTxt = ".card.msg.messageid-" + messageid + " .card-text";
+            $(".formeditmessage").appendTo(selector);
+            $(".formeditmessage").show();
+            $(selectorTxt).hide();
+            var txt = $(selectorTxt).text();
+            console.log("edit  message   txt  " + txt);
+
+            $(".formeditmessage").find("input[type=text]").val(txt);
+            $(".formeditmessage").addClass("messageid-" + messageid);
+            // location.reload();
+            // alert("Message saved!");
+        }).fail(function (res) {
+            console.log("/api/editmessageallowed  FAIL response", JSON.stringify(res, null, 4));
+            res = JSON.parse(res["responseText"]);
+            console.log("/api/editmessageallowed  FAIL responseText", JSON.stringify(res, null, 4));
+
+            if (res["errorcode"] >= 2) {
+                //showError(".feedback-newmessage .topicid-" + topicid, res["status"]);
+                // showError(".feedback-message ", res["status"]);
+                alert("Message  can not be edited - it's already read by a user!");
+            } else {
+                console.log("well - don't know now ");
+            }
+        });
+    });
+
+    $(".formeditmessage").submit(function (e) {
+        e.preventDefault();
+        console.log(".formeditmessage submit");
+        var myClass = $(this).attr("class");
+        var s = "formeditmessage messageid-"
+        var messageid = myClass.substr(s.length, myClass.length);
+        console.log("messageid " + messageid);
+
+        var txt = $(this).find("input[type=text]").val();
+        if (txt.lengtth < 1) {
+            showError(".register-error", res["status"]);
+        }
+        console.log("message text " + txt);
+
+        var data = {
+            messageid: messageid,
+            txt: txt
+        };
+
+        console.log("edit message data " + JSON.stringify(data, null, 4));
+
+        $.ajax({
+            url: "/api/editmessage",
+            type: "POST",
+            data: data,
+            dataType: "JSON"
+        }).done(function (res) {
+            console.log("/api/editmessage DONE reponse", JSON.stringify(res, null, 4));
+
+            // if everything works -> reload page and data
+            location.reload();
+        }).fail(function (res) {
+            console.log("/api/editmessage   FAIL response", JSON.stringify(res, null, 4));
+            res = JSON.parse(res["responseText"]);
+            console.log("/api/editmessage   FAIL responseText", JSON.stringify(res, null, 4));
+
+            if (res["errorcode"] >= 2) {
+                //showError(".feedback-newmessage .topicid-" + topicid, res["status"]);
+                // showError(".feedback-newmessage ", res["status"]);
+                Alert("Message could not be saved!");
+            } else {
+                console.log("well - don't know now ");
+            }
+        });
     });
 
     // display hidden in CSS does not work :-( (not even with !important)
-    $(".feedback-newmessage").hide();
-
+    // $(".feedback-newmessage").hide();
 });

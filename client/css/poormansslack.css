@@ -188,3 +188,7 @@ body {
 .badge-secondary, .badge-primary {
   margin-left: 10px;
 }
+
+.formeditmessage {
+  display: none;
+}

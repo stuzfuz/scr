@@ -1,9 +1,9 @@
 <?php
 
-class MessageEditApiController extends SimpleController {
+class MessageEditAllowedApiController extends SimpleController {
 
     protected function gatherData() {
-        \Logger::logDebug("MessageEditApiController::gatherData() BEGIN", "");
+        \Logger::logDebug("MessageEditAllowedApiController::gatherData() BEGIN", "");
 
         $ret = null; 
         if (\AuthenticationManager::isAuthenticated()) {
@@ -18,13 +18,13 @@ class MessageEditApiController extends SimpleController {
             $ret["status"] = "ERROR: your are not logged in - please login and try again!";
             $ret["isloggedin"] = false;
         }
-        \Logger::logDebug("MessageEditApiController::gatherData() END", "");
+        \Logger::logDebug("MessageEditAllowedApiController::gatherData() END", "");
 
         $this->data = $ret; 
     }
 
     public function justDoIt() : string {
-        \Logger::logDebug("MessageEditApiController::justDoIt() BEGIN", "");
+        \Logger::logDebug("MessageEditAllowedApiController::justDoIt() BEGIN", "");
 
         $this->gatherData();
 
@@ -35,14 +35,13 @@ class MessageEditApiController extends SimpleController {
         
         $messageid = $this->route["requestparameter"]["messageid"];
         $userid = $this->data["userid"];
-        $txt = $this->route["requestparameter"]["txt"];
-        
-        \Logger::logDebug("MessageEditApiController::justDoIt() values in route 'messageid' $messageid ", "");
-        \Logger::logDebug("MessageEditApiController::justDoIt() values in route 'userid' $userid ", "");
+
+        \Logger::logDebug("MessageEditAllowedApiController::justDoIt() values in route 'messageid' $messageid ", "");
+        \Logger::logDebug("MessageEditAllowedApiController::justDoIt() values in route 'userid' $userid ", "");
 
         $ret = null; 
-        if (\DataBaseManager::updateMessage($userid, $messageid, $txt)) {
-            \Logger::logDebug("MessageEditApiController::justDoIt() insert success  ", "");
+        if (\DataBaseManager::messageUnread($messageid)) {
+            \Logger::logDebug("MessageEditAllowedApiController::justDoIt() message can be edited  ", "");
 
             // 200 everything is fine 
             header_remove();
@@ -53,10 +52,10 @@ class MessageEditApiController extends SimpleController {
             http_response_code(401);
             $ret["status"] = "Error";
             $ret["errorcode"] = 3;
-            $ret["status"] = "ERROR: could not mark the  new message as important -> please contact our support!";
+            $ret["status"] = "ERROR: message can not be edited!";
         }
 
-        \Logger::logDebugPrintR("MessageEditApiController json_encode( ret ) = ", json_encode( $ret ));
+        \Logger::logDebugPrintR("MessageEditAllowedApiController json_encode( ret ) = ", json_encode( $ret ));
         
         return json_encode( $ret );
     }    

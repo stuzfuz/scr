@@ -168,6 +168,11 @@ INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate,
 VALUES ('/api/editmessage' ,'API', NULL, NULL, NULL, NULL, 'server/components/message/', 'MessageEditApiController', 'POST');
 
 
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/api/editmessageallowed' ,'API', NULL, NULL, NULL, NULL, 'server/components/message/', 'MessageEditAllowedApiController', 'POST');
+
+
+
 
 
 

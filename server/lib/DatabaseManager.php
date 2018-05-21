@@ -417,7 +417,6 @@ class DatabaseManager
             $res = self::query($con, $sql, array($messageid));
             $res = \DatabaseManager::fetchAssoz($res);
             $count = $res["cnt"];
-
         } catch (Exception $e) {
             $con->rollBack();
         }
@@ -430,7 +429,6 @@ class DatabaseManager
         $con = self::getConnection();
         
         try {
-            
             if (!self::messageUnread($messageid)) {
                 return false;
             }
@@ -439,6 +437,28 @@ class DatabaseManager
             // only the owner of the message can delete it!
             $sql = "UPDATE message SET deleted = TRUE WHERE id = ?   AND user_id = ?";
             $res = self::query($con, $sql, array($messageid, $userid));
+
+            $con->commit();
+        } catch (Exception $e) {
+            $con->rollBack();
+        }
+        self::closeConnection();
+        return true;
+    }
+
+    public static function updateMessage(int $userid, int $messageid, $txt)
+    {
+        $con = self::getConnection();
+        
+        try {
+            if (!self::messageUnread($messageid)) {
+                return false;
+            }
+            $con->beginTransaction();
+
+            // only the owner of the message can delete it!
+            $sql = "UPDATE message SET txt = ?, created_at = UNIX_TIMESTAMP(NOW()) WHERE id = ? AND user_id = ?";
+            $res = self::query($con, $sql, array($txt, $messageid, $userid));
 
             $con->commit();
         } catch (Exception $e) {
