@@ -23,7 +23,7 @@ class ChannelController extends SimpleController {
         // if a channelname is provided in the URL - load the data 
         // check if the channelname really exists!
         if (isset($this->route["channelname"])) {
-            $topicsAndMessages = \DatabaseManager::getTopicsAndMessagesForUser($user->getId(), $this->route["channelname"]);
+            $topicsAndMessages = \DatabaseManager::getMessagesForUser($user->getId(), $this->route["channelname"]);
         } else {
             \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  no routeparam provided  ", ""); 
             \Util::quit500("Fatal Error - 'traverseAST' [" . __LINE__ ."] no routeparam provided   ", "");
@@ -40,7 +40,6 @@ class ChannelController extends SimpleController {
         // $data["hastopics"] = 0;
         $this->data = $data; 
         \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  data   = ", $this->data);
-        // die("kdsjf");
     }
 
     // // TODO Delete this if not necessary

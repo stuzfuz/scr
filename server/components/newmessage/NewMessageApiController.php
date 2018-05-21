@@ -34,14 +34,14 @@ class NewMessageApiController extends SimpleController {
         }
         
         $txt = $this->route["requestparameter"]["txt"];
-        $topicid = $this->route["requestparameter"]["topicid"];
+        $channelid = $this->route["requestparameter"]["channelid"];
         $userid = $this->data["userid"];
 
         \Logger::logDebug("NewMessageApiController::justDoIt() values in route 'txt' $txt ", "");
-        \Logger::logDebug("NewMessageApiController::justDoIt() values in route 'topicid' $topicid ", "");
+        \Logger::logDebug("NewMessageApiController::justDoIt() values in route 'channelid' $channelid ", "");
 
         $ret = null; 
-        if (\DataBaseManager::insertMessage($userid, $topicid, $txt)) {
+        if (\DataBaseManager::insertMessage($userid, $channelid, $txt)) {
             \Logger::logDebug("NewMessageApiController::justDoIt() insert success  ", "");
 
             // 200 everything is fine 

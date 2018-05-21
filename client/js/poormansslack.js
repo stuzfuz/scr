@@ -43,10 +43,10 @@ $( document ).ready(function() {
 
     // TODO: remove!!  but its easer this way than filling out the form on every reload
     $("#registerUsername").val(Math.floor((Math.random() * 10000) + 1));
-        $("#registerPassword").val("a"),
-        $("#registerPasswordConfirm").val("a"),
-        $("#registerFirstname").val("a"),
-        $("#registerLastname").val("a")
+    $("#registerPassword").val("a"),
+    $("#registerPasswordConfirm").val("a"),
+    $("#registerFirstname").val("a"),
+    $("#registerLastname").val("a")
 
     
     $( "#formRegister1" ).submit(function(e) {
@@ -187,9 +187,9 @@ $( document ).ready(function() {
         e.preventDefault();
         console.log(".formnewmessage submit");
         var myClass = $(this).attr("class");
-        var s = "formnewmessage topicid-"
-        var topicid = myClass.substr(s.length, myClass.length);
-        console.log("topicid " + topicid);
+        var s = "formnewmessage channelid-"
+        var channelid = myClass.substr(s.length, myClass.length);
+        console.log("channelid " + channelid);
 
         var txt = $(this).find("input[type=text]").val();
         if (txt.lengtth < 1) {
@@ -198,7 +198,7 @@ $( document ).ready(function() {
         console.log("message text " + txt);
 
         var data = {
-            topicid: topicid,
+            channelid: channelid,
             txt: txt
         };
 
@@ -220,103 +220,31 @@ $( document ).ready(function() {
             console.log( "/api/newmessage   FAIL responseText", JSON.stringify(res, null, 4));
 
             if (res["errorcode"] >= 2) {
-                showError(".feedback-newmessage .topicid-" + topicid, res["status"]);
+                //showError(".feedback-newmessage .topicid-" + topicid, res["status"]);
+                showError(".feedback-newmessage ", res["status"]);
             } else {
                 console.log("well - don't know now ");
             }
         });
     });
 
-    $(".formnewtopic").submit(function(e) {
-        e.preventDefault();
-        console.log(".formnewtopic submit");
-        var myClass = $(this).attr("class");
-        var s = "formnewtopic channelid-";
-        var channelid = myClass.substr(s.length, myClass.length);
-        console.log("formnewtopic     channelid " + channelid);
-
-        var title = $(this).find("input[name=topictitle]").val();
-        var description = $(this).find("input[name=topicdescription]").val();
-
-        if (title.length < 1) {
-            showError(".register-error", "title too short");
-        } else if (description.length < 1) {
-            showError(".register-error", "description too short");
-        } else {
-            console.log("formnewtopic    title:  " + title);
-            console.log("formnewtopic    description: " + description);
-    
-            var data = {
-                channelid: channelid,
-                description: description,
-                title: title
-            };
-            console.log("formnewtopic    data " + JSON.stringify(data, null, 4));
-    
-    
-            $.ajax({
-                url: "/api/newtopic",
-                type: "POST",
-                data: data,
-                dataType: "JSON"
-            }).done(function( res ) {
-                console.log( "/api/newtopic DONE reponse", JSON.stringify(res, null, 4));
-                
-                // if everything works -> reload page and data
-                location.reload();        
-            }).fail(function( res ) {
-                console.log( "/api/newtopic   FAIL response", JSON.stringify(res, null, 4));
-                res = JSON.parse(res["responseText"]);
-                console.log( "/api/newtopic   FAIL responseText", JSON.stringify(res, null, 4));
-    
-                if (res["errorcode"] >= 2) {
-                    showError(".feedback-newtopic .topicid-" + topicid, res["status"]);
-                } else {
-                    console.log("well - don't know now ");
-                }
-            });
-        }
-    });
-
-    
-    $(".importanttopic").click(function(e) {
-        e.preventDefault();
-        console.log("importanttopic click");
-        var myClass = $(this).attr("class");
-        console.log("class " + myClass);
-    });
-
-    $(".deletetopic").click(function(e) {
-        e.preventDefault();
-        console.log("deletetopic click");
-        var myClass = $(this).attr("class");
-        console.log("class " + myClass);
-    });
-
-    $(".edittopic").click(function(e) {
-        e.preventDefault();
-        console.log("edittopic click");
-        var myClass = $(this).attr("class");
-        console.log("class " + myClass);
-    });
-
     $(".importantmessage").click(function(e) {
         e.preventDefault();
-        console.log("importanttopic click");
+        console.log("importantmessage   click");
         var myClass = $(this).attr("class");
         console.log("class " + myClass);
     });
 
     $(".deletemessage").click(function(e) {
         e.preventDefault();
-        console.log("deletetopic click");
+        console.log("deletemessageclick");
         var myClass = $(this).attr("class");
         console.log("class " + myClass);
     });
 
     $(".editmessage").click(function(e) {
         e.preventDefault();
-        console.log("edittopic click");
+        console.log("editmessage click");
         var myClass = $(this).attr("class");
         console.log("class " + myClass);
     });
@@ -324,6 +252,5 @@ $( document ).ready(function() {
 
     // display hidden in CSS does not work :-( (not even with !important)
     $(".feedback-newmessage").hide();
-    $(".feedback-newtopic").hide();
 
 });

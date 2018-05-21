@@ -105,232 +105,87 @@
 
                     <!-- ###BEGIN_PARTIAL### -->
                         <!-- ###BEGIN###
-                            ###IF(HASIMPORTANTTOPICS)###
-                                <div class="container-importanttopics">
-                                    ###FOREACH(IMPORTANTTOPIC)###
-                                        <div class="container-importanttopic  topicid-@@topicid@@">
-                                            <div class="card  mb-5">
-                                                <div class="card-header bg-transparent ">
-                                                    <h5 class="card-title importanttopic-title">@@username@@  <span class="badge badge-primary">Important</span> 
-                                                    ###IF(unread)### 
-                                                        <span class="badge badge-secondary">New</span> 
-                                                    ###END###
-                                                    </h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
-                                                </div>
-                                                <div class="card-body ">
-                                                    <p class="card-text">@@topictitle@@</p>
-                                                </div>
-                                                <div class="card-footer bg-transparent text-right">
-                                                    <a href="#" class="importanttopic topicid-@@topicid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                   <a href="#" class="edittopic topicid-@@topicid@@">  <span data-feather="edit"></span> </a>
-                                                   <a href="#" class="deletetopic topicid-@@topicid@@">  <span data-feather="trash-2"></span> </a>
-                                                </div>
-                                            </div>
-                                            ###IF(HASIMPORTANTMESSAGES)###
-                                                <div class="container-importantmessages topicid-@@topicid@@">
-                                                    ###FOREACH(IMPORTANTMESSAGES)###
-                                                        <div class="row messageid-@@messageid@@">
-                                                            <div class="col-sm-1"></div>
-                                                            <div class="col-sm-11">
-                                                                <div class="card mb-5">
-                                                                    <div class="card-header bg-transparent ">
-                                                                        <h5 class="card-title">@@username@@ <span class="badge badge-primary">Important</span> 
-                                                                            ###IF(unread)### 
-                                                                                <span class="badge badge-secondary">New</span> 
-                                                                            ###END###
-                                                                        </h5>
-                                                                        <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
-                                                                    </div>
-                                                                    <div class="card-body ">
-                                                                        <p class="card-text">@@messagetxt@@</p>
-                                                                    </div>
-                                                                    <div class="card-footer bg-transparent text-right">
-                                                                        <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                                        <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
-                                                                        <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
-                                                                    </div>                                                            
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    ###END###
-                                                </div>
-                                            ###END###
-                                            ###IF(HASMESSAGES)###
-                                                <div class="container-messages topicid-@@topicid@@">
-                                                    ###FOREACH(MESSAGES)###
-                                                        <div class="row messageid-@@messageid@@">
-                                                            <div class="col-sm-1">
-                                                            </div>
-                                                            <div class="col-sm-11">
-                                                                <div class="card mb-5">
-                                                                    <div class="card-header bg-transparent ">
-                                                                        <h5 class="card-title">@@username@@ 
-                                                                            ###IF(unread)### 
-                                                                                <span class="badge badge-secondary">New</span> 
-                                                                            ###END###
-                                                                        </h5>
-                                                                        <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
-                                                                        </div>
-                                                                    <div class="card-body ">
-                                                                        <p class="card-text">@@messagetxt@@</p>
-                                                                    </div>
-                                                                    <div class="card-footer bg-transparent text-right">
-                                                                        <a href="#" class="importanttopic topicid-@@topicid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                                       <a href="#" class="edittopic topicid-@@topicid@@">  <span data-feather="edit"></span> </a>
-                                                                       <a href="#" class="deletetopic topicid-@@topicid@@">  <span data-feather="trash-2"></span> </a>
-                                                                    </div>                                                            
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    ###END###
-                                                </div>
-                                            ###END###
-                                            <div class="row new-message">
-                                                <div class="col-sm-5">
-                                                </div>
-                                                <div class="col-sm-7">
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <form class="formnewmessage topicid-@@topicid@@">
-                                                                <div class="form-group">
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text" >+</span>
-                                                                        </div>
-                                                                        <input type="text" class="form-control" placeholder="Write new reply!" required>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
+                            ###IF(HASIMPORTANTMESSAGES)###
+                                <div class="container-importantmessages channelid-@@channelid@@">
+                                    ###FOREACH(IMPORTANTMESSAGES)###
+                                        <div class="row messageid-@@messageid@@">
+                                            <div class="col-sm-12">
+                                                <div class="card mb-5">
+                                                    <div class="card-header bg-transparent ">
+                                                        <h5 class="card-title">@@username@@ <span class="badge badge-primary">Important</span> 
+                                                            ###IF(unread)### 
+                                                                <span class="badge badge-secondary">New</span> 
+                                                            ###END###
+                                                        </h5>
+                                                        <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
                                                     </div>
-                                                    <div class="row" >
-                                                        <div class="alert alert-danger feedback-newmessage topicid-@@topicid@@" role="alert">
-                                                        </div>
+                                                    <div class="card-body">
+                                                        <p class="card-text">@@messagetxt@@</p>
                                                     </div>
+                                                    <div class="card-footer bg-transparent text-right">
+                                                        <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
+                                                        <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
+                                                        <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
+                                                    </div>                                                            
                                                 </div>
-                                            </div>
+                                            </div>                                                        
                                         </div>
-                                    ###END### 
+                                    ###END###
                                 </div>
-                            ###ELSE###  
-                                <h4 class="infoh4">no IMPORTANT topics in this channel ...</h4> 
                             ###END###
-                            
-                           
-
-                            ###IF(HASTOPICS)###
-                                <div class="container-topics">
-                                    ###FOREACH(TOPIC)### 
-                                        <div class="container-topic  topicid-@@topicid@@">
-                                            <div class="card  mb-5">
-                                                <div class="card-header bg-transparent ">
-                                                    <h5 class="card-title ">@@username@@  
-                                                        ###IF(unread)### 
-                                                        <span class="badge badge-secondary">New</span> 
-                                                        ###END###
-                                                    </h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
-                                                </div>
-                                                <div class="card-body ">
-                                                    <p class="card-text">@@topictitle@@</p>
-                                                </div>
-                                                <div class="card-footer bg-transparent text-right">
-                                                    <a href="#" class="importanttopic topicid-@@topicid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                    <a href="#" class="edittopic topicid-@@topicid@@">  <span data-feather="edit"></span> </a>
-                                                    <a href="#" class="deletetopic topicid-@@topicid@@">  <span data-feather="trash-2"></span> </a>
-                                                </div>
-                                            </div>
-                                            ###IF(HASIMPORTANTMESSAGES)###
-                                                <div class="container-importantmessages topicid-@@topicid@@">
-                                                    ###FOREACH(IMPORTANTMESSAGES)###
-                                                        <div class="row messageid-@@topicid@@">
-                                                            <div class="col-sm-1"></div>
-                                                            <div class="col-sm-11">
-                                                                <div class="card mb-5">
-                                                                    <div class="card-header bg-transparent ">
-                                                                        <h5 class="card-title">@@username@@  
-                                                                            ###IF(unread)### 
-                                                                                <span class="badge badge-secondary">New</span> 
-                                                                            ###END###
-                                                                            <span class="badge badge-primary">Important</span> 
-                                                                        </h5>
-                                                                        <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
-                                                                    </div>
-                                                                    <div class="card-body ">
-                                                                        <p class="card-text">@@messagetxt@@</p>
-                                                                    </div>
-                                                                    <div class="card-footer bg-transparent text-right">
-                                                                        <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                                        <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
-                                                                        <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    ###END###
-                                                </div>
-                                            ###END###
-                                            ###IF(HASMESSAGES)###
-                                                <div class="container-messages topicid-@@topicid@@">
-                                                    ###FOREACH(MESSAGES)###
-                                                        <div class="row messageid-@@topicid@@">
-                                                            <div class="col-sm-1">
-                                                            </div>
-                                                            <div class="col-sm-11">
-                                                                <div class="card mb-5">
-                                                                    <div class="card-header bg-transparent ">
-                                                                        <h5 class="card-title">@@username@@
-                                                                            ###IF(unread)### 
-                                                                            <span class="badge badge-secondary">New</span> 
-                                                                            ###END###
-                                                                        </h5>
-                                                                        <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
-                                                                    </div>
-                                                                    <div class="card-body ">
-                                                                        <p class="card-text">@@messagetxt@@</p>
-                                                                    </div>
-                                                                    <div class="card-footer bg-transparent text-right">
-                                                                        <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
-                                                                        <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
-                                                                        <a href="#" class="deletemessage messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
-                                                                    </div>                                                            
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    ###END###
-                                                </div>
-                                            ###END###
-                                            <div class="row new-message">
-                                                <div class="col-sm-5">
-                                                </div>
-                                                <div class="col-sm-7">
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <form class="formnewmessage topicid-@@topicid@@">
-                                                                <div class="form-group">
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text" >+</span>
-                                                                        </div>
-                                                                        <input type="text" class="form-control" placeholder="Write new reply!" required>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
+                            ###IF(HASMESSAGES)###
+                                <div class="container-messages channelid-@@channelid@@">
+                                    ###FOREACH(MESSAGES)###
+                                        <div class="row messageid-@@messageid@@">
+                                            
+                                            <div class="col-sm-12">
+                                                <div class="card mb-5">
+                                                    <div class="card-header bg-transparent ">
+                                                        <h5 class="card-title">@@username@@ 
+                                                            ###IF(unread)### 
+                                                                <span class="badge badge-secondary">New</span> 
+                                                            ###END###
+                                                        </h5>
+                                                        <h6 class="card-subtitle mb-2 text-muted">@@time@@ on @@date@@</h6>
                                                     </div>
-                                                    <div class="row" >
-                                                        <div class="alert alert-danger feedback-newmessage topicid-@@topicid@@" role="alert">
-                                                        </div>
+                                                    <div class="card-body ">
+                                                        <p class="card-text">@@messagetxt@@</p>
                                                     </div>
+                                                    <div class="card-footer bg-transparent text-right">
+                                                        <a href="#" class="importantmessage messageid-@@messageid@@">  <span data-feather="thumbs-up"></span> </a>
+                                                        <a href="#" class="editmessage messageid-@@messageid@@">  <span data-feather="edit"></span> </a>
+                                                        <a href="#" class="deletemessage  messageid-@@messageid@@">  <span data-feather="trash-2"></span> </a>
+                                                    </div>                                                            
                                                 </div>
-                                            </div>
+                                            </div>                                                
                                         </div>
-                                    ###END### 
+                                    ###END###
                                 </div>
-                            ###ELSE###  
-                                <h4 class="infoh4">no unimportant topics in this channel ...</h4> 
                             ###END###
+                            <div class="row new-message">
+                                <div class="col-sm-5">
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <form class="formnewmessage channelid-@@channelid@@">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" >+</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" placeholder="Write new reply!" required>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="alert alert-danger feedback-newmessage channelid-@@channelid@@" role="alert">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             -->
                     
                     <div class="card mb-5">
@@ -408,46 +263,7 @@
                     <!-- ###END### -->
                     <!-- ###END_PARTIAL### -->
                 </div>
-                <div class="row new-topic">
-                    <div class="col-sm-12">
-                        <h4>New Topic:</h4>
-                        <!-- ###BEGIN_PARTIAL### -->
-                            <!-- ###BEGIN### 
-                                <form class="formnewtopic channelid-@@channelid@@">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" >Title</span>
-                                        </div>
-                                        <input type="text" name="topictitle" class="form-control"  >
-                                    </div>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" >Description</span>
-                                        </div>
-                                        <input type="text" name="topicdescription" class="form-control"  >
-                                    </div>
-
-                                    <button type="submit" class="btn btn-primary text-right">Submit</button>
-                                </form>
-                            ###END### -->
-                            <form class="formnewtopic">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" >Title</span>
-                                        </div>
-                                        <input type="text" name="topictitle" class="form-control"  >
-                                    </div>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" >Description</span>
-                                        </div>
-                                        <input type="text" name="topicdescription"  class="form-control"  >
-                                    </div>
-                                    <button type="submit" class="btn btn-primary text-right">Submit</button>
-                            </form>
-                            <!-- ###END_PARTIAL### -->
-                    </div>
-                </div>
+                
             </main>
         </div>
     </div>

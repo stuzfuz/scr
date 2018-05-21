@@ -4,6 +4,8 @@ class Logger {
 
   public static function logError($msg1, $msg2 = '') {
     $date = date("D M d, Y G:i");
+    // var_dump($msg1);
+    // var_dump($msg2);
     $myfile = file_put_contents(\ApplicationConfig::$logFileError, "ERROR" ."\t" . $_SERVER['REMOTE_ADDR'] . "\t" . $date . "\t" . $msg1 . "\t" . $msg2 . "\n", FILE_APPEND | LOCK_EX);
   }
 

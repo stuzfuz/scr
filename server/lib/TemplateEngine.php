@@ -255,10 +255,10 @@ class TemplateEngine {
 
     // template names can be null -> no string type  
     public static function render(string $tmplFilename, $data,  $headertemplate,  $contenttemplate,  $footertemplate) : string {
-        // \Logger::logDebug("render() [".  __LINE__  . "] headertemplate    = ", $headertemplate);
-        // \Logger::logDebug("render() [".  __LINE__  . "] contenttemplate    = ", $contenttemplate);
-        // \Logger::logDebug("render() [".  __LINE__  . "] footertemplate    = ", $footertemplate);
-        // \Logger::logDebug("render() [".  __LINE__  . "] tmplFilename    = ", $tmplFilename);
+        \Logger::logDebug("render() [".  __LINE__  . "] headertemplate    = ", $headertemplate);
+        \Logger::logDebug("render() [".  __LINE__  . "] contenttemplate    = ", $contenttemplate);
+        \Logger::logDebug("render() [".  __LINE__  . "] footertemplate    = ", $footertemplate);
+        \Logger::logDebug("render() [".  __LINE__  . "] tmplFilename    = ", $tmplFilename);
 
         $template = file_get_contents ($tmplFilename);
         if (!$template) {
@@ -266,8 +266,8 @@ class TemplateEngine {
             \Util::quit500("Fatal Error - TemplateEngine::render()   could not open file : " , $tmplFilename);
         }
 
-        // \Logger::logDebug("render() [".  __LINE__  . "] template    = ", $template);
-        // \Logger::logDebug("render() [".  __LINE__  . "] headertemplate    = ", $headertemplate);
+        \Logger::logDebug("render() [".  __LINE__  . "] template    = ", $template);
+        \Logger::logDebug("render() [".  __LINE__  . "] headertemplate    = ", $headertemplate);
 
 
         // check if there is a header, footer or content template
