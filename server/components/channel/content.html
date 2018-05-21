@@ -97,7 +97,7 @@
                             ###IF(HASIMPORTANTMESSAGES)###
                                 <div class="container-importantmessages channelid-@@channelid@@">
                                     ###FOREACH(IMPORTANTMESSAGES)###
-                                        <div class="card msg messageid-@@messageid@@">
+                                        <div class="card msg messageid-@@messageid@@   @@unreadclass@@">
                                             <div class="card-header">
                                                 <div class="row justify-content-between">
                                                     <div class="co-6 ">
@@ -130,7 +130,7 @@
                             ###IF(HASMESSAGES)###
                                 <div class="container-messages channelid-@@channelid@@">
                                     ###FOREACH(MESSAGES)###
-                                        <div class="card msg messageid-@@messageid@@">
+                                        <div class="card msg messageid-@@messageid@@  @@unreadclass@@">
                                             <div class="card-header">
                                                 <div class="row justify-content-between">
                                                     <div class="col-6 ">

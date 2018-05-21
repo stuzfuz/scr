@@ -209,6 +209,13 @@ class DatabaseManager
                 $date->setTimestamp($msg["messagecreatedat"]);
                 $msg["date"] = $date->format('Y-m-d');
                 $msg["time"] = $date->format('H:i');
+
+                if ($msg["unread"]) {
+                    $msg["unreadclass"] = "unreadmessage";
+                } else {
+                    $msg["unreadclass"]="";
+                }
+            
                 $messages[] = $msg;
                 $channelId = $msg["channel_id"];
                 $channelName = $msg["channelname"];
@@ -459,6 +466,35 @@ class DatabaseManager
             // only the owner of the message can delete it!
             $sql = "UPDATE message SET txt = ?, created_at = UNIX_TIMESTAMP(NOW()) WHERE id = ? AND user_id = ?";
             $res = self::query($con, $sql, array($txt, $messageid, $userid));
+
+            $con->commit();
+        } catch (Exception $e) {
+            $con->rollBack();
+        }
+        self::closeConnection();
+        return true;
+    }
+    
+    public static function markMessageRead(int $userid, array $messageids)
+    {
+        $con = self::getConnection();
+        $con->beginTransaction();
+        try {
+            $sql = "UPDATE message_flag SET unread = FALSE WHERE   user_id = ? AND message_id IN ";
+            $sqlArr = [];
+            $sqlParams[] = $userid;
+            
+            foreach ($messageids as $msg) {
+                $sqlArr[] = "?";
+                $sqlParams[] = $msg;
+                \Logger::logDebug("DatabaseManager::markMessageRead() added message = $msg ", "");
+
+            }
+            $sql .= "(" . implode(",", $sqlArr) . ")";
+            \Logger::logDebug("DatabaseManager::markMessageRead() sql = $sql ", "");
+            \Logger::logDebugPrintR("DatabaseManager::markMessageRead() sqlParams = q ",$sqlParams);
+
+            self::query($con, $sql, $sqlParams);
 
             $con->commit();
         } catch (Exception $e) {

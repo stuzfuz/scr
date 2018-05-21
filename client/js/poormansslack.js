@@ -451,4 +451,70 @@ $(document).ready(function () {
 
     // display hidden in CSS does not work :-( (not even with !important)
     // $(".feedback-newmessage").hide();
+
+    var unreadMessages = [];
+
+    $('.unreadmessage').appear();
+    $('.unreadmessage').on('appear', function (event) {
+        console.log("element with class appeared: " + $(this).attr('class'));
+        var myClass = $(this).attr('class');
+        var s = "card msg messageid-";
+        var messageid = parseInt(myClass.substr(s.length, myClass.length));
+
+        console.log("unreadmessage   messageid: " + messageid);
+
+        unreadMessages.push(messageid);
+
+        // remove class, so it wont be added twice to the array
+        var selector = ".card.msg.messageid-" + messageid;
+        console.log("selector   : " + selector);
+
+        $(selector).removeClass("unreadmessage").unbind('appear');
+
+        // remove the "unread" span
+        $(selector).find(".badge-secondary").remove();
+    });
+
+    function markMessagesUnread() {
+        console.log("MarkMessagesUnread   current 'unreadMessages' = " + JSON.stringify(unreadMessages));
+        var msgIds = JSON.parse(JSON.stringify(unreadMessages));
+        console.log("MarkMessagesUnread   deep copy 'msgIds' = " + JSON.stringify(msgIds));
+
+        unreadMessages = [];
+        console.log("MarkMessagesUnread   empty  'unreadMessages' = " + JSON.stringify(unreadMessages));
+
+        if (msgIds.length > 0 ) {
+            var data = {
+                messageIds: msgIds
+            };
+    
+            console.log("mark messages as read  " + JSON.stringify(data, null, 4));
+    
+            $.ajax({
+                url: "/api/markmessagesasread",
+                type: "POST",
+                data: data,
+                dataType: "JSON"
+            }).done(function (res) {
+                console.log("/api/markmessagesasread DONE reponse", JSON.stringify(res, null, 4));
+                // if everything works -> do nothing
+             }).fail(function (res) {
+                console.log("/api/markmessagesasread   FAIL response", JSON.stringify(res, null, 4));
+                res = JSON.parse(res["responseText"]);
+                console.log("/api/markmessagesasread   FAIL responseText", JSON.stringify(res, null, 4));
+    
+                if (res["errorcode"] >= 2) {
+                    //showError(".feedback-newmessage .topicid-" + topicid, res["status"]);
+                    // showError(".feedback-newmessage ", res["status"]);
+                    Alert("Message could not be saved!");
+                } else {
+                    console.log("well - don't know now ");
+                }
+            });
+        }
+    }
+
+    if (window.location.href.includes("/channel/")) {
+        setInterval(markMessagesUnread, 5000);
+    }
 });
