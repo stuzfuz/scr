@@ -83,6 +83,7 @@
                     <!-- ###BEGIN_PARTIAL### -->
                     <!-- ###BEGIN### 
                             <h1 class="h2">@@channelname@@</h1>       
+                            <h6 class="border-bottom border-gray pb-2 mb-0 channeldescription">@@channeldescription@@</h6>
                          ###END### -->
 
                     <h1 class=" pb-2 mb-0">Channelname</h1>
@@ -107,7 +108,7 @@
                                                         ###END###
                                                     </div>
                                                     <div class="col-4  text-right">
-                                                        <a href="#" class="importantmessage messageid-@@messageid@@">
+                                                        <a href="#" class="notimportantmessage messageid-@@messageid@@">
                                                             <span data-feather="thumbs-up"></span>
                                                         </a>
                                                         <a href="#" class="editmessage messageid-@@messageid@@">
@@ -159,10 +160,10 @@
                                 </div>
                             
                                 
-                            ###ELSE###
-                                <h6 class="border-bottom border-gray pb-2 mb-0 channeldescription">no messages yet - be the first to write!</h6>
 
                             ###END### 
+
+                            
                                 <form class="formnewmessage channelid-@@channelid@@">
                                     <div class="form-group">
                                         <div class="input-group">

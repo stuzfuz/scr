@@ -152,6 +152,22 @@ INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate,
 VALUES ('/api/newmessage' ,'API', NULL, NULL, NULL, NULL, 'server/components/newmessage/', 'NewMessageApiController', 'POST');
 
 
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/api/markmessageimportant' ,'API', NULL, NULL, NULL, NULL, 'server/components/message/', 'MessageStatusImportantApiController', 'POST');
+
+
+
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/api/markmessagenotimportant' ,'API', NULL, NULL, NULL, NULL, 'server/components/message/', 'MessageStatusNotImportantApiController', 'POST');
+
+
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/api/deletemessage' ,'API', NULL, NULL, NULL, NULL, 'server/components/message/', 'MessageDeleteApiController', 'POST');
+
+INSERT INTO route (route, type, headertemplate,contenttemplate ,	footertemplate, routeparam, controller, controllername, verb)
+VALUES ('/api/editmessage' ,'API', NULL, NULL, NULL, NULL, 'server/components/message/', 'MessageEditApiController', 'POST');
+
+
 
 
 

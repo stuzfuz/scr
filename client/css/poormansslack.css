@@ -167,7 +167,7 @@ body {
 }
 
 
-.importanttopic, .edittopic, .importantmessage, .editmessage {
+.importanttopic, .edittopic, .importantmessage, .editmessage, .notimportantmessage {
   padding-right: 8px;
 }
 
