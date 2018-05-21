@@ -312,9 +312,45 @@ $(document).ready(function () {
 
     $(".deletemessage").click(function (e) {
         e.preventDefault();
-        console.log("deletemessageclick");
+        console.log("deletemessage click");
+        e.preventDefault();
+        console.log("deletemessage   click");
         var myClass = $(this).attr("class");
         console.log("class " + myClass);
+        var s = "deletemessage messageid-"
+        var messageid = myClass.substr(s.length, myClass.length);
+        console.log("messageid " + messageid);
+
+        var data = {
+            messageid: messageid
+        };
+
+        console.log("delete message    " + JSON.stringify(data, null, 4));
+
+        $.ajax({
+            url: "/api/deletemessage",
+            type: "POST",
+            data: data,
+            dataType: "JSON"
+        }).done(function (res) {
+            console.log("/api/deletemessage DONE reponse", JSON.stringify(res, null, 4));
+
+            // if everything works -> reload page and data
+            location.reload();
+            alert("Message deleted!");
+        }).fail(function (res) {
+            console.log("/api/deletemessage  FAIL response", JSON.stringify(res, null, 4));
+            res = JSON.parse(res["responseText"]);
+            console.log("/api/deletemessage   FAIL responseText", JSON.stringify(res, null, 4));
+
+            if (res["errorcode"] >= 2) {
+                //showError(".feedback-newmessage .topicid-" + topicid, res["status"]);
+                // showError(".feedback-message ", res["status"]);
+                alert("Message could not be deleted!");
+            } else {
+                console.log("well - don't know now ");
+            }
+        });
     });
 
     $(".editmessage").click(function (e) {

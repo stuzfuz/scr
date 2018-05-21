@@ -373,7 +373,7 @@ class DatabaseManager
         return $id;
     }
     
-    public static function markMessageImportant(int $userid, int $messageid) 
+    public static function markMessageImportant(int $userid, int $messageid)
     {
         $con = self::getConnection();
         $con->beginTransaction();
@@ -385,13 +385,12 @@ class DatabaseManager
             $con->commit();
         } catch (Exception $e) {
             $con->rollBack();
-            $userid = false;
         }
         self::closeConnection();
         return true;
     }
 
-    public static function markMessageNotImportant(int $userid, int $messageid) 
+    public static function markMessageNotImportant(int $userid, int $messageid)
     {
         $con = self::getConnection();
         $con->beginTransaction();
@@ -403,7 +402,47 @@ class DatabaseManager
             $con->commit();
         } catch (Exception $e) {
             $con->rollBack();
-            $userid = false;
+        }
+        self::closeConnection();
+        return true;
+    }
+
+    public static function messageUnread(int $messageid)
+    {
+        $con = self::getConnection();
+        
+        try {
+            $sql = "SELECT COUNT(*) AS cnt  FROM message_flag WHERE message_id = ? and unread = TRUE";
+            
+            $res = self::query($con, $sql, array($messageid));
+            $res = \DatabaseManager::fetchAssoz($res);
+            $count = $res["cnt"];
+
+        } catch (Exception $e) {
+            $con->rollBack();
+        }
+        self::closeConnection();
+        return $count == 0;
+    }
+
+    public static function markMessageDeleted(int $userid, int $messageid)
+    {
+        $con = self::getConnection();
+        
+        try {
+            
+            if (!self::messageUnread($messageid)) {
+                return false;
+            }
+            $con->beginTransaction();
+
+            // only the owner of the message can delete it!
+            $sql = "UPDATE message SET deleted = TRUE WHERE id = ?   AND user_id = ?";
+            $res = self::query($con, $sql, array($messageid, $userid));
+
+            $con->commit();
+        } catch (Exception $e) {
+            $con->rollBack();
         }
         self::closeConnection();
         return true;

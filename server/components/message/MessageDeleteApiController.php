@@ -40,7 +40,8 @@ class MessageDeleteApiController extends SimpleController {
         \Logger::logDebug("MessageDeleteApiController::justDoIt() values in route 'userid' $userid ", "");
 
         $ret = null; 
-        if (\DataBaseManager::markMessageImportant($userid, $messageid)) {
+        // pass the userid to the method -> only the author of the message can delete the message!
+        if (\DataBaseManager::markMessageDeleted($userid, $messageid)) {
             \Logger::logDebug("MessageDeleteApiController::justDoIt() insert success  ", "");
 
             // 200 everything is fine 
