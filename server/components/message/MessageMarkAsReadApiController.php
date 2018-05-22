@@ -20,6 +20,8 @@ class MessageMarkAsReadApiController extends SimpleController {
         }
         \Logger::logDebug("MessageMarkAsReadApiController::gatherData() END", "");
 
+        \Logger::logAccess($user->getId(), "mark message as read");
+
         $this->data = $ret; 
     }
 

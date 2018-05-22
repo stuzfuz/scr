@@ -20,6 +20,8 @@ class MessageEditAllowedApiController extends SimpleController {
         }
         \Logger::logDebug("MessageEditAllowedApiController::gatherData() END", "");
 
+        \Logger::logAccess($user->getId(), "delete message allowed");
+
         $this->data = $ret; 
     }
 
@@ -40,7 +42,7 @@ class MessageEditAllowedApiController extends SimpleController {
         \Logger::logDebug("MessageEditAllowedApiController::justDoIt() values in route 'userid' $userid ", "");
 
         $ret = null; 
-        if (\DataBaseManager::messageUnread($messageid)) {
+        if (\DataBaseManager::messageUnread($userid, $messageid)) {
             \Logger::logDebug("MessageEditAllowedApiController::justDoIt() message can be edited  ", "");
 
             // 200 everything is fine 

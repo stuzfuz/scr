@@ -11,6 +11,7 @@ class ApplicationConfig {
     public static $logFileError = 'server/log/err_poormansslack.log';
     public static $logFileDebug = 'server/log/debug_poormansslack.log';
     public static $logQuery = 'server/log/query_poormansslack.log';
+    public static $logAccess = 'server/log/access_poormansslack.log';
 
     public static $indexTmpl = 'client/index.tmpl';
     

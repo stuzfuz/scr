@@ -20,6 +20,8 @@ class MessageEditApiController extends SimpleController {
         }
         \Logger::logDebug("MessageEditApiController::gatherData() END", "");
 
+        \Logger::logAccess($user->getId(), "edit message");
+
         $this->data = $ret; 
     }
 

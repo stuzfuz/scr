@@ -53,7 +53,7 @@ class MessageDeleteApiController extends SimpleController {
             http_response_code(401);
             $ret["status"] = "Error";
             $ret["errorcode"] = 3;
-            $ret["status"] = "ERROR: could not mark the  new message as important -> please contact our support!";
+            $ret["status"] = "ERROR: could not delete  message!";
         }
 
         \Logger::logDebugPrintR("MessageDeleteApiController json_encode( ret ) = ", json_encode( $ret ));

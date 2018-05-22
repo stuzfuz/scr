@@ -11,6 +11,8 @@ class NewChannelController extends SimpleController {
         } else {
             \Util::redirect("/");
         }
+        \Logger::logAccess($user->getId(), "new channel");
+        
         $this->data = $ret; 
     }
 

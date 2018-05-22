@@ -118,12 +118,14 @@
                                                             <a href="#" class="notimportantmessage messageid-@@messageid@@">
                                                                 <span data-feather="thumbs-up"></span>
                                                             </a>
-                                                            <a href="#" class="editmessage messageid-@@messageid@@">
-                                                                <span data-feather="edit"></span>
-                                                            </a>
-                                                            <a href="#" class="deletemessage messageid-@@messageid@@">
-                                                                <span data-feather="trash-2"></span>
-                                                            </a>
+                                                            ###IF(ISAUTHOR)###
+                                                                <a href="#" class="editmessage messageid-@@messageid@@">
+                                                                    <span data-feather="edit"></span>
+                                                                </a>
+                                                                <a href="#" class="deletemessage messageid-@@messageid@@">
+                                                                    <span data-feather="trash-2"></span>
+                                                                </a>
+                                                            ##END##
                                                         </div>
                                                     </div>
                                                 </div>
@@ -150,12 +152,14 @@
                                                             <a href="#" class="importantmessage messageid-@@messageid@@">
                                                                 <span data-feather="thumbs-up"></span>
                                                             </a>
-                                                            <a href="#" class="editmessage messageid-@@messageid@@">
-                                                                <span data-feather="edit"></span>
-                                                            </a>
-                                                            <a href="#" class="deletemessage messageid-@@messageid@@">
-                                                                <span data-feather="trash-2"></span>
-                                                            </a>
+                                                            ###IF(ISAUTHOR)###
+                                                                <a href="#" class="editmessage messageid-@@messageid@@">
+                                                                    <span data-feather="edit"></span>
+                                                                </a>
+                                                                <a href="#" class="deletemessage messageid-@@messageid@@">
+                                                                    <span data-feather="trash-2"></span>
+                                                                </a>
+                                                            ###END###
                                                         </div>
                                                     </div>
                                                 </div>

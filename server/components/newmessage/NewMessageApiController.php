@@ -20,6 +20,8 @@ class NewMessageApiController extends SimpleController {
         }
         \Logger::logDebug("NewMessageApiController::gatherData() END", "");
 
+        \Logger::logAccess($user->getId(), "new message");
+
         $this->data = $ret; 
     }
 

@@ -20,6 +20,8 @@ class MessageStatusImportantApiController extends SimpleController {
         }
         \Logger::logDebug("MessageStatusImportantApiController::gatherData() END", "");
 
+        \Logger::logAccess($user->getId(), "mark message as important");
+
         $this->data = $ret; 
     }
 

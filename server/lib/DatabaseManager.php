@@ -177,7 +177,7 @@ class DatabaseManager
     {
         $sqlMessages = "\n";
         $sqlMessages .= "SELECT channel.id AS channel_id,  channel.name AS channelname, channel.description AS channeldescription,                  \n";
-        $sqlMessages .= "message.id AS messageid, message.txt AS messagetxt, message.created_at AS messagecreatedat,                    \n ";
+        $sqlMessages .= "message.id AS messageid, message.txt AS messagetxt, message.created_at AS messagecreatedat, message.user_id AS user_id   ,                 \n ";
         $sqlMessages .= "message_flag.unread AS unread, message_flag.important AS messageimportant,                     \n ";
         $sqlMessages .= "user.username                       \n ";
         $sqlMessages .= "FROM channel                    \n";
@@ -213,8 +213,16 @@ class DatabaseManager
                 if ($msg["unread"]) {
                     $msg["unreadclass"] = "unreadmessage";
                 } else {
-                    $msg["unreadclass"]="";
+                    $msg["unreadclass"]= "";
                 }
+                $msg["isauthor"] = false;
+                if ($msg["user_id"] == $userid) {
+                    $msg["isauthor"] = true;
+                } else {
+                    $msg["isauthor"] = false;
+                }
+
+                $msg["username"] = "@".$msg["username"];
             
                 $messages[] = $msg;
                 $channelId = $msg["channel_id"];
@@ -486,12 +494,21 @@ class DatabaseManager
             $res = self::query($con, $sql, array($messageid, $userid));
             $res = \DatabaseManager::fetchAssoz($res);
             $count = $res["cnt"];
+
+            $sql = "SELECT COUNT(*) AS cnt  FROM message_flag WHERE message_id = ? AND user_id <> ?";
+            $res = self::query($con, $sql, array($messageid, $userid));
+            $res = \DatabaseManager::fetchAssoz($res);
+            $totalCount = $res["cnt"];
+
         } catch (Exception $e) {
             $con->rollBack();
             return false; 
         }
         self::closeConnection();
-        return $count == 0;
+
+        \Logger::logDebug("DatabaseManager::messageUnread() count unread = $count    count total = $totalCount ", "");
+
+        return $count == $totalCount;
     }
 
     public static function markMessageDeleted(int $userid, int $messageid)

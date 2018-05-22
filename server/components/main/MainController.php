@@ -13,7 +13,8 @@ class MainController extends SimpleController {
             $this->data = $ret; 
             return; 
         }
-       
+        \Logger::logAccess($user->getId(), "startpage");
+
         $tmp = \DatabaseManager::getChannelsForUser($user->getId());
         // \Logger::logDebugPrintR("'MainController::gatherData()' [" . __LINE__ ."]  channels for user  ", $tmp); 
 

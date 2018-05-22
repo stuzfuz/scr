@@ -2,10 +2,7 @@
 
 class ChannelController extends SimpleController {
 
-    protected function gatherData() {
-
-        // \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  route =   ", $this->route); 
-        
+    protected function gatherData() {        
         // user logged in? NO -> then redirect to /
         if (\AuthenticationManager::isAuthenticated()) {
             $user = \AuthenticationManager::getAuthenticatedUser();
@@ -14,6 +11,8 @@ class ChannelController extends SimpleController {
         } else {
             \Util::redirect("/");
         }
+
+        \Logger::logAccess($user->getId(), "view channels");
 
         $tmp = \DatabaseManager::getChannelsForUser($user->getId());
         $data = array_merge($data, $tmp);
@@ -47,7 +46,6 @@ class ChannelController extends SimpleController {
         // \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  messages =   ", $messages);
         
         $data = array_merge($data, $messages);
-
        
         $data["channelname"] = $this->route["channelname"];
         $data["channelid"] = $channelId; 
@@ -59,7 +57,6 @@ class ChannelController extends SimpleController {
         \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  data   = ", $this->data);
     }
 
-    // // TODO Delete this if not necessary
     public function justDoIt() : string {
         self::gatherData();
         $page = \TemplateEngine::render(\ApplicationConfig::$indexTmpl, $this->data, $this->route['headertemplate'], $this->route['contenttemplate'], $this->route['footertemplate']);
