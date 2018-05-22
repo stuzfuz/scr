@@ -374,10 +374,13 @@ class DatabaseManager
             
         $res = self::query($con, $sql, array($channelname));
         $res = \DatabaseManager::fetchAssoz($res);
-        $id = $res["id"];
-
         self::closeConnection();
-        return $id;
+
+        if (isset($res["id"])) {
+            return $res["id"];
+        } else {
+            return false;
+        }
     }
     
     public static function markMessageImportant(int $userid, int $messageid)

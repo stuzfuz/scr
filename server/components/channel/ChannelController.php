@@ -18,20 +18,37 @@ class ChannelController extends SimpleController {
         $tmp = \DatabaseManager::getChannelsForUser($user->getId());
         $data = array_merge($data, $tmp);
 
-        $channelId = \DatabaseManager::getChannelIdForName($this->route["channelname"]);
+        if (!isset($this->route["channelname"])) {
+            $data["channelselected"] = false; 
+            $this->data = $data; 
+            return;
+        }
 
+        $channelId = \DatabaseManager::getChannelIdForName($this->route["channelname"]);
+        \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  channelId = $channelId",""); 
+
+        if (!$channelId) {
+            $data["channelselected"] = false; 
+            $this->data = $data; 
+            return;
+        }
         // if a channelname is provided in the URL - load the data 
         // check if the channelname really exists!
         if (isset($this->route["channelname"])) {
-            $topicsAndMessages = \DatabaseManager::getMessagesForUser($user->getId(), $this->route["channelname"]);
+            $messages = \DatabaseManager::getMessagesForUser($user->getId(), $this->route["channelname"]);
+            $data["channelselected"] = true;
         } else {
-            \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  no routeparam provided  ", ""); 
-            \Util::quit500("Fatal Error - 'traverseAST' [" . __LINE__ ."] no routeparam provided   ", "");
+            $data["channelselected"] = false;
+            $this->data = $data; 
+            return;
+            // \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  no routeparam provided  ", ""); 
+            // \Util::quit500("Fatal Error - 'traverseAST' [" . __LINE__ ."] no routeparam provided   ", "");
         }
-        // \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  topicsAndMessages =   ", $topicsAndMessages);
+        // \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  messages =   ", $messages);
         
-        $data = array_merge($data, $topicsAndMessages);
+        $data = array_merge($data, $messages);
 
+       
         $data["channelname"] = $this->route["channelname"];
         $data["channelid"] = $channelId; 
         // \Logger::logDebugPrintR("'ChannelController::gatherData()' [" . __LINE__ ."]  data =   ", $data);

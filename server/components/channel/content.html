@@ -82,9 +82,15 @@
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <!-- ###BEGIN_PARTIAL### -->
                     <!-- ###BEGIN### 
-                            <h1 class="h2">@@channelname@@</h1>       
-                            <h6 class="border-bottom border-gray pb-2 mb-0 channeldescription">@@channeldescription@@</h6>
-                         ###END### -->
+                            
+                            ###IF(CHANNELSELECTED)###
+                                <h1 class="h2">@@channelname@@</h1>       
+                                <h6 class="border-bottom border-gray pb-2 mb-0 channeldescription">@@channeldescription@@</h6>
+                           
+                            ###ELSE###
+                                <h6 class="border-bottom border-gray pb-2 mb-0">No channel selected or channel not found!</h6>
+                            ###END###
+                        ###END### -->
 
                     <h1 class=" pb-2 mb-0">Channelname</h1>
                     <h6 class="border-bottom border-gray pb-2 mb-0 channeldescription">Channeldescription</h6>
@@ -94,75 +100,73 @@
 
                     <!-- ###BEGIN_PARTIAL### -->
                     <!-- ###BEGIN###
-                            ###IF(HASIMPORTANTMESSAGES)###
-                                <div class="container-importantmessages channelid-@@channelid@@">
-                                    ###FOREACH(IMPORTANTMESSAGES)###
-                                        <div class="card msg messageid-@@messageid@@   @@unreadclass@@">
-                                            <div class="card-header">
-                                                <div class="row justify-content-between">
-                                                    <div class="co-6 ">
-                                                        @@username@@  wrote on the @@date@@ at @@time@@
-                                                        <span class="badge badge-primary">Important</span>
-                                                        ###IF(unread)### 
-                                                            <span class="badge badge-secondary">Unread</span>
-                                                        ###END###
-                                                    </div>
-                                                    <div class="col-4  text-right">
-                                                        <a href="#" class="notimportantmessage messageid-@@messageid@@">
-                                                            <span data-feather="thumbs-up"></span>
-                                                        </a>
-                                                        <a href="#" class="editmessage messageid-@@messageid@@">
-                                                            <span data-feather="edit"></span>
-                                                        </a>
-                                                        <a href="#" class="deletemessage messageid-@@messageid@@">
-                                                            <span data-feather="trash-2"></span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-                                                <p class="card-text">@@messagetxt@@</p>
-                                            </div>
-                                        </div>
-                                    ###END###
-                                </div>
-                            ###END###
-                            ###IF(HASMESSAGES)###
-                                <div class="container-messages channelid-@@channelid@@">
-                                    ###FOREACH(MESSAGES)###
-                                        <div class="card msg messageid-@@messageid@@  @@unreadclass@@">
-                                            <div class="card-header">
-                                                <div class="row justify-content-between">
-                                                    <div class="col-6 ">
-                                                        @@username@@  wrote on the @@date@@ at @@time@@
-                                                        ###IF(unread)### 
-                                                            <span class="badge badge-secondary">Unread</span>
-                                                        ###END###
-                                                    </div>
-                                                    <div class="col-4  text-right">
-                                                        <a href="#" class="importantmessage messageid-@@messageid@@">
-                                                            <span data-feather="thumbs-up"></span>
-                                                        </a>
-                                                        <a href="#" class="editmessage messageid-@@messageid@@">
-                                                            <span data-feather="edit"></span>
-                                                        </a>
-                                                        <a href="#" class="deletemessage messageid-@@messageid@@">
-                                                            <span data-feather="trash-2"></span>
-                                                        </a>
+                            ###IF(CHANNELSELECTED)###
+                                ###IF(HASIMPORTANTMESSAGES)###
+                                    <div class="container-importantmessages channelid-@@channelid@@">
+                                        ###FOREACH(IMPORTANTMESSAGES)###
+                                            <div class="card msg messageid-@@messageid@@   @@unreadclass@@">
+                                                <div class="card-header">
+                                                    <div class="row justify-content-between">
+                                                        <div class="co-6 ">
+                                                            @@username@@  wrote on the @@date@@ at @@time@@
+                                                            <span class="badge badge-primary">Important</span>
+                                                            ###IF(unread)### 
+                                                                <span class="badge badge-secondary">Unread</span>
+                                                            ###END###
+                                                        </div>
+                                                        <div class="col-4  text-right">
+                                                            <a href="#" class="notimportantmessage messageid-@@messageid@@">
+                                                                <span data-feather="thumbs-up"></span>
+                                                            </a>
+                                                            <a href="#" class="editmessage messageid-@@messageid@@">
+                                                                <span data-feather="edit"></span>
+                                                            </a>
+                                                            <a href="#" class="deletemessage messageid-@@messageid@@">
+                                                                <span data-feather="trash-2"></span>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <div class="card-body">
+                                                    <p class="card-text">@@messagetxt@@</p>
+                                                </div>
                                             </div>
-                                            <div class="card-body">
-                                                <p class="card-text">@@messagetxt@@</p>
+                                        ###END###
+                                    </div>
+                                ###END###
+                                ###IF(HASMESSAGES)###
+                                    <div class="container-messages channelid-@@channelid@@">
+                                        ###FOREACH(MESSAGES)###
+                                            <div class="card msg messageid-@@messageid@@  @@unreadclass@@">
+                                                <div class="card-header">
+                                                    <div class="row justify-content-between">
+                                                        <div class="col-6 ">
+                                                            @@username@@  wrote on the @@date@@ at @@time@@
+                                                            ###IF(unread)### 
+                                                                <span class="badge badge-secondary">Unread</span>
+                                                            ###END###
+                                                        </div>
+                                                        <div class="col-4  text-right">
+                                                            <a href="#" class="importantmessage messageid-@@messageid@@">
+                                                                <span data-feather="thumbs-up"></span>
+                                                            </a>
+                                                            <a href="#" class="editmessage messageid-@@messageid@@">
+                                                                <span data-feather="edit"></span>
+                                                            </a>
+                                                            <a href="#" class="deletemessage messageid-@@messageid@@">
+                                                                <span data-feather="trash-2"></span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <p class="card-text">@@messagetxt@@</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ###END###
-                                </div>
-                            
-                                
+                                        ###END###
+                                    </div>
 
-                            ###END### 
-
+                                ###END### 
                             
                                 <form class="formnewmessage channelid-@@channelid@@">
                                     <div class="form-group">
@@ -185,6 +189,7 @@
                                         </div>
                                     </div>
                                 </form>
+                            ###END###
 
                             -->
                             
