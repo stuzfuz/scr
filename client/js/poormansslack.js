@@ -2,6 +2,7 @@
 
 function showError(classname, msg) {
     $(classname).text(msg);
+    $(classname).show();
     $(classname).fadeIn(500);
     setTimeout(function () {
         $(classname).fadeOut(500);

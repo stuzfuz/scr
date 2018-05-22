@@ -269,6 +269,63 @@ class DatabaseManager
         return $found;
     }
 
+    public static function assignUserToChannelsMessages(int $userid, array $channelIds)
+    {
+        $con = self::getConnection();
+        $con->beginTransaction();
+        try {
+            $sql = "INSERT INTO ref_user_channel (user_id, channel_id) VALUES  ";
+            $sqlArr = [];
+            $sqlParams= [];
+            $sqlParamsMessageIds = [];
+            foreach ($channelIds as $id) {
+                $sqlArr[] = "(?, ?)";
+                $sqlParams[] = $userid;
+                $sqlParams[] = $id;
+                $sqlParamsMessageIds[] = $id;
+            }
+
+            $sql .= implode(",", $sqlArr);
+            \Logger::logDebug("DatabaseManager::assignUserToChannelsMessages() sql = $sql ", "");
+            \Logger::logDebugPrintR("DatabaseManager::assignUserToChannelsMessages() sqlParams =  ", $sqlParams);
+            
+            self::query($con, $sql, $sqlParams);
+
+            // all the messageIds in these channels ...
+            $sql = "SELECT id FROM message WHERE channel_id IN    ";
+            $sql .= "(" . implode(",", $sqlParamsMessageIds) .")";
+
+            \Logger::logDebug("DatabaseManager::assignUserToChannelsMessages()  get messageids for channels  sql  = $sql ", "");
+            \Logger::logDebugPrintR("DatabaseManager::assignUserToChannelsMessages() get messageids for channel sqlParams =  ", $sqlParams);
+            $res = self::query($con, $sql, $sqlParams);
+            
+            $sqlParams = [];
+            $sqlArr = []; 
+            while ($id = \DatabaseManager::fetchAssoz($res)) {
+                $sqlArr[] = "(?, ?, FALSE, TRUE)";
+                $sqlParams[] = $userid;
+                $sqlParams[]= $id["id"];
+            }
+            if (count($sqlParams) > 0) {
+                // insert the user_id <-> message_id reference ...
+                $sql = "INSERT INTO message_flag(user_id, message_id , important, unread) VALUES   ";
+                $sql .=  implode(",", $sqlArr);
+
+                \Logger::logDebug("DatabaseManager::assignUserToChannelsMessages()  INSERT messageids for user_id  sql  = $sql ", "");
+                \Logger::logDebugPrintR("DatabaseManager::assignUserToChannelsMessages() get INSERT messageids for user_id sqlParams =  ", $sqlParams);
+
+                $res = self::query($con, $sql, $sqlParams);
+            }
+            
+            $con->commit();
+        } catch (Exception $e) {
+            $con->rollBack();
+            return false; 
+        }
+        self::closeConnection();
+        return true;
+    }
+
     public static function insertChannel(int $userid, string $channelname, string $description)
     {
         $con = self::getConnection();
@@ -395,6 +452,7 @@ class DatabaseManager
             $con->commit();
         } catch (Exception $e) {
             $con->rollBack();
+            return false; 
         }
         self::closeConnection();
         return true;
@@ -412,6 +470,7 @@ class DatabaseManager
             $con->commit();
         } catch (Exception $e) {
             $con->rollBack();
+            return false; 
         }
         self::closeConnection();
         return true;
@@ -429,6 +488,7 @@ class DatabaseManager
             $count = $res["cnt"];
         } catch (Exception $e) {
             $con->rollBack();
+            return false; 
         }
         self::closeConnection();
         return $count == 0;
@@ -451,6 +511,7 @@ class DatabaseManager
             $con->commit();
         } catch (Exception $e) {
             $con->rollBack();
+            return false; 
         }
         self::closeConnection();
         return true;
@@ -473,6 +534,7 @@ class DatabaseManager
             $con->commit();
         } catch (Exception $e) {
             $con->rollBack();
+            return false; 
         }
         self::closeConnection();
         return true;
@@ -491,17 +553,17 @@ class DatabaseManager
                 $sqlArr[] = "?";
                 $sqlParams[] = $msg;
                 \Logger::logDebug("DatabaseManager::markMessageRead() added message = $msg ", "");
-
             }
             $sql .= "(" . implode(",", $sqlArr) . ")";
             \Logger::logDebug("DatabaseManager::markMessageRead() sql = $sql ", "");
-            \Logger::logDebugPrintR("DatabaseManager::markMessageRead() sqlParams = q ",$sqlParams);
+            \Logger::logDebugPrintR("DatabaseManager::markMessageRead() sqlParams = q ", $sqlParams);
 
             self::query($con, $sql, $sqlParams);
 
             $con->commit();
         } catch (Exception $e) {
             $con->rollBack();
+            return false; 
         }
         self::closeConnection();
         return true;

@@ -40,8 +40,10 @@
         <!-- ###BEGIN_PARTIAL### -->
             <!-- ###BEGIN###
                     ###IF(ISLOGGEDIN)###
-                      <a class="nav-link" href="/api/signout">@@username@@</a> 
-                    ###END###
+                        <a class="nav-link" href="/api/signout">logout</a> 
+                    ###ELSE###
+                        <a class="nav-link" href="/login">login</a> 
+                     ###END###
                 ###END### -->
           <!-- ###END_PARTIAL### -->
 

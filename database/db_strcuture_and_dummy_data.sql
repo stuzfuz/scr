@@ -11,7 +11,6 @@ CREATE TABLE user (
 	created_at INT(14) DEFAULT UNIX_TIMESTAMP(NOW()), 
 	password VARCHAR(255) NOT NULL, 
 	deleted TINYINT(1) NOT NULL DEFAULT FALSE,
-	isadmin TINYINT(1) NOT NULL DEFAULT FALSE,
 	PRIMARY KEY (id),
 	UNIQUE KEY (username) 
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
@@ -180,8 +179,8 @@ VALUES ('/api/markmessagesasread' ,'API', NULL, NULL, NULL, NULL, 'server/compon
 
 
 
-INSERT INTO user(username, firstname, lastname, password, isadmin) 
-VALUES ('admin', 'admin', 'admin', '68be59da0cf353ae74ee8db8b005454b515e1a22', TRUE);
+INSERT INTO user(username, firstname, lastname, password) 
+VALUES ('admin', 'admin', 'admin', '68be59da0cf353ae74ee8db8b005454b515e1a22');
 
 	
 INSERT INTO user(username, firstname, lastname, password) 

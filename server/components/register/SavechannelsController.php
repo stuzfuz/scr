@@ -33,13 +33,7 @@ class SavechannelsController extends SimpleController {
 
         \Logger::logDebugPrintR("'SavechannelsController::gatherData()' [" . __LINE__ ."]  channels from request  ", $this->route["requestparameter"]["channels"]); 
 
-        // if (is_array($this->route["requestparameter"]["channels"])) {
-        //     die("is an array");
-        // } else {
-        //     die("is not an array");
-        // }
-        // insert user into db and return the new userid
-        $res = \DatabaseManager::assignUserChannelsTopicsMessages($user->getId(), $this->route["requestparameter"]["channels"]);
+        $res = \DatabaseManager::assignUserToChannelsMessages($user->getId(), $this->route["requestparameter"]["channels"]);
         
         if (!$res) {
             \Logger::logDebugPrintR("'SavechannelsController::gatherData()' [" . __LINE__ ."]  could not save channels for user  :-(  ", ""); 

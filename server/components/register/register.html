@@ -40,7 +40,7 @@
                     <label for="registerPassword" class="sr-only">Password</label>
                     <input type="password" id="registerPassword" class="form-control" placeholder="Password" required>
                     <label for="registerPasswordConfirm" class="sr-only">Confirm password</label>
-                    <input type="password" id="registerPasswordConfirm" class="form-control" placeholder="Password" required>
+                    <input type="password" id="registerPasswordConfirm" class="form-control" placeholder="Confirm password" required>
                     
                     
                     <label for="registerFirstname" class="sr-only">Firstname</label>
@@ -50,6 +50,9 @@
           
                     <button id="btnregister" class="btn btn-lg btn-primary btn-block">Register</button>
                   </form>
+                  <div class="alert alert-danger register-error" role="alert">
+                    blupp
+                  </div>
                  -->
 
         <form id="formRegister1" class="form-register" method="post">
@@ -86,6 +89,9 @@
                           </select>
                         </div>   
                         <button id="btnselect" class="btn btn-lg btn-primary btn-block">Save</button>
+                            <div class="alert alert-danger register-error" role="alert">
+                                  blupp
+                            </div>
                   ###ELSE###
                         <h5>No Channels available</h5>
                         <button id="btnselect" class="btn btn-lg btn-primary btn-block">Finish registration</button>
@@ -129,9 +135,7 @@
         <div class="col-sm">
         </div>
         <div class="col-sm">
-            <div class="alert alert-danger register-error" role="alert">
-                blupp
-            </div>
+            
         </div>
         <div class="col-sm">
         </div>
