@@ -20,6 +20,8 @@ class MessageDeleteApiController extends SimpleController {
         }
         \Logger::logDebug("MessageDeleteApiController::gatherData() END", "");
 
+        \Logger::logAccess($user->getId(), "delete message");
+
         $this->data = $ret; 
     }
 
