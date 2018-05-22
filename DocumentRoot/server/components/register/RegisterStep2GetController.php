@@ -3,11 +3,6 @@
 class RegisterStep2GetController extends SimpleController {
 
     protected function gatherData() {
-        $ret = null; 
-        if (\AuthenticationManager::isAuthenticated()) {
-            \Util::redirect("/");
-        } 
-        
         // check if required request params are set
         \Logger::logDebugPrintR("'RegisterStep2GetController::gatherData()'   [" . __LINE__ ."]  GET  route =   ", $this->route); 
             
