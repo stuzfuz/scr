@@ -3,6 +3,10 @@
 class RegisterController extends SimpleController {
 
     protected function gatherData() {
+        $ret = null; 
+        if (\AuthenticationManager::isAuthenticated()) {
+            \Util::redirect("/");
+        } 
         $ret["stepone"] = true;
         $this->data = $ret; 
     }

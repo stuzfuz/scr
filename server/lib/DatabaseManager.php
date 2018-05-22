@@ -476,14 +476,14 @@ class DatabaseManager
         return true;
     }
 
-    public static function messageUnread(int $messageid)
+    public static function messageUnread(int $userid, int $messageid)
     {
         $con = self::getConnection();
         
         try {
-            $sql = "SELECT COUNT(*) AS cnt  FROM message_flag WHERE message_id = ? and unread = TRUE";
+            $sql = "SELECT COUNT(*) AS cnt  FROM message_flag WHERE message_id = ? AND unread = TRUE AND user_id <> ?";
             
-            $res = self::query($con, $sql, array($messageid));
+            $res = self::query($con, $sql, array($messageid, $userid));
             $res = \DatabaseManager::fetchAssoz($res);
             $count = $res["cnt"];
         } catch (Exception $e) {
@@ -499,7 +499,7 @@ class DatabaseManager
         $con = self::getConnection();
         
         try {
-            if (!self::messageUnread($messageid)) {
+            if (!self::messageUnread($userid, $messageid)) {
                 return false;
             }
             $con->beginTransaction();
@@ -522,7 +522,7 @@ class DatabaseManager
         $con = self::getConnection();
         
         try {
-            if (!self::messageUnread($messageid)) {
+            if (!self::messageUnread($userid, $messageid)) {
                 return false;
             }
             $con->beginTransaction();
