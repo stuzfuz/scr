@@ -16,10 +16,11 @@ services:
             ./docker/mariadb
         volumes:
             - ./db:/var/lib/mysql
+            - ./database/db_strcuture_and_dummy_data.sql:/docker-entrypoint-initdb.d/db_strcuture_and_dummy_data.sql
         ports:
             - "3306:3306"
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_USER: fh_2018_scm4
             MYSQL_PASSWORD: fh_2018_scm4
-            MYSQL_DATABASE: fh_2018_scm4_S1610307036
+            MYSQL_DATABASE: fh_2018_scm4_s1610307036
