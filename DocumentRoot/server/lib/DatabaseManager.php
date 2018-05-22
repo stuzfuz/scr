@@ -8,7 +8,15 @@ class DatabaseManager
     {
         if (!isset(self::$__connection)) {
             try {
-                $s = "mysql:host=localhost;dbname=" . ApplicationConfig::$databaseName . ";charset=utf8";
+                // echo"<br>conencting to database<br/>";
+                // echo"<br>password = " . ApplicationConfig::$databasePassword." <br/>";
+                // echo"<br>username = ".ApplicationConfig::$databaseUsername ."<br/>";
+                // echo"<br>database = ." . ApplicationConfig::$databaseName."<br/>";
+                // echo"<br>host = ". ApplicationConfig::$databaseHost ."<br/>";
+
+                $s = "mysql:host=" . ApplicationConfig::$databaseHost . ";dbname=" . ApplicationConfig::$databaseName . ";charset=utf8";
+                
+                // $s = "mysql:host=localhost;dbname=" . ApplicationConfig::$databaseName . ";charset=utf8";
                 self::$__connection = new \PDO($s, ApplicationConfig::$databaseUsername, ApplicationConfig::$databasePassword);
             } catch (PDOException $e) {
                 \Logger::logError("Fatal Error - could not connect to Database", $e->getMessage());
