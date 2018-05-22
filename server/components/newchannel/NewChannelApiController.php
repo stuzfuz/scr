@@ -21,8 +21,10 @@ class NewChannelApiController extends SimpleController {
         \Logger::logDebugPrintR("LoginApiController::justDoIt() trying to authenicate user  route = ", $this->route);
         
         $channelname = $this->route["requestparameter"]["channelname"];
+        $description = $this->route["requestparameter"]["description"];
         \Logger::logDebug("LoginApiController::justDoIt() values in route 'channelname' $channelname ", "");
-        
+        \Logger::logDebug("LoginApiController::justDoIt() values in route 'description' $description ", "");
+
         $ret = null; 
         if (\DataBaseManager::existsChannel($channelname)) {
             \Logger::logDebug("LoginApiController::justDoIt() channel '$channelname' already exists  ", "");
@@ -35,7 +37,7 @@ class NewChannelApiController extends SimpleController {
             $ret["status"] = "ERROR: channelname already exists -> please choose a different name!";            
         } else {
             \Logger::logDebug("LoginApiController::justDoIt() inserting channel into list of channels", "");
-            if (\DataBaseManager::insertChannel($this->data["userid"], $channelname)) {
+            if (\DataBaseManager::insertChannel($this->data["userid"], $channelname, $description)) {
                 // 200 everything is fine 
                 header_remove();
                 http_response_code(200);

@@ -269,17 +269,17 @@ class DatabaseManager
         return $found;
     }
 
-    public static function insertChannel(int $userid, string $channelname)
+    public static function insertChannel(int $userid, string $channelname, string $description)
     {
         $con = self::getConnection();
         $con->beginTransaction();
         $channelId = false;
         try {
             // insert new channel name
-            $sql = "INSERT INTO channel (name, created_by_user_id)";
-            $sql .= " VALUES (?, ?)";
+            $sql = "INSERT INTO channel (name, description, created_by_user_id)";
+            $sql .= " VALUES (?, ?, ?)";
             
-            self::query($con, $sql, array($channelname, $userid));
+            self::query($con, $sql, array($channelname, $description, $userid));
 
             $channelId = $con->lastInsertid();
 

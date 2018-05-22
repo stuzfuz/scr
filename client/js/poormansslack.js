@@ -156,6 +156,7 @@ $(document).ready(function () {
         // read input data from form
         data = {
             channelname: $("#channelName").val(),
+            description:  $("#channelDescription").val()
         };
         console.log("formNewChannel  data = " + JSON.stringify(data, null, 4));
 

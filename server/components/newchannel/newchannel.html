@@ -25,7 +25,7 @@
 
 
   <div class="container-fluid">
-    <div class="row">
+        <div class="row align-items-center login-container">
       <div class="col-sm">
       </div>
       <div class="col-sm">
@@ -36,16 +36,20 @@
             <form id="formNewChannel" class="form-register" method="post">
                 <h1 class="h3 mb-3 font-weight-normal">Create New Channel</h1>
                 <label for="channelName" class="sr-only">Channelname</label>
-                <input type="text" id="channelName" class="form-control" placeholder="Channelname" required autofocus>
+                <input type="text" id="channelName" class="form-control" placeholder="name" required autofocus>
+                <label for="channelDescription" class="sr-only">Channel description</label>
+                <input type="text" id="channelDescription" class="form-control" placeholder="description" required>
           
                 <button id="btncreatechannel" class="btn btn-lg btn-primary btn-block">Create channel</button>
               </form>
           -->
 
         <form id="formNewChannel" class="form-register" method="post">
-          <h1 class="h3 mb-3 font-weight-normal">Create New Channel</h1>
-          <label for="channelName" class="sr-only">Channelname</label>
-          <input type="text" id="channelName" class="form-control" placeholder="Channelname" required autofocus>
+          <h1 class="h3 mb-3 font-weight-normal">Create new channel</h1>
+          <label for="channelName" class="sr-only">Channel name</label>
+          <input type="text" id="channelName" class="form-control" placeholder="name" required autofocus>
+          <label for="channelDescription" class="sr-only">Channel description</label>
+          <input type="text" id="channelName" class="form-control" placeholder="description" required >
           <button id="btncreatechannel" class="btn btn-lg btn-primary btn-block">Create channel</button>
         </form>
 
