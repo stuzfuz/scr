@@ -16,7 +16,6 @@ services:
         build:
             ./docker/mariadb
         volumes:
-      #     - ./db:/var/lib/mysql
             - ./database/db_strcuture_and_dummy_data.sql:/docker-entrypoint-initdb.d/db_strcuture_and_dummy_data.sql
         ports:
             - "3306:3306"
