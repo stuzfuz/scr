@@ -102,6 +102,7 @@ class TemplateLexer extends Lexer {
                 // case '\t': 
                 case '\n': 
                 case Chr(10):
+                case Chr(13):
                 case '\r': $this->WS();
                            continue;
                 case '#' : if ($this->isHash()) return $this->COMMAND();
